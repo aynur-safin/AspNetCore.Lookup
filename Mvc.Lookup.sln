@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7BEFA84-7DFD-4529-BBD6-AF8C7539834B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A4226CF-8B00-4D16-A89C-1A39CCF24D89}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Lookup", "src\Mvc.Lookup\Mvc.Lookup.xproj", "{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Lookup.Core", "src\Mvc.Lookup.Core\Mvc.Lookup.Core.xproj", "{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E} = {F7BEFA84-7DFD-4529-BBD6-AF8C7539834B}
+		{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2} = {F7BEFA84-7DFD-4529-BBD6-AF8C7539834B}
+	EndGlobalSection
+EndGlobal
