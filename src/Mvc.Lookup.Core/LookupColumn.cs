@@ -11,13 +11,13 @@ namespace NonFactors.Mvc.Lookup
         public LookupColumn(String key, String header, String cssClass = "")
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             if (header == null)
-                throw new ArgumentNullException("header");
+                throw new ArgumentNullException(nameof(header));
 
             if (cssClass == null)
-                throw new ArgumentNullException("cssClass");
+                throw new ArgumentNullException(nameof(cssClass));
 
             Key = key;
             Header = header;

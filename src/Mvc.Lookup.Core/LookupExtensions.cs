@@ -74,10 +74,7 @@ namespace NonFactors.Mvc.Lookup
             LookupAttribute lookup = exp.Member.GetCustomAttribute<LookupAttribute>();
 
             if (lookup == null)
-                throw new LookupException(
-                    String.Format(
-                        "'{0}' property does not have a '{1}' specified.",
-                        exp.Member.Name, typeof(LookupAttribute).Name));
+                throw new LookupException($"'{exp.Member.Name}' property does not have a '{typeof(LookupAttribute).Name}' specified.");
 
             return (AbstractLookup)Activator.CreateInstance(lookup.Type);
         }
@@ -85,7 +82,7 @@ namespace NonFactors.Mvc.Lookup
         {
             IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
             if (attributes.ContainsKey("class"))
-                attributes["class"] = String.Format("{0} {1}", attributes["class"], "form-control mvc-lookup-input").Trim();
+                attributes["class"] = $"{attributes["class"]} form-control mvc-lookup-input".Trim();
             else
                 attributes["class"] = "form-control mvc-lookup-input";
             attributes.Add("data-mvc-lookup-for", TagBuilder.CreateSanitizedId(hiddenInput, "_"));

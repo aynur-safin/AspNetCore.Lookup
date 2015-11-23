@@ -28,10 +28,10 @@ namespace NonFactors.Mvc.Lookup
         public void Add(LookupColumn column)
         {
             if (column == null)
-                throw new ArgumentNullException("column");
+                throw new ArgumentNullException(nameof(column));
 
             if (Columns.Any(col => col.Key == column.Key))
-                throw new LookupException(String.Format("Can not add lookup column with the same key '{0}'.", column.Key));
+                throw new LookupException($"Can not add lookup column with the same key '{column.Key}'.");
 
             Columns.Add(column);
         }

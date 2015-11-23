@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Lookup
         }
         protected virtual String GetColumnKey(PropertyInfo property)
         {
-            if (property == null) throw new ArgumentNullException("property");
+            if (property == null) throw new ArgumentNullException(nameof(property));
 
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
             if (column != null && column.Relation != null)
@@ -37,7 +37,7 @@ namespace NonFactors.Mvc.Lookup
         }
         protected virtual String GetColumnHeader(PropertyInfo property)
         {
-            if (property == null) throw new ArgumentNullException("property");
+            if (property == null) throw new ArgumentNullException(nameof(property));
 
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
             if (column != null && column.Relation != null)
@@ -58,10 +58,7 @@ namespace NonFactors.Mvc.Lookup
             if (relationProperty != null)
                 return relationProperty;
 
-            throw new LookupException(String.Format("{0}.{1} does not have property named '{2}'.",
-                property.DeclaringType.Name,
-                property.Name,
-                relation));
+            throw new LookupException($"{property.DeclaringType.Name}.{property.Name} does not have property named '{relation}'.");
         }
 
         public override LookupData GetData()
@@ -88,7 +85,7 @@ namespace NonFactors.Mvc.Lookup
         {
             PropertyInfo idProperty = typeof(T).GetProperty("Id");
             if (idProperty == null)
-                throw new LookupException(String.Format("Type '{0}' does not have property named 'Id'.", typeof(T).Name));
+                throw new LookupException($"Type '{typeof(T).Name}' does not have property named 'Id'.");
 
             if (idProperty.PropertyType == typeof(String))
                 return models.Where("Id = \"" + CurrentFilter.Id + "\"");
@@ -97,7 +94,7 @@ namespace NonFactors.Mvc.Lookup
             if (IsNumeric(idProperty.PropertyType) && Decimal.TryParse(CurrentFilter.Id, out temp))
                 return models.Where("Id = " + CurrentFilter.Id);
 
-            throw new LookupException(String.Format("{0}.Id can not be filtered by using '{1}' value, because it's not a string nor a number.", typeof(T).Name, CurrentFilter.Id));
+            throw new LookupException($"{typeof(T).Name}.Id can not be filtered by using '{CurrentFilter.Id}' value, because it's not a string nor a number.");
         }
         protected virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
@@ -129,12 +126,12 @@ namespace NonFactors.Mvc.Lookup
             String sortColumn = CurrentFilter.SortColumn ?? DefaultSortColumn;
             if (sortColumn != null)
                 if (Columns.Keys.Contains(sortColumn))
-                    return models.OrderBy(String.Format("{0} {1}", sortColumn, CurrentFilter.SortOrder));
+                    return models.OrderBy($"{sortColumn} {CurrentFilter.SortOrder}");
                 else
-                    throw new LookupException(String.Format("Lookup does not contain sort column named '{0}'.", sortColumn));
+                    throw new LookupException($"Lookup does not contain sort column named '{sortColumn}'.");
 
             if (Columns.Any())
-                return models.OrderBy(String.Format("{0} {1}", Columns.First().Key, CurrentFilter.SortOrder));
+                return models.OrderBy($"{Columns.First().Key} {CurrentFilter.SortOrder}");
 
             throw new LookupException("Lookup should have at least one column.");
         }
@@ -187,18 +184,18 @@ namespace NonFactors.Mvc.Lookup
 
         private String FormContainsQuery(String propertyName, String term)
         {
-            return String.Format(@"({0} && {1}.ToLower().Contains(""{2}""))", FormNotNullQuery(propertyName), propertyName, term);
+            return $"({FormNotNullQuery(propertyName)} && {propertyName}.ToLower().Contains(\"{term}\"))";
         }
         private String FormEqualsQuery(Type type, String propertyName, Object term)
         {
             if (type == typeof(String))
-                return String.Format(@"({0} && {1} == ""{2}"")", FormNotNullQuery(propertyName), propertyName, term);
+                return $"({FormNotNullQuery(propertyName)} && {propertyName} == \"{term}\")";
 
             Decimal number;
             if (IsNumeric(type) && Decimal.TryParse(term.ToString(), out number))
-                return String.Format("({0} && {1} == {2})", FormNotNullQuery(propertyName), propertyName, number.ToString().Replace(',', '.'));
+                return $"({FormNotNullQuery(propertyName)} && {propertyName} == {number.ToString().Replace(',', '.')})";
 
-            throw new LookupException(String.Format("'{0}' type is not supported in dynamic filtering.", type.Name));
+            throw new LookupException($"'{type.Name}' type is not supported in dynamic filtering.");
         }
         private String FormNotNullQuery(String propertyName)
         {
@@ -223,7 +220,7 @@ namespace NonFactors.Mvc.Lookup
             String[] properties = fullPropertyName.Split('.');
             PropertyInfo property = type.GetProperty(properties[0]);
             if (property == null)
-                throw new LookupException(String.Format("'{0}' type does not have property named '{1}'.", type.Name, properties[0]));
+                throw new LookupException($"'{type.Name}' type does not have property named '{properties[0]}'.");
 
             if (properties.Length > 1)
                 return GetValue(property.GetValue(model), String.Join(".", properties.Skip(1)));
@@ -243,8 +240,7 @@ namespace NonFactors.Mvc.Lookup
             {
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
-                    throw new LookupException(String.Format("Type {0} does not have property named {1}.",
-                        type.Name, propertyName));
+                    throw new LookupException($"Type {type.Name} does not have property named {propertyName}.");
 
                 type = property.PropertyType;
             }
