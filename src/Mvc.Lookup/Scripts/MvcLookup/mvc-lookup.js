@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 0.9.0
+ * Mvc.Lookup 0.9.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -8,7 +8,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 (function ($) {
-    $.widget('mvclookup', {
+    $.widget('mvc.mvclookup', {
         _create: function () {
             if (!this.element.hasClass('mvc-lookup-input')) {
                 return;

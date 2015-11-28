@@ -4,7 +4,7 @@
   "licenseUrl": "http://opensource.org/licenses/MIT",
   "authors": [ "NonFactors" ],
   "tags": [ "mvc lookup" ],
-  "version": "0.9.0",
+  "version": "0.9.1",
 
   "dependencies": {
     "System.Linq.Dynamic": "1.0.4",
