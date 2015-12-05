@@ -142,9 +142,11 @@ namespace NonFactors.Mvc.Lookup
             data.FilteredRecords = models.Count();
             data.Columns = Columns;
 
-            IQueryable<T> pagedModels = models
-                .Skip(CurrentFilter.Page * CurrentFilter.RecordsPerPage)
-                .Take(CurrentFilter.RecordsPerPage);
+            IQueryable<T> pagedModels = CurrentFilter.Page != 0 && CurrentFilter.RecordsPerPage != 0
+                ? models
+                    .Skip(CurrentFilter.Page * CurrentFilter.RecordsPerPage)
+                    .Take(CurrentFilter.RecordsPerPage)
+                : new T[0].AsQueryable();
 
             foreach (T model in pagedModels)
             {

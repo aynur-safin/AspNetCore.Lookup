@@ -1,0 +1,34 @@
+{
+  "description": "Unit tests for Mvc.Lookup projects code base",
+  "projectUrl": "https://github.com/NonFactors/MVC6.Lookup",
+  "licenseUrl": "http://opensource.org/licenses/MIT",
+  "authors": [ "NonFactors" ],
+  "tags": [ "mvc lookup" ],
+  "version": "0.9.0",
+
+  "dependencies": {
+    "Mvc.Lookup.Core": "",
+
+    "xunit": "2.1.0",
+    "Moq": "4.2.1510.2205",
+    "NSubstitute": "1.8.2",
+    "xunit.runner.dnx": "2.1.0-rc1-build204",
+    "EntityFramework.Core": "7.0.0-rc1-final",
+    "Microsoft.AspNet.Http": "1.0.0-rc1-final",
+    "EntityFramework.Commands": "7.0.0-rc1-final",
+    "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final"
+  },
+
+  "compilationOptions": {
+    "warningsAsErrors": true
+  },
+
+  "commands": {
+    "ef": "EntityFramework.Commands",
+    "test": "xunit.runner.dnx"
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}
