@@ -58,7 +58,7 @@ namespace NonFactors.Mvc.Lookup
             if (relationProperty != null)
                 return relationProperty;
 
-            throw new LookupException($"{property.DeclaringType.Name}.{property.Name} does not have property named '{relation}'.");
+            throw new LookupException($"'{property.DeclaringType.Name}.{property.Name}' does not have property named '{relation}'.");
         }
 
         public override LookupData GetData()
@@ -85,7 +85,7 @@ namespace NonFactors.Mvc.Lookup
         {
             PropertyInfo idProperty = typeof(T).GetProperty("Id");
             if (idProperty == null)
-                throw new LookupException($"Type '{typeof(T).Name}' does not have property named 'Id'.");
+                throw new LookupException($"'{typeof(T).Name}' type does not have property named 'Id'.");
 
             if (idProperty.PropertyType == typeof(String))
                 return models.Where("Id = \"" + CurrentFilter.Id + "\"");
@@ -94,7 +94,7 @@ namespace NonFactors.Mvc.Lookup
             if (IsNumeric(idProperty.PropertyType) && Decimal.TryParse(CurrentFilter.Id, out temp))
                 return models.Where("Id = " + CurrentFilter.Id);
 
-            throw new LookupException($"{typeof(T).Name}.Id can not be filtered by using '{CurrentFilter.Id}' value, because it's not a string nor a number.");
+            throw new LookupException($"'{typeof(T).Name}.Id' can not be filtered by using '{CurrentFilter.Id}' value, because it's not a string nor a number.");
         }
         protected virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
@@ -242,7 +242,7 @@ namespace NonFactors.Mvc.Lookup
             {
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
-                    throw new LookupException($"Type {type.Name} does not have property named {propertyName}.");
+                    throw new LookupException($"'{type.Name}' type does not have property named '{propertyName}'.");
 
                 type = property.PropertyType;
             }

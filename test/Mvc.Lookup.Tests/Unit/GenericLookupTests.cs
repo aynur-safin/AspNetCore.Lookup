@@ -116,7 +116,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnKey(property));
 
-            String expected = String.Format("{0}.{1} does not have property named 'None'.", property.DeclaringType.Name, property.Name);
+            String expected = String.Format("'{0}.{1}' does not have property named 'None'.", property.DeclaringType.Name, property.Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -175,7 +175,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnHeader(property));
 
-            String expected = String.Format("{0}.{1} does not have property named 'None'.", property.DeclaringType.Name, property.Name);
+            String expected = String.Format("'{0}.{1}' does not have property named 'None'.", property.DeclaringType.Name, property.Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -324,7 +324,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
 
-            String expected = String.Format("Type '{0}' does not have property named 'Id'.", typeof(NoIdModel).Name);
+            String expected = String.Format("'{0}' type does not have property named 'Id'.", typeof(NoIdModel).Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -365,7 +365,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
 
-            String expected = String.Format("{0}.Id can not be filtered by using 'Id' value, because it's not a string nor a number.", typeof(EnumModel).Name);
+            String expected = String.Format("'{0}.Id' can not be filtered by using 'Id' value, because it's not a string nor a number.", typeof(EnumModel).Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -380,7 +380,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
 
-            String expected = String.Format("{0}.Id can not be filtered by using '9' value, because it's not a string nor a number.", typeof(NonNumericIdModel).Name);
+            String expected = String.Format("'{0}.Id' can not be filtered by using '9' value, because it's not a string nor a number.", typeof(NonNumericIdModel).Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -408,7 +408,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
 
-            String expected = String.Format("Type {0} does not have property named Test.", typeof(TestModel).Name);
+            String expected = String.Format("'{0}' type does not have property named 'Test'.", typeof(TestModel).Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -462,7 +462,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterBySearchTerm(lookup.BaseGetModels()));
 
-            String expected = String.Format("Type {0} does not have property named Test.", typeof(TestModel).Name);
+            String expected = String.Format("'{0}' type does not have property named 'Test'.", typeof(TestModel).Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
