@@ -13,11 +13,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
     public class GenericLookupTests
     {
         private Mock<TestLookupProxy> lookupMock;
+        private Dictionary<String, String> row;
         private TestLookupProxy lookup;
 
         public GenericLookupTests()
         {
             lookupMock = new Mock<TestLookupProxy> { CallBase = true };
+            row = new Dictionary<String, String>();
             lookup = lookupMock.Object;
         }
 
@@ -89,15 +91,18 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: GetColumnKey(PropertyInfo property)
 
         [Fact]
-        public void GetColumnKey_OnNullPropertyThrows()
+        public void GetColumnKey_NullProperty_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => lookup.BaseGetColumnKey(null));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.BaseGetColumnKey(null));
+
+            Assert.Equal("property", actual.ParamName);
         }
 
         [Fact]
         public void GetColumnKey_ReturnsPropertyName()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("Sum");
+
             String actual = lookup.BaseGetColumnKey(property);
             String expected = property.Name;
 
@@ -105,17 +110,25 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnKey_OnMissingRelationThrows()
+        public void GetColumnKey_NoRelation_Throws()
         {
             PropertyInfo property = typeof(NoRelationModel).GetProperty("NoRelation");
-            Assert.Throws<LookupException>(() => lookup.BaseGetColumnKey(property));
+
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnKey(property));
+
+            String expected = String.Format("{0}.{1} does not have property named 'None'.", property.DeclaringType.Name, property.Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void GetColumnKey_GetsKeyWithRelation()
+        public void GetColumnKey_ReturnsRelationKey()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("FirstRelationModel");
-            String expected = String.Format("{0}.{1}", property.Name, property.GetCustomAttribute<LookupColumnAttribute>(false).Relation);
+            String relation = property.GetCustomAttribute<LookupColumnAttribute>(false).Relation;
+
+            String expected = String.Format("{0}.{1}", property.Name, relation);
             String actual = lookup.BaseGetColumnKey(property);
 
             Assert.Equal(expected, actual);
@@ -126,15 +139,18 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: GetColumnHeader(PropertyInfo property)
 
         [Fact]
-        public void GetColumnHeader_OnNullPropertyThrows()
+        public void GetColumnHeader_NullProperty_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => lookup.BaseGetColumnHeader(null));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.BaseGetColumnHeader(null));
+
+            Assert.Equal("property", actual.ParamName);
         }
 
         [Fact]
         public void GetColumnHeader_ReturnsPropertyName()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("Sum");
+
             String actual = lookup.BaseGetColumnHeader(property);
             String expected = property.Name;
 
@@ -145,6 +161,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void GetColumnHeader_ReturnsDisplayName()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("Number");
+
             String expected = property.GetCustomAttribute<DisplayAttribute>().Name;
             String actual = lookup.BaseGetColumnHeader(property);
 
@@ -152,16 +169,23 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnHeader_OnMissingRelationThrows()
+        public void GetColumnHeader_NoRelation_Throws()
         {
             PropertyInfo property = typeof(NoRelationModel).GetProperty("NoRelation");
-            Assert.Throws<LookupException>(() => lookup.BaseGetColumnHeader(property));
+
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnHeader(property));
+
+            String expected = String.Format("{0}.{1} does not have property named 'None'.", property.DeclaringType.Name, property.Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void GetColumnHeader_ReturnsRelationName()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("SecondRelationModel");
+
             String expected = property.GetCustomAttribute<LookupColumnAttribute>(false).Relation;
             String actual = lookup.BaseGetColumnHeader(property);
 
@@ -184,9 +208,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: GetColumnCssClass(PropertyInfo property)
 
         [Fact]
-        public void GetColumnCssClass_AlwaysEmptyString()
+        public void GetColumnCssClass_ReturnsEmptyString()
         {
-            Assert.Equal("", lookup.BaseGetColumnCssClass(null));
+            Assert.Empty(lookup.BaseGetColumnCssClass(null));
         }
 
         #endregion
@@ -212,7 +236,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetData_NotCallsFilterById()
+        public void GetData_DoesNotCallFilterById()
         {
             lookup.CurrentFilter.Id = null;
 
@@ -232,7 +256,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetData_NotCallsFilterByAdditionalFiltersBecauseEmpty()
+        public void GetData_DoesNotCallFilterByAdditionalFiltersBecauseEmpty()
         {
             lookup.CurrentFilter.AdditionalFilters.Clear();
 
@@ -242,7 +266,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetData_NotCallsFilterByAdditionalFiltersBecauseFiltersById()
+        public void GetData_DoesNotCallFilterByAdditionalFiltersBecauseFiltersById()
         {
             lookup.CurrentFilter.Id = "1";
 
@@ -272,7 +296,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetData_NotCallsFilterBySearchTermBecauseFiltersById()
+        public void GetData_DoesNotCallFilterBySearchTermBecauseFiltersById()
         {
             lookup.CurrentFilter.Id = "1";
 
@@ -294,15 +318,20 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: FilterById(IQueryable<T> models)
 
         [Fact]
-        public void FilterById_OnMissingIdPropertyThrows()
+        public void FilterById_NoIdProperty_Throws()
         {
             GenericLookupProxy<NoIdModel> lookup = new GenericLookupProxy<NoIdModel>();
 
-            Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
+
+            String expected = String.Format("Type '{0}' does not have property named 'Id'.", typeof(NoIdModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterById_FiltersStringId()
+        public void FilterById_String()
         {
             lookup.CurrentFilter.Id = "9";
 
@@ -313,38 +342,48 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterById_FiltersNumericId()
+        public void FilterById_Number()
         {
             List<NumericIdModel> models = new List<NumericIdModel>();
+            for (Int32 i = 0; i < 100; i++) models.Add(new NumericIdModel { Id = i });
             GenericLookupProxy<NumericIdModel> lookup = new GenericLookupProxy<NumericIdModel>();
-            for (Int32 i = 0; i < 100; i++)
-                models.Add(new NumericIdModel { Id = i });
 
-            Int32 id = 9;
-            lookup.CurrentFilter.Id = id.ToString();
+            lookup.CurrentFilter.Id = "9";
 
-            IEnumerable<NumericIdModel> expected = models.Where(model => model.Id == id);
             IEnumerable<NumericIdModel> actual = lookup.BaseFilterById(models.AsQueryable());
+            IEnumerable<NumericIdModel> expected = models.Where(model => model.Id == 9);
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterById_OnEnumIdPropertyThrows()
+        public void FilterById_EnumId_Throws()
         {
             GenericLookupProxy<EnumModel> lookup = new GenericLookupProxy<EnumModel>();
+
             lookup.CurrentFilter.Id = IdEnum.Id.ToString();
 
-            Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
+
+            String expected = String.Format("{0}.Id can not be filtered by using 'Id' value, because it's not a string nor a number.", typeof(EnumModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterById_OnNonNumericIdThrows()
+        public void FilterById_NotNumericId_Throws()
         {
             GenericLookupProxy<NonNumericIdModel> lookup = new GenericLookupProxy<NonNumericIdModel>();
+
             lookup.CurrentFilter.Id = "9";
 
-            Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
+
+            String expected = String.Format("{0}.Id can not be filtered by using '9' value, because it's not a string nor a number.", typeof(NonNumericIdModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         #endregion
@@ -352,50 +391,52 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: FilterByAdditionalFilters(IQueryable<T> models)
 
         [Fact]
-        public void FilterByAdditionalFilters_NotFiltersNulls()
+        public void FilterByAdditionalFilters_SkipsNullValues()
         {
-            IQueryable<TestModel> expected = lookup.BaseGetModels();
             lookup.CurrentFilter.AdditionalFilters.Add("Id", null);
+
             IQueryable<TestModel> actual = lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels());
+            IQueryable<TestModel> expected = lookup.BaseGetModels();
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterByAdditionalFilters_OnMissingPropertyThrows()
+        public void FilterByAdditionalFilters_NoProperty_Throws()
         {
-            lookup.CurrentFilter.AdditionalFilters.Add("TestProperty", "Test");
-            Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
+            lookup.CurrentFilter.AdditionalFilters.Add("Test", "Value");
+
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
+
+            String expected = String.Format("Type {0} does not have property named Test.", typeof(TestModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void FilterByAdditionalFilters_Filters()
         {
-            Int32 numberFilter = 9;
-            String stringFilter = "9";
-            lookup.CurrentFilter.AdditionalFilters.Add("Id", stringFilter);
-            lookup.CurrentFilter.AdditionalFilters.Add("Number", numberFilter);
+            lookup.CurrentFilter.AdditionalFilters.Add("Id", "9");
+            lookup.CurrentFilter.AdditionalFilters.Add("Number", 9);
 
             IQueryable<TestModel> actual = lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels());
-            IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model => model.Id == stringFilter && model.Number == numberFilter);
+            IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model => model.Id == "9" && model.Number == 9);
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterByAdditionalFilters_OnNotSupportedPropertyThrows()
+        public void FilterByAdditionalFilters_NotSupportedType_Throws()
         {
             lookup.CurrentFilter.AdditionalFilters.Add("CreationDate", DateTime.Now);
-            Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
-        }
 
-        [Fact]
-        public void FilterByAdditionalFilters_OnEnumThrows()
-        {
-            GenericLookupProxy<EnumModel> lookup = new GenericLookupProxy<EnumModel>();
-            lookup.CurrentFilter.AdditionalFilters.Add("IdEnum", DateTime.Now);
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
 
-            Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
+            String expected = String.Format("'DateTime' type is not supported in dynamic filtering.", typeof(DateTime).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         #endregion
@@ -403,7 +444,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: FilterBySearchTerm(IQueryable<T> models)
 
         [Fact]
-        public void FilterBySearchTerm_NotFiltersNull()
+        public void FilterBySearchTerm_SkipsNullTerm()
         {
             lookup.CurrentFilter.SearchTerm = null;
 
@@ -414,18 +455,24 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterBySearchTerm_OnMissingPropertyThrows()
+        public void FilterBySearchTerm_NoProperty_Throws()
         {
             lookup.CurrentFilter.SearchTerm = "Test";
-            lookup.Columns.Add(new LookupColumn("TestProperty", ""));
+            lookup.Columns.Add(new LookupColumn("Test", ""));
 
-            Assert.Throws<LookupException>(() => lookup.BaseFilterBySearchTerm(lookup.BaseGetModels()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterBySearchTerm(lookup.BaseGetModels()));
+
+            String expected = String.Format("Type {0} does not have property named Test.", typeof(TestModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void FilterBySearchTerm_FiltersWhiteSpace()
         {
             lookup.CurrentFilter.SearchTerm = " ";
+
             IQueryable<TestModel> actual = lookup.BaseFilterBySearchTerm(lookup.BaseGetModels());
             IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model =>
                 (model.Id != null && model.Id.ToLower().Contains(lookup.CurrentFilter.SearchTerm)) ||
@@ -439,6 +486,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterBySearchTerm_UsesContainsSearch()
         {
             lookup.CurrentFilter.SearchTerm = "1";
+
             IQueryable<TestModel> actual = lookup.BaseFilterBySearchTerm(lookup.BaseGetModels());
             IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model =>
                 (model.Id != null && model.Id.ToLower().Contains(lookup.CurrentFilter.SearchTerm)) ||
@@ -449,11 +497,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterBySearchTerm_NotFiltersNonStringProperties()
+        public void FilterBySearchTerm_NotStringProperties_DoesNotFilter()
         {
             lookup.Columns.Clear();
+            lookup.CurrentFilter.SearchTerm = "1";
             lookup.Columns.Add(new LookupColumn("Number", ""));
-            lookup.CurrentFilter.SearchTerm = "Test";
 
             IQueryable<TestModel> expected = lookup.BaseGetModels();
             IQueryable<TestModel> actual = lookup.BaseFilterBySearchTerm(expected.AsQueryable());
@@ -466,9 +514,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: Sort(IQueryable<T> models)
 
         [Fact]
-        public void Sort_SortsBySortColumn()
+        public void Sort_ByColumn()
         {
             lookup.CurrentFilter.SortColumn = lookup.BaseAttributedProperties.First().Name;
+
             IQueryable<TestModel> expected = lookup.BaseGetModels().OrderBy(model => model.Number);
             IQueryable<TestModel> actual = lookup.BaseSort(lookup.BaseGetModels());
 
@@ -476,10 +525,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Sort_SortsByDefaultSortColumn()
+        public void Sort_ByDefaultSortColumn()
         {
             lookup.CurrentFilter.SortColumn = null;
             lookup.BaseDefaultSortColumn = lookup.BaseAttributedProperties.First().Name;
+
             IQueryable<TestModel> expected = lookup.BaseGetModels().OrderBy(model => model.Number);
             IQueryable<TestModel> actual = lookup.BaseSort(lookup.BaseGetModels());
 
@@ -487,25 +537,38 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Sort_MissingPropertyThrows()
+        public void Sort_NoProperty_Throws()
         {
-            lookup.CurrentFilter.SortColumn = "TestProperty";
-            Assert.Throws<LookupException>(() => lookup.BaseSort(lookup.BaseGetModels()));
+            lookup.CurrentFilter.SortColumn = "Test";
+
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseSort(lookup.BaseGetModels()));
+
+            String expected = "Lookup does not contain sort column named 'Test'.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void Sort_MissingDefaultPropertyThrows()
+        public void Sort_NoDefaultProperty_Throws()
         {
-            lookup.BaseDefaultSortColumn = "TestProperty";
+            lookup.BaseDefaultSortColumn = "Test";
             lookup.CurrentFilter.SortColumn = null;
-            Assert.Throws<LookupException>(() => lookup.BaseSort(lookup.BaseGetModels()));
+
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseSort(lookup.BaseGetModels()));
+
+            String expected = "Lookup does not contain sort column named 'Test'.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void Sort_SortsByFirstColumn()
+        public void Sort_ByFirstColumn()
         {
             lookup.BaseDefaultSortColumn = null;
             lookup.CurrentFilter.SortColumn = null;
+
             IQueryable<TestModel> actual = lookup.BaseSort(lookup.BaseGetModels());
             IQueryable<TestModel> expected = lookup.BaseGetModels().OrderBy(model => model.Number);
 
@@ -513,11 +576,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Sort_OnEmptyColumnsThrows()
+        public void Sort_EmptyColumns_Throws()
         {
             lookup.Columns.Clear();
 
-            Assert.Throws<LookupException>(() => lookup.BaseSort(lookup.BaseGetModels()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseSort(lookup.BaseGetModels()));
+
+            String expected = "Lookup should have at least one column.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         #endregion
@@ -527,8 +595,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_SetsFilteredRecords()
         {
-            Int32 expected = lookup.BaseGetModels().Count();
             Int32 actual = lookup.BaseFormLookupData(lookup.BaseGetModels()).FilteredRecords;
+            Int32 expected = lookup.BaseGetModels().Count();
 
             Assert.Equal(expected, actual);
         }
@@ -536,8 +604,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_FormsColumns()
         {
-            LookupColumns expected = lookup.Columns;
             LookupColumns actual = lookup.BaseFormLookupData(lookup.BaseGetModels()).Columns;
+            LookupColumns expected = lookup.Columns;
 
             Assert.Equal(expected, actual);
         }
@@ -557,10 +625,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.CurrentFilter.Page = 3;
             lookup.CurrentFilter.RecordsPerPage = 3;
             lookup.BaseFormLookupData(lookup.BaseGetModels());
-            List<TestModel> expectedModels = lookup.BaseGetModels().Skip(9).Take(3).ToList();
+
+            List<TestModel> models = lookup.BaseGetModels().Skip(9).Take(3).ToList();
             Int32 callCount = Math.Min(lookup.CurrentFilter.RecordsPerPage, lookup.BaseGetModels().Count());
 
-            lookupMock.Protected().Verify("AddId", Times.Exactly(callCount), ItExpr.IsAny<Dictionary<String, String>>(), ItExpr.Is<TestModel>(match => expectedModels.Contains(match)));
+            lookupMock.Protected().Verify("AddId", Times.Exactly(callCount), ItExpr.IsAny<Dictionary<String, String>>(), ItExpr.Is<TestModel>(match => models.Contains(match)));
         }
 
         [Fact]
@@ -604,24 +673,29 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: AddId(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddId_OnMissingPropertyThrows()
+        public void AddId_NoProperty_Throws()
         {
-            Assert.Throws<LookupException>(() => new GenericLookupProxy<NoIdModel>().BaseAddId(new Dictionary<String, String>(), new NoIdModel()));
+            GenericLookupProxy<NoIdModel> lookup = new GenericLookupProxy<NoIdModel>();
+
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseAddId(row, new NoIdModel()));
+
+            String expected = String.Format("'{0}' type does not have property named 'Id'.", typeof(NoIdModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void AddId_AddsConstantKey()
+        public void AddId_Key()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             lookup.BaseAddId(row, new TestModel());
 
             Assert.True(row.ContainsKey(AbstractLookup.IdKey));
         }
 
         [Fact]
-        public void AddId_AddsValue()
+        public void AddId_Value()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             TestModel model = new TestModel { Id = "Test" };
 
             lookup.BaseAddId(row, model);
@@ -630,9 +704,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void AddId_AddsOneElement()
+        public void AddId_Element()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             lookup.BaseAddId(row, new TestModel());
 
             Assert.Equal(1, row.Keys.Count);
@@ -643,59 +716,67 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: AddAutocomplete(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddAutocomplete_OnEmptyColumnsThrows()
+        public void AddAutocomplete_EmptyColumns_Throws()
         {
             lookup.Columns.Clear();
 
-            Assert.Throws<LookupException>(() => lookup.BaseAddAutocomplete(null, new TestModel()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseAddAutocomplete(row, new TestModel()));
+
+            String expected = "Lookup should have at least one column.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void AddAutocomplete_OnMissingPropertyThrows()
+        public void AddAutocomplete_NoProperty_Throws()
         {
             lookup.Columns.Clear();
-            lookup.Columns.Add(new LookupColumn("TestProperty", ""));
+            lookup.Columns.Add(new LookupColumn("Test", ""));
 
-            Assert.Throws<LookupException>(() => lookup.BaseAddAutocomplete(new Dictionary<String, String>(), new TestModel()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseAddAutocomplete(row, new TestModel()));
+
+            String expected = String.Format("'{0}' type does not have property named 'Test'.", typeof(TestModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void AddAutocomplete_AddsConstantKey()
+        public void AddAutocomplete_Key()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             lookup.BaseAddAutocomplete(row, new TestModel());
 
             Assert.Equal(AbstractLookup.AcKey, row.First().Key);
         }
 
         [Fact]
-        public void AddAutocomplete_AddsValue()
+        public void AddAutocomplete_Value()
         {
             TestModel model = new TestModel();
-            Dictionary<String, String> row = new Dictionary<String, String>();
             PropertyInfo firstProperty = model.GetType().GetProperty(lookup.Columns.First().Key);
+
             lookup.BaseAddAutocomplete(row, model);
 
             Assert.Equal(firstProperty.GetValue(model).ToString(), row.First().Value);
         }
 
         [Fact]
-        public void AddAutocomplete_AddsRelationValue()
+        public void AddAutocomplete_RelationValue()
         {
             lookup.Columns.Clear();
             lookup.Columns.Add(new LookupColumn("FirstRelationModel.Value", ""));
             TestModel model = new TestModel { FirstRelationModel = new TestRelationModel { Value = "Test" } };
             PropertyInfo firstProperty = typeof(TestRelationModel).GetProperty("Value");
-            Dictionary<String, String> row = new Dictionary<String, String>();
+
             lookup.BaseAddAutocomplete(row, model);
 
             Assert.Equal(firstProperty.GetValue(model.FirstRelationModel).ToString(), row.First().Value);
         }
 
         [Fact]
-        public void AddAutocomplete_AddsOneElement()
+        public void AddAutocomplete_Element()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             lookup.BaseAddAutocomplete(row, new TestModel());
 
             Assert.Equal(1, row.Keys.Count);
@@ -706,36 +787,44 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: AddColumns(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddColumns_OnEmptyColumnsThrows()
+        public void AddColumns_EmptyColumns_Throws()
         {
             lookup.Columns.Clear();
 
-            Assert.Throws<LookupException>(() => lookup.BaseAddColumns(null, new TestModel()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseAddColumns(null, new TestModel()));
+
+            String expected = "Lookup should have at least one column.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void AddColumns_OnMissingPropertyThrows()
+        public void AddColumns_NoProperty_Throws()
         {
             lookup.Columns.Clear();
-            lookup.Columns.Add(new LookupColumn("TestProperty", ""));
+            lookup.Columns.Add(new LookupColumn("Test", ""));
 
-            Assert.Throws<LookupException>(() => lookup.BaseAddColumns(new Dictionary<String, String>(), new TestModel()));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseAddColumns(row, new TestModel()));
+
+            String expected = String.Format("'{0}' type does not have property named 'Test'.", typeof(TestModel).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void AddColumns_AddsKeys()
+        public void AddColumns_Keys()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             lookup.BaseAddColumns(row, new TestModel());
 
             Assert.Equal(lookup.Columns.Keys, row.Keys);
         }
 
         [Fact]
-        public void AddColumns_AddsValues()
+        public void AddColumns_Values()
         {
             List<String> expected = new List<String>();
-            Dictionary<String, String> row = new Dictionary<String, String>();
             TestModel model = new TestModel { FirstRelationModel = new TestRelationModel { Value = "Test" } };
             foreach (LookupColumn column in lookup.Columns)
                 expected.Add(GetValue(model, column.Key));
@@ -750,9 +839,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Method: AddAdditionalData(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddAdditionalData_IsEmptyMethod()
+        public void AddAdditionalData_DoesNothing()
         {
-            Dictionary<String, String> row = new Dictionary<String, String>();
             lookup.BaseAddAdditionalData(row, new TestModel());
 
             Assert.Empty(row.Keys);

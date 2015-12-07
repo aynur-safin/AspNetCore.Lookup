@@ -1,8 +1,7 @@
-﻿using NonFactors.Mvc.Lookup;
-using System;
+﻿using System;
 using Xunit;
 
-namespace Mvc.Lookup.Tests.Unit
+namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupExceptionTests
     {
@@ -11,8 +10,8 @@ namespace Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupException_SetsMessage()
         {
-            String actual = new LookupException("T").Message;
-            String expected = "T";
+            String actual = new LookupException("Test").Message;
+            String expected = "Test";
 
             Assert.Equal(expected, actual);
         }

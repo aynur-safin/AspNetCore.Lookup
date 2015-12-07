@@ -8,15 +8,23 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Constructor: LookupAttribute(Type type)
 
         [Fact]
-        public void LookupAttribute_NullThrows()
+        public void LookupAttribute_NullType_Throws()
         {
-            Assert.Throws<ArgumentNullException>(() => new LookupAttribute(null));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupAttribute(null));
+
+            Assert.Equal("type", actual.ParamName);
         }
 
         [Fact]
-        public void LookupAttribute_UnassignableTypeThrows()
+        public void LookupAttribute_NotLookupType_Throws()
         {
-            Assert.Throws<ArgumentException>(() => new LookupAttribute(typeof(Object)));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => new LookupAttribute(typeof(Object)));
+
+            String expected = String.Format("'{0}' type does not implement '{1}'.",
+                typeof(Object).Name, typeof(AbstractLookup).Name);
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

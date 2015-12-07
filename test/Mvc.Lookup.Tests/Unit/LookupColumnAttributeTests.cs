@@ -1,8 +1,7 @@
-﻿using NonFactors.Mvc.Lookup;
-using System;
+﻿using System;
 using Xunit;
 
-namespace Mvc.Lookup.Tests.Unit
+namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnAttributeTests
     {

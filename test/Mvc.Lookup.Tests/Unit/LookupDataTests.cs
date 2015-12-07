@@ -1,15 +1,14 @@
-﻿using NonFactors.Mvc.Lookup;
-using System;
+﻿using System;
 using Xunit;
 
-namespace Mvc.Lookup.Tests.Unit
+namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupDataTests
     {
         #region Constructor: LookupData()
 
         [Fact]
-        public void LookupData_ZeroFilteredRecords()
+        public void LookupData_SetsFilteredRecords()
         {
             Int32 actual = new LookupData().FilteredRecords;
             Int32 expected = 0;
@@ -18,13 +17,13 @@ namespace Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void LookupData_EmptyColumns()
+        public void LookupData_SetsColumns()
         {
             Assert.Empty(new LookupData().Columns);
         }
 
         [Fact]
-        public void LookupData_EmptyRows()
+        public void LookupData_SetsRows()
         {
             Assert.Empty(new LookupData().Rows);
         }
