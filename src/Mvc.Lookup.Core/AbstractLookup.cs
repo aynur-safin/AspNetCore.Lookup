@@ -22,11 +22,9 @@ namespace NonFactors.Mvc.Lookup
 
         protected AbstractLookup()
         {
-            String sanitizedName = GetType().Name.Replace(Prefix, "");
             AdditionalFilters = new List<String>();
             CurrentFilter = new LookupFilter();
             Columns = new LookupColumns();
-            DialogTitle = sanitizedName;
             DefaultRecordsPerPage = 20;
         }
 

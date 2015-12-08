@@ -43,10 +43,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AbstractLookup_SetsDialogTitle()
         {
-            String expected = lookup.GetType().Name.Replace(AbstractLookup.Prefix, "");
-            String actual = lookup.DialogTitle;
-
-            Assert.Equal(expected, actual);
+            Assert.Null(lookup.DialogTitle);
         }
 
         [Fact]

@@ -17,6 +17,10 @@
     width: 100%;
 }
 
+.mvc-lookup-dialog .ui-dialog-title {
+    min-height: 21px;
+}
+
 .mvc-lookup {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
