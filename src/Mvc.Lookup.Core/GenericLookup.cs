@@ -123,12 +123,12 @@ namespace NonFactors.Mvc.Lookup
             String sortColumn = CurrentFilter.SortColumn ?? DefaultSortColumn;
             if (sortColumn != null)
                 if (Columns.Keys.Contains(sortColumn))
-                    return models.OrderBy($"{sortColumn} {CurrentFilter.SortOrder}");
+                    return models.OrderBy(sortColumn + " " + CurrentFilter.SortOrder);
                 else
                     throw new LookupException($"Lookup does not contain sort column named '{sortColumn}'.");
 
             if (Columns.Any())
-                return models.OrderBy($"{Columns.First().Key} {CurrentFilter.SortOrder}");
+                return models.OrderBy(Columns.First().Key + " " + CurrentFilter.SortOrder);
 
             throw new LookupException("Lookup should have at least one column.");
         }
@@ -218,17 +218,16 @@ namespace NonFactors.Mvc.Lookup
                 return GetValue(property.GetValue(model), String.Join(".", properties.Skip(1)));
 
             Object value = property.GetValue(model) ?? "";
-            LookupColumnAttribute lookupColumn = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (lookupColumn != null && lookupColumn.Format != null)
-                value = String.Format(lookupColumn.Format, value);
+            LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
+            if (column != null && column.Format != null)
+                value = String.Format(column.Format, value);
 
             return value.ToString();
         }
         private Type GetType(String fullPropertyName)
         {
             Type type = typeof(T);
-            String[] properties = fullPropertyName.Split('.');
-            foreach (String propertyName in properties)
+            foreach (String propertyName in fullPropertyName.Split('.'))
             {
                 PropertyInfo property = type.GetProperty(propertyName);
                 if (property == null)
