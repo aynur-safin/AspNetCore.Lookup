@@ -88,23 +88,20 @@ namespace NonFactors.Mvc.Lookup
                 throw new LookupException($"'{typeof(T).Name}' type does not have property named 'Id'.");
 
             if (idProperty.PropertyType == typeof(String))
-                return models.Where("Id = \"" + CurrentFilter.Id + "\"");
+                return models.Where("Id = @0", CurrentFilter.Id);
 
             Decimal temp;
             if (IsNumeric(idProperty.PropertyType) && Decimal.TryParse(CurrentFilter.Id, out temp))
-                return models.Where("Id = " + CurrentFilter.Id);
+                return models.Where("Id = @0", temp);
 
             throw new LookupException($"'{typeof(T).Name}.Id' can not be filtered by using '{CurrentFilter.Id}' value, because it's not a string nor a number.");
         }
         protected virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
-            List<String> queries = new List<String>();
             foreach (KeyValuePair<String, Object> filter in CurrentFilter.AdditionalFilters.Where(item => item.Value != null))
-                queries.Add(FormEqualsQuery(GetType(filter.Key), filter.Key, filter.Value));
+                models = models.Where(FormEqualsQuery(GetType(filter.Key), filter.Key), filter.Value);
 
-            if (queries.Count == 0) return models;
-
-            return models.Where(String.Join(" && ", queries));
+            return models;
         }
         protected virtual IQueryable<T> FilterBySearchTerm(IQueryable<T> models)
         {
@@ -115,11 +112,11 @@ namespace NonFactors.Mvc.Lookup
 
             foreach (String propertyName in Columns.Keys)
                 if (GetType(propertyName) == typeof(String))
-                    queries.Add(FormContainsQuery(propertyName, term));
+                    queries.Add(FormContainsQuery(propertyName));
 
             if (queries.Count == 0) return models;
 
-            return models.Where(String.Join(" || ", queries));
+            return models.Where(String.Join(" || ", queries), term);
         }
         protected virtual IQueryable<T> Sort(IQueryable<T> models)
         {
@@ -184,18 +181,14 @@ namespace NonFactors.Mvc.Lookup
         {
         }
 
-        private String FormContainsQuery(String propertyName, String term)
+        private String FormContainsQuery(String propertyName)
         {
-            return $"({FormNotNullQuery(propertyName)} && {propertyName}.ToLower().Contains(\"{term}\"))";
+            return $"({FormNotNullQuery(propertyName)} && {propertyName}.ToLower().Contains(@0))";
         }
-        private String FormEqualsQuery(Type type, String propertyName, Object term)
+        private String FormEqualsQuery(Type type, String propertyName)
         {
-            if (type == typeof(String))
-                return $"({FormNotNullQuery(propertyName)} && {propertyName} == \"{term}\")";
-
-            Decimal number;
-            if (IsNumeric(type) && Decimal.TryParse(term.ToString(), out number))
-                return $"({FormNotNullQuery(propertyName)} && {propertyName} == {number.ToString().Replace(',', '.')})";
+            if (type == typeof(String) || IsNumeric(type))
+                return String.Format(@"({0} && {1} == @0)", FormNotNullQuery(propertyName), propertyName);
 
             throw new LookupException($"'{type.Name}' type is not supported in dynamic filtering.");
         }

@@ -348,7 +348,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             for (Int32 i = 0; i < 100; i++) models.Add(new NumericIdModel { Id = i });
             GenericLookupProxy<NumericIdModel> lookup = new GenericLookupProxy<NumericIdModel>();
 
-            lookup.CurrentFilter.Id = "9";
+            lookup.CurrentFilter.Id = "9.0";
 
             IEnumerable<NumericIdModel> actual = lookup.BaseFilterById(models.AsQueryable());
             IEnumerable<NumericIdModel> expected = models.Where(model => model.Id == 9);
