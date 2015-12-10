@@ -99,7 +99,7 @@ namespace NonFactors.Mvc.Lookup
         protected virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
             foreach (KeyValuePair<String, Object> filter in CurrentFilter.AdditionalFilters.Where(item => item.Value != null))
-                models = models.Where(FormEqualsQuery(GetType(filter.Key), filter.Key), filter.Value);
+                models = models.Where(FormEqualsQuery(filter.Key), filter.Value);
 
             return models;
         }
@@ -185,13 +185,6 @@ namespace NonFactors.Mvc.Lookup
         {
             return $"({FormNotNullQuery(propertyName)} && {propertyName}.ToLower().Contains(@0))";
         }
-        private String FormEqualsQuery(Type type, String propertyName)
-        {
-            if (type == typeof(String) || IsNumeric(type))
-                return String.Format(@"({0} && {1} == @0)", FormNotNullQuery(propertyName), propertyName);
-
-            throw new LookupException($"'{type.Name}' type is not supported in dynamic filtering.");
-        }
         private String FormNotNullQuery(String propertyName)
         {
             List<String> queries = new List<String>();
@@ -201,6 +194,10 @@ namespace NonFactors.Mvc.Lookup
                 queries.Add(String.Join(".", properties.Take(i + 1)) + " != null");
 
             return String.Join(" && ", queries);
+        }
+        private String FormEqualsQuery(String propertyName)
+        {
+            return String.Format(@"({0} && {1} == @0)", FormNotNullQuery(propertyName), propertyName);
         }
 
         private void AddColumn(Dictionary<String, String> row, String column, T model)

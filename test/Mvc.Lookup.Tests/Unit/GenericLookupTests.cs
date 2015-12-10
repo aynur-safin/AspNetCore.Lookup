@@ -402,39 +402,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterByAdditionalFilters_NoProperty_Throws()
-        {
-            lookup.CurrentFilter.AdditionalFilters.Add("Test", "Value");
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
-
-            String expected = String.Format("'{0}' type does not have property named 'Test'.", typeof(TestModel).Name);
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void FilterByAdditionalFilters_Filters()
         {
             lookup.CurrentFilter.AdditionalFilters.Add("Id", "9");
             lookup.CurrentFilter.AdditionalFilters.Add("Number", 9);
+            lookup.CurrentFilter.AdditionalFilters.Add("CreationDate", DateTime.Now.Date.AddDays(9));
 
-            IQueryable<TestModel> actual = lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels());
-            IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model => model.Id == "9" && model.Number == 9);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FilterByAdditionalFilters_NotSupportedType_Throws()
-        {
-            lookup.CurrentFilter.AdditionalFilters.Add("CreationDate", DateTime.Now);
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels()));
-
-            String expected = String.Format("'DateTime' type is not supported in dynamic filtering.", typeof(DateTime).Name);
-            String actual = exception.Message;
+            IEnumerable<TestModel> actual = lookup.BaseFilterByAdditionalFilters(lookup.BaseGetModels());
+            IEnumerable<TestModel> expected = lookup.BaseGetModels().ToArray().Where(model => model.Id == "9" && model.Number == 9 && model.CreationDate == DateTime.Now.Date.AddDays(9));
 
             Assert.Equal(expected, actual);
         }
