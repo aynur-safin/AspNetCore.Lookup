@@ -21,7 +21,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             ArgumentException exception = Assert.Throws<ArgumentException>(() => new LookupAttribute(typeof(Object)));
 
             String expected = String.Format("'{0}' type does not implement '{1}'.",
-                typeof(Object).Name, typeof(AbstractLookup).Name);
+                typeof(Object).Name, typeof(MvcLookup).Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -30,8 +30,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupAttribute_SetsType()
         {
-            Type actual = new LookupAttribute(typeof(AbstractLookup)).Type;
-            Type expected = typeof(AbstractLookup);
+            Type actual = new LookupAttribute(typeof(MvcLookup)).Type;
+            Type expected = typeof(MvcLookup);
 
             Assert.Equal(expected, actual);
         }

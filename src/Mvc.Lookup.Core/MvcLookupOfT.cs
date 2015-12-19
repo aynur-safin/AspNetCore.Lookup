@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace NonFactors.Mvc.Lookup
 {
-    public abstract class GenericLookup<T> : AbstractLookup where T : class
+    public abstract class MvcLookup<T> : MvcLookup where T : class
     {
         protected IEnumerable<PropertyInfo> AttributedProperties
         {
@@ -20,7 +20,7 @@ namespace NonFactors.Mvc.Lookup
             }
         }
 
-        protected GenericLookup()
+        protected MvcLookup()
         {
             foreach (PropertyInfo property in AttributedProperties)
                 Columns.Add(GetColumnKey(property), GetColumnHeader(property), GetColumnCssClass(property));

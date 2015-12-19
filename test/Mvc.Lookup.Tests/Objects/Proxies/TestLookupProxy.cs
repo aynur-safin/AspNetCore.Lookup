@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NonFactors.Mvc.Lookup.Tests.Objects
 {
-    public class TestLookupProxy : GenericLookupProxy<TestModel>
+    public class TestLookupProxy : MvcLookupProxy<TestModel>
     {
         private IQueryable<TestModel> models;
 

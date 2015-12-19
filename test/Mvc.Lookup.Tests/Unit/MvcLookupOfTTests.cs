@@ -10,13 +10,13 @@ using Xunit;
 
 namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
-    public class GenericLookupTests
+    public class MvcLookupOfTTests
     {
         private Mock<TestLookupProxy> lookupMock;
         private Dictionary<String, String> row;
         private TestLookupProxy lookup;
 
-        public GenericLookupTests()
+        public MvcLookupOfTTests()
         {
             lookupMock = new Mock<TestLookupProxy> { CallBase = true };
             row = new Dictionary<String, String>();
@@ -39,10 +39,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Constructor: GenericLookup()
+        #region Constructor: MvcLookup()
 
         [Fact]
-        public void GenericLookup_CallsGetColumnKey()
+        public void MvcLookup_CallsGetColumnKey()
         {
             IEnumerable<PropertyInfo> properties = lookup.BaseAttributedProperties;
             Int32 callCount = lookup.BaseAttributedProperties.Count();
@@ -51,7 +51,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GenericLookup_CallsGetColumnHeader()
+        public void MvcLookup_CallsGetColumnHeader()
         {
             IEnumerable<PropertyInfo> properties = lookup.BaseAttributedProperties;
             Int32 callCount = lookup.BaseAttributedProperties.Count();
@@ -60,7 +60,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GenericLookup_CallsGetColumnCssClass()
+        public void MvcLookup_CallsGetColumnCssClass()
         {
             IEnumerable<PropertyInfo> properties = lookup.BaseAttributedProperties;
             Int32 callCount = lookup.BaseAttributedProperties.Count();
@@ -69,7 +69,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GenericLookup_AddsColumns()
+        public void MvcLookup_AddsColumns()
         {
             LookupColumns columns = new LookupColumns();
             foreach (PropertyInfo property in lookup.BaseAttributedProperties)
@@ -320,7 +320,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterById_NoIdProperty_Throws()
         {
-            GenericLookupProxy<NoIdModel> lookup = new GenericLookupProxy<NoIdModel>();
+            MvcLookupProxy<NoIdModel> lookup = new MvcLookupProxy<NoIdModel>();
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseFilterById(lookup.BaseGetModels()));
 
@@ -346,7 +346,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             List<NumericIdModel> models = new List<NumericIdModel>();
             for (Int32 i = 0; i < 100; i++) models.Add(new NumericIdModel { Id = i });
-            GenericLookupProxy<NumericIdModel> lookup = new GenericLookupProxy<NumericIdModel>();
+            MvcLookupProxy<NumericIdModel> lookup = new MvcLookupProxy<NumericIdModel>();
 
             lookup.CurrentFilter.Id = "9.0";
 
@@ -359,7 +359,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterById_EnumId_Throws()
         {
-            GenericLookupProxy<EnumModel> lookup = new GenericLookupProxy<EnumModel>();
+            MvcLookupProxy<EnumModel> lookup = new MvcLookupProxy<EnumModel>();
 
             lookup.CurrentFilter.Id = IdEnum.Id.ToString();
 
@@ -374,7 +374,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterById_NotNumericId_Throws()
         {
-            GenericLookupProxy<NonNumericIdModel> lookup = new GenericLookupProxy<NonNumericIdModel>();
+            MvcLookupProxy<NonNumericIdModel> lookup = new MvcLookupProxy<NonNumericIdModel>();
 
             lookup.CurrentFilter.Id = "9";
 
@@ -650,7 +650,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AddId_NoProperty_Throws()
         {
-            GenericLookupProxy<NoIdModel> lookup = new GenericLookupProxy<NoIdModel>();
+            MvcLookupProxy<NoIdModel> lookup = new MvcLookupProxy<NoIdModel>();
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseAddId(row, new NoIdModel()));
 
@@ -665,7 +665,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.BaseAddId(row, new TestModel());
 
-            Assert.True(row.ContainsKey(AbstractLookup.IdKey));
+            Assert.True(row.ContainsKey(MvcLookup.IdKey));
         }
 
         [Fact]
@@ -722,7 +722,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.BaseAddAutocomplete(row, new TestModel());
 
-            Assert.Equal(AbstractLookup.AcKey, row.First().Key);
+            Assert.Equal(MvcLookup.AcKey, row.First().Key);
         }
 
         [Fact]

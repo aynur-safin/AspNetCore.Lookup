@@ -4,13 +4,13 @@ using Xunit;
 
 namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
-    public class AbstractLookupTests
+    public class MvcLookupTests
     {
-        private AbstractLookup lookup;
+        private MvcLookup lookup;
 
-        public AbstractLookupTests()
+        public MvcLookupTests()
         {
-            lookup = new Mock<AbstractLookup>().Object;
+            lookup = new Mock<MvcLookup>().Object;
         }
 
         #region Constants
@@ -18,48 +18,48 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Prefix_IsConstant()
         {
-            Assert.True(typeof(AbstractLookup).GetField("Prefix").IsLiteral);
-            Assert.Equal("Lookup", AbstractLookup.Prefix);
+            Assert.True(typeof(MvcLookup).GetField("Prefix").IsLiteral);
+            Assert.Equal("Lookup", MvcLookup.Prefix);
         }
 
         [Fact]
         public void IdKey_IsConstant()
         {
-            Assert.True(typeof(AbstractLookup).GetField("IdKey").IsLiteral);
-            Assert.Equal("LookupIdKey", AbstractLookup.IdKey);
+            Assert.True(typeof(MvcLookup).GetField("IdKey").IsLiteral);
+            Assert.Equal("LookupIdKey", MvcLookup.IdKey);
         }
 
         [Fact]
         public void AcKey_IsConstant()
         {
-            Assert.True(typeof(AbstractLookup).GetField("AcKey").IsLiteral);
-            Assert.Equal("LookupAcKey", AbstractLookup.AcKey);
+            Assert.True(typeof(MvcLookup).GetField("AcKey").IsLiteral);
+            Assert.Equal("LookupAcKey", MvcLookup.AcKey);
         }
 
         #endregion
 
-        #region Constructor: AbstractLookup()
+        #region Constructor: MvcLookup()
 
         [Fact]
-        public void AbstractLookup_SetsDialogTitle()
+        public void MvcLookup_SetsDialogTitle()
         {
             Assert.Null(lookup.DialogTitle);
         }
 
         [Fact]
-        public void AbstractLookup_SetsLookupUrl()
+        public void MvcLookup_SetsLookupUrl()
         {
             Assert.Null(lookup.LookupUrl);
         }
 
         [Fact]
-        public void AbstractLookup_SetsDefaultSortColumn()
+        public void MvcLookup_SetsDefaultSortColumn()
         {
             Assert.Null(lookup.DefaultSortColumn);
         }
 
         [Fact]
-        public void AbstractLookup_SetsDefaultRecordsPerPage()
+        public void MvcLookup_SetsDefaultRecordsPerPage()
         {
             UInt32 actual = lookup.DefaultRecordsPerPage;
             UInt32 expected = 20;
@@ -68,13 +68,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void AbstractLookup_SetsAdditionalFilters()
+        public void MvcLookup_SetsAdditionalFilters()
         {
             Assert.Empty(lookup.AdditionalFilters);
         }
 
         [Fact]
-        public void AbstractLookup_SetsDefaultSortOrder()
+        public void MvcLookup_SetsDefaultSortOrder()
         {
             LookupSortOrder actual = lookup.DefaultSortOrder;
             LookupSortOrder expected = LookupSortOrder.Asc;
@@ -83,13 +83,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void AbstractLookup_SetsColumns()
+        public void MvcLookup_SetsColumns()
         {
             Assert.Empty(lookup.Columns);
         }
 
         [Fact]
-        public void AbstractLookup_SetsCurrentFilter()
+        public void MvcLookup_SetsCurrentFilter()
         {
             Assert.NotNull(lookup.CurrentFilter);
         }

@@ -29,7 +29,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             html = MockHtmlHelper();
         }
 
-        #region Extension method: AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, Object value, AbstractLookup model, Object htmlAttributes = null)
+        #region Extension method: AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void AutoComplete_CreatesAutocompleteAndHiddenInput()
@@ -243,7 +243,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, AbstractLookup model, Object htmlAttributes = null)
+        #region Extension method: AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void AutoCompleteFor_CreatesAutocompleteAndHiddenInputFromExpression()
@@ -356,7 +356,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: Lookup<TModel>(this IHtmlHelper<TModel> html, String name, Object value, AbstractLookup model, Object htmlAttributes = null)
+        #region Extension method: Lookup<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void Lookup_WrapsAutocompleteInInputGroup()
@@ -594,7 +594,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, AbstractLookup model, Object htmlAttributes = null)
+        #region Extension method: LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void LookupFor_WrapsAutocompleteInInputGroup()
@@ -752,13 +752,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         private void CreatesAutocompleteAndHiddenInput(String id, Object actual)
         {
-            String pattern = String.Format(@"<input(.*) id=""{0}{1}""(.*) /><input(.*) id=""{0}""(.*) />", id, AbstractLookup.Prefix);
+            String pattern = String.Format(@"<input(.*) id=""{0}{1}""(.*) /><input(.*) id=""{0}""(.*) />", id, MvcLookup.Prefix);
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsIdAttribute(String id, Object actual)
         {
-            String pattern = String.Format(@"<input(.*) id=""{0}{1}""(.*) />", id, AbstractLookup.Prefix);
+            String pattern = String.Format(@"<input(.*) id=""{0}{1}""(.*) />", id, MvcLookup.Prefix);
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }

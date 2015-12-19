@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace NonFactors.Mvc.Lookup.Tests.Objects
 {
-    public class GenericLookupProxy<T> : GenericLookup<T> where T : class
+    public class MvcLookupProxy<T> : MvcLookup<T> where T : class
     {
         public String BaseDefaultSortColumn
         {

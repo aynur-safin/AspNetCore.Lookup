@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NonFactors.Mvc.Lookup
 {
-    public abstract class AbstractLookup
+    public abstract class MvcLookup
     {
         public const String Prefix = "Lookup";
         public const String IdKey = "LookupIdKey";
@@ -20,7 +20,7 @@ namespace NonFactors.Mvc.Lookup
         public UInt32 DefaultRecordsPerPage { get; protected set; }
         public LookupSortOrder DefaultSortOrder { get; protected set; }
 
-        protected AbstractLookup()
+        protected MvcLookup()
         {
             AdditionalFilters = new List<String>();
             CurrentFilter = new LookupFilter();

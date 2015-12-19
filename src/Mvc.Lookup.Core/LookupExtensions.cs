@@ -13,7 +13,7 @@ namespace NonFactors.Mvc.Lookup
     public static class LookupExtensions
     {
         public static IHtmlContent AutoComplete<TModel>(this IHtmlHelper<TModel> html,
-            String name, Object value, AbstractLookup model, Object htmlAttributes = null)
+            String name, Object value, MvcLookup model, Object htmlAttributes = null)
         {
             using (StringWriter writer = new StringWriter())
             {
@@ -29,7 +29,7 @@ namespace NonFactors.Mvc.Lookup
             return html.AutoCompleteFor(expression, GetModelFromExpression(expression), htmlAttributes);
         }
         public static IHtmlContent AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, AbstractLookup model, Object htmlAttributes = null)
+            Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
             String name = ExpressionHelper.GetExpressionText(expression);
 
@@ -43,7 +43,7 @@ namespace NonFactors.Mvc.Lookup
         }
 
         public static IHtmlContent Lookup<TModel>(this IHtmlHelper<TModel> html,
-            String name, Object value, AbstractLookup model, Object htmlAttributes = null)
+            String name, Object value, MvcLookup model, Object htmlAttributes = null)
         {
             TagBuilder inputGroup = new TagBuilder("div");
             inputGroup.AddCssClass("input-group");
@@ -58,7 +58,7 @@ namespace NonFactors.Mvc.Lookup
             return html.LookupFor(expression, GetModelFromExpression(expression), htmlAttributes);
         }
         public static IHtmlContent LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, AbstractLookup model, Object htmlAttributes = null)
+            Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
             TagBuilder inputGroup = new TagBuilder("div");
             inputGroup.AddCssClass("input-group");
@@ -68,7 +68,7 @@ namespace NonFactors.Mvc.Lookup
             return inputGroup;
         }
 
-        private static AbstractLookup GetModelFromExpression<TModel, TProperty>(Expression<Func<TModel, TProperty>> expression)
+        private static MvcLookup GetModelFromExpression<TModel, TProperty>(Expression<Func<TModel, TProperty>> expression)
         {
             MemberExpression exp = expression.Body as MemberExpression;
             LookupAttribute lookup = exp.Member.GetCustomAttribute<LookupAttribute>();
@@ -76,9 +76,9 @@ namespace NonFactors.Mvc.Lookup
             if (lookup == null)
                 throw new LookupException($"'{exp.Member.Name}' property does not have a '{typeof(LookupAttribute).Name}' specified.");
 
-            return (AbstractLookup)Activator.CreateInstance(lookup.Type);
+            return (MvcLookup)Activator.CreateInstance(lookup.Type);
         }
-        private static IHtmlContent FormAutoComplete(IHtmlHelper html, AbstractLookup model, String hiddenInput, Object htmlAttributes)
+        private static IHtmlContent FormAutoComplete(IHtmlHelper html, MvcLookup model, String hiddenInput, Object htmlAttributes)
         {
             IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
             if (attributes.ContainsKey("class"))
@@ -95,7 +95,7 @@ namespace NonFactors.Mvc.Lookup
             attributes.Add("data-mvc-lookup-term", "");
             attributes.Add("data-mvc-lookup-page", 0);
 
-            return html.TextBox(hiddenInput + AbstractLookup.Prefix, null, attributes);
+            return html.TextBox(hiddenInput + MvcLookup.Prefix, null, attributes);
         }
 
         private static IHtmlContent FormHiddenInputFor<TModel, TProperty>(IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
