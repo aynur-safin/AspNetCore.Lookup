@@ -91,7 +91,7 @@ namespace NonFactors.Mvc.Lookup
             attributes.Add("data-mvc-lookup-sort-column", model.DefaultSortColumn);
             attributes.Add("data-mvc-lookup-sort-order", model.DefaultSortOrder);
             attributes.Add("data-mvc-lookup-dialog-title", model.DialogTitle);
-            attributes.Add("data-mvc-lookup-url", model.LookupUrl);
+            attributes.Add("data-mvc-lookup-url", model.Url);
             attributes.Add("data-mvc-lookup-term", "");
             attributes.Add("data-mvc-lookup-page", 0);
 

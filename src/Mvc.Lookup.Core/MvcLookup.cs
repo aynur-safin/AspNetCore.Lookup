@@ -9,8 +9,8 @@ namespace NonFactors.Mvc.Lookup
         public const String IdKey = "LookupIdKey";
         public const String AcKey = "LookupAcKey";
 
+        public String Url { get; protected set; }
         public String DialogTitle { get; protected set; }
-        public String LookupUrl { get; protected set; }
 
         public LookupFilter CurrentFilter { get; set; }
         public LookupColumns Columns { get; protected set; }

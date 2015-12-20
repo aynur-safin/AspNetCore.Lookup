@@ -811,7 +811,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
         private void AddsUrlAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-url=""{0}""(.*) />", lookup.LookupUrl);
+            String pattern = String.Format(@"<input(.*) data-mvc-lookup-url=""{0}""(.*) />", lookup.Url);
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }

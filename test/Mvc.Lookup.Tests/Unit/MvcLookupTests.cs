@@ -47,9 +47,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void MvcLookup_SetsLookupUrl()
+        public void MvcLookup_SetsUrl()
         {
-            Assert.Null(lookup.LookupUrl);
+            Assert.Null(lookup.Url);
         }
 
         [Fact]
