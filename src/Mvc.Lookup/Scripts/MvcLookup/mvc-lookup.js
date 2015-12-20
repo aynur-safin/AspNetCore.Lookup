@@ -284,10 +284,10 @@
 
             for (var i = 0; i < columns.length; i++) {
                 var column = columns[i];
-                header += '<th class="' + (column.CssClass != null ? column.CssClass : '') + '" data-column="' + column.Key + '"><span class="mvc-lookup-header-title">' + (column.Header != null ? column.Header : '') + '</span>';
-                if (that.options.sortColumn == column.Key || (that.options.sortColumn == '' && i == 0)) {
+                header += '<th class="' + (column.CssClass != null ? column.CssClass : '') + '" data-column="' + column.Name + '"><span class="mvc-lookup-header-title">' + (column.Header != null ? column.Header : '') + '</span>';
+                if (that.options.sortColumn == column.Name || (that.options.sortColumn == '' && i == 0)) {
                     header += '<span class="mvc-lookup-sort-arrow ' + (that.options.sortOrder == 'Asc' ? 'asc' : 'desc') + '"></span></th>';
-                    that.options.sortColumn = column.Key;
+                    that.options.sortColumn = column.Name;
                 } else {
                     header += '<span class="mvc-lookup-sort-arrow"></span></th>';
                 }
@@ -325,7 +325,7 @@
 
                 for (var j = 0; j < data.Columns.length; j++) {
                     var column = data.Columns[j];
-                    tableRow += '<td class="' + (column.CssClass != null ? column.CssClass : '') + '">' + (row[column.Key] != null ? row[column.Key] : '') + '</td>';
+                    tableRow += '<td class="' + (column.CssClass != null ? column.CssClass : '') + '">' + (row[column.Name] != null ? row[column.Name] : '') + '</td>';
                 }
 
                 tableRow += '<td class="mvc-lookup-select-cell"><div class="mvc-lookup-select-container"><i></i></div></td></tr>';

@@ -5,14 +5,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnTests
     {
-        #region Constructor: LookupColumn(String key, String header, String cssClass = "")
+        #region Constructor: LookupColumn(String name, String header, String cssClass = "")
 
         [Fact]
-        public void Add_NullKey_Throws()
+        public void Add_NullName_Throws()
         {
             ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupColumn(null, ""));
 
-            Assert.Equal("key", actual.ParamName);
+            Assert.Equal("name", actual.ParamName);
         }
 
         [Fact]
@@ -32,9 +32,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void LookupColumn_SetsKey()
+        public void LookupColumn_SetsName()
         {
-            String actual = new LookupColumn("Test", "").Key;
+            String actual = new LookupColumn("Test", "").Name;
             String expected = "Test";
 
             Assert.Equal(expected, actual);

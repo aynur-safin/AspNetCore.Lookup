@@ -61,11 +61,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Add_SameColumnKey_Throws()
+        public void Add_SameColumnName_Throws()
         {
             LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First()));
 
-            String expected = String.Format("Can not add lookup column with the same key '{0}'.", columns.First().Key);
+            String expected = String.Format("Can not add lookup column with the same name '{0}'.", columns.First().Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -87,14 +87,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Add(String key, String header, String cssClass = ")
+        #region Method: Add(String name, String header, String cssClass = ")
 
         [Fact]
-        public void Add_NullKey_Throws()
+        public void Add_NullName_Throws()
         {
             ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => columns.Add(null, ""));
 
-            Assert.Equal("key", actual.ParamName);
+            Assert.Equal("name", actual.ParamName);
         }
 
         [Fact]
@@ -114,11 +114,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Add_SameKey_Throws()
+        public void Add_SameName_Throws()
         {
-            LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First().Key, "1"));
+            LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First().Name, "1"));
 
-            String expected = String.Format("Can not add lookup column with the same key '{0}'.", columns.First().Key);
+            String expected = String.Format("Can not add lookup column with the same name '{0}'.", columns.First().Name);
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -129,14 +129,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             columns = new LookupColumns();
             foreach (LookupColumn column in allColumns)
-                columns.Add(column.Key, column.Header, column.CssClass);
+                columns.Add(column.Name, column.Header, column.CssClass);
 
             IEnumerator<LookupColumn> expected = allColumns.GetEnumerator();
             IEnumerator<LookupColumn> actual = columns.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
             {
-                Assert.Equal(expected.Current.Key, actual.Current.Key);
+                Assert.Equal(expected.Current.Name, actual.Current.Name);
                 Assert.Equal(expected.Current.Header, actual.Current.Header);
                 Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
             }
@@ -173,19 +173,19 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Remove(String key)
+        #region Method: Remove(String name)
 
         [Fact]
-        public void Remove_ByKey()
+        public void Remove_ByName()
         {
             foreach (LookupColumn column in columns)
-                Assert.True(columns.Remove(column.Key));
+                Assert.True(columns.Remove(column.Name));
 
             Assert.Empty(columns);
         }
 
         [Fact]
-        public void Remove_NoKey_ReturnsFalse()
+        public void Remove_NoName_ReturnsFalse()
         {
             Assert.False(columns.Remove("Test3"));
             Assert.Equal(allColumns, columns);

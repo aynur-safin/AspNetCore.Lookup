@@ -4,14 +4,14 @@ namespace NonFactors.Mvc.Lookup
 {
     public class LookupColumn
     {
-        public String Key { get; protected set; }
+        public String Name { get; protected set; }
         public String Header { get; protected set; }
         public String CssClass { get; protected set; }
 
-        public LookupColumn(String key, String header, String cssClass = "")
+        public LookupColumn(String name, String header, String cssClass = "")
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
 
             if (header == null)
                 throw new ArgumentNullException(nameof(header));
@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Lookup
             if (cssClass == null)
                 throw new ArgumentNullException(nameof(cssClass));
 
-            Key = key;
+            Name = name;
             Header = header;
             CssClass = cssClass;
         }

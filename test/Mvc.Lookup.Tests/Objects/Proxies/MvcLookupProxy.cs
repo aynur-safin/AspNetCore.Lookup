@@ -35,9 +35,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
             return new List<T>().AsQueryable();
         }
 
-        public String BaseGetColumnKey(PropertyInfo property)
+        public String BaseGetColumnName(PropertyInfo property)
         {
-            return GetColumnKey(property);
+            return GetColumnName(property);
         }
         public String BaseGetColumnHeader(PropertyInfo property)
         {
