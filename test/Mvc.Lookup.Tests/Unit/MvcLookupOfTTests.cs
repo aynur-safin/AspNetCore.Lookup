@@ -147,14 +147,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnHeader_ReturnsPropertyName()
+        public void GetColumnHeader_NoDisplayName_ReturnsEmpty()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("Sum");
 
             String actual = lookup.BaseGetColumnHeader(property);
-            String expected = property.Name;
 
-            Assert.Equal(expected, actual);
+            Assert.Empty(actual);
         }
 
         [Fact]
@@ -182,14 +181,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnHeader_ReturnsRelationName()
+        public void GetColumnHeader_NoRelationDisplayName_ReturnsEmpty()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("SecondRelationModel");
-
-            String expected = property.GetCustomAttribute<LookupColumnAttribute>(false).Relation;
+            
             String actual = lookup.BaseGetColumnHeader(property);
 
-            Assert.Equal(expected, actual);
+            Assert.Empty(actual);
         }
 
         [Fact]
