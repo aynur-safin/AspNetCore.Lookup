@@ -42,12 +42,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Constructor: MvcLookup()
 
         [Fact]
-        public void MvcLookup_CallsGetColumnName()
+        public void MvcLookup_CallsGetColumnKey()
         {
             IEnumerable<PropertyInfo> properties = lookup.BaseAttributedProperties;
             Int32 callCount = lookup.BaseAttributedProperties.Count();
 
-            lookupMock.Protected().Verify("GetColumnName", Times.Exactly(callCount), ItExpr.Is<PropertyInfo>(match => properties.Contains(match)));
+            lookupMock.Protected().Verify("GetColumnKey", Times.Exactly(callCount), ItExpr.Is<PropertyInfo>(match => properties.Contains(match)));
         }
 
         [Fact]
@@ -73,14 +73,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupColumns columns = new LookupColumns();
             foreach (PropertyInfo property in lookup.BaseAttributedProperties)
-                columns.Add(new LookupColumn(lookup.BaseGetColumnName(property), lookup.BaseGetColumnHeader(property)));
+                columns.Add(new LookupColumn(lookup.BaseGetColumnKey(property), lookup.BaseGetColumnHeader(property)));
 
             IEnumerator<LookupColumn> expected = columns.GetEnumerator();
             IEnumerator<LookupColumn> actual = lookup.Columns.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
             {
-                Assert.Equal(expected.Current.Name, actual.Current.Name);
+                Assert.Equal(expected.Current.Key, actual.Current.Key);
                 Assert.Equal(expected.Current.Header, actual.Current.Header);
                 Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
             }
@@ -88,33 +88,33 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: GetColumnName(PropertyInfo property)
+        #region Method: GetColumnKey(PropertyInfo property)
 
         [Fact]
-        public void GetColumnName_NullProperty_Throws()
+        public void GetColumnKey_NullProperty_Throws()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.BaseGetColumnName(null));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.BaseGetColumnKey(null));
 
             Assert.Equal("property", actual.ParamName);
         }
 
         [Fact]
-        public void GetColumnName_ReturnsPropertyName()
+        public void GetColumnKey_ReturnsPropertyName()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("Sum");
 
-            String actual = lookup.BaseGetColumnName(property);
+            String actual = lookup.BaseGetColumnKey(property);
             String expected = property.Name;
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void GetColumnName_NoRelation_Throws()
+        public void GetColumnKey_NoRelation_Throws()
         {
             PropertyInfo property = typeof(NoRelationModel).GetProperty("NoRelation");
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnName(property));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnKey(property));
 
             String expected = String.Format("'{0}.{1}' does not have property named 'None'.", property.DeclaringType.Name, property.Name);
             String actual = exception.Message;
@@ -123,13 +123,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnName_ReturnsRelationName()
+        public void GetColumnKey_ReturnsRelationKey()
         {
             PropertyInfo property = typeof(TestModel).GetProperty("FirstRelationModel");
             String relation = property.GetCustomAttribute<LookupColumnAttribute>(false).Relation;
 
             String expected = String.Format("{0}.{1}", property.Name, relation);
-            String actual = lookup.BaseGetColumnName(property);
+            String actual = lookup.BaseGetColumnKey(property);
 
             Assert.Equal(expected, actual);
         }
@@ -727,7 +727,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void AddAutocomplete_Value()
         {
             TestModel model = new TestModel();
-            PropertyInfo firstProperty = model.GetType().GetProperty(lookup.Columns.First().Name);
+            PropertyInfo firstProperty = model.GetType().GetProperty(lookup.Columns.First().Key);
 
             lookup.BaseAddAutocomplete(row, model);
 
@@ -800,7 +800,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             List<String> expected = new List<String>();
             TestModel model = new TestModel { FirstRelationModel = new TestRelationModel { Value = "Test" } };
             foreach (LookupColumn column in lookup.Columns)
-                expected.Add(GetValue(model, column.Name));
+                expected.Add(GetValue(model, column.Key));
 
             lookup.BaseAddColumns(row, model);
 

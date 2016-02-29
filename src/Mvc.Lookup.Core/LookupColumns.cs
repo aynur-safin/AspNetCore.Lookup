@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Lookup
         {
             get
             {
-                return Columns.Select(column => column.Name);
+                return Columns.Select(column => column.Key);
             }
         }
 
@@ -30,22 +30,22 @@ namespace NonFactors.Mvc.Lookup
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
 
-            if (Columns.Any(col => col.Name == column.Name))
-                throw new LookupException($"Can not add lookup column with the same name '{column.Name}'.");
+            if (Columns.Any(col => col.Key == column.Key))
+                throw new LookupException($"Can not add lookup column with the same key '{column.Key}'.");
 
             Columns.Add(column);
         }
-        public void Add(String name, String header, String cssClass = "")
+        public void Add(String key, String header, String cssClass = "")
         {
-            Add(new LookupColumn(name, header, cssClass));
+            Add(new LookupColumn(key, header, cssClass));
         }
         public Boolean Remove(LookupColumn column)
         {
             return Columns.Remove(column);
         }
-        public Boolean Remove(String name)
+        public Boolean Remove(String key)
         {
-            return Columns.Remove(Columns.FirstOrDefault(column => column.Name == name));
+            return Columns.Remove(Columns.FirstOrDefault(column => column.Key == key));
         }
         public void Clear()
         {

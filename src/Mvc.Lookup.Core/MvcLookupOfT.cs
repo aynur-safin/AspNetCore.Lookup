@@ -23,15 +23,15 @@ namespace NonFactors.Mvc.Lookup
         protected MvcLookup()
         {
             foreach (PropertyInfo property in AttributedProperties)
-                Columns.Add(GetColumnName(property), GetColumnHeader(property), GetColumnCssClass(property));
+                Columns.Add(GetColumnKey(property), GetColumnHeader(property), GetColumnCssClass(property));
         }
-        protected virtual String GetColumnName(PropertyInfo property)
+        protected virtual String GetColumnKey(PropertyInfo property)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
             if (column != null && column.Relation != null)
-                return property.Name + "." + GetColumnName(GetRelationProperty(property, column.Relation));
+                return property.Name + "." + GetColumnKey(GetRelationProperty(property, column.Relation));
 
             return property.Name;
         }
@@ -128,7 +128,7 @@ namespace NonFactors.Mvc.Lookup
                     throw new LookupException($"Lookup does not contain sort column named '{sortColumn}'.");
 
             if (Columns.Any())
-                return models.OrderBy(Columns.First().Name + " " + CurrentFilter.SortOrder);
+                return models.OrderBy(Columns.First().Key + " " + CurrentFilter.SortOrder);
 
             throw new LookupException("Lookup should have at least one column.");
         }
