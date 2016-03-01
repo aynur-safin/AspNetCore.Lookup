@@ -235,14 +235,14 @@
             return value;
         },
         _cleanUp: function () {
-            this.element.removeAttr('data-lookup-records-per-page');
-            this.element.removeAttr('data-lookup-dialog-title');
-            this.element.removeAttr('data-lookup-sort-column');
-            this.element.removeAttr('data-lookup-sort-order');
-            this.element.removeAttr('data-lookup-filters');
-            this.element.removeAttr('data-lookup-term');
-            this.element.removeAttr('data-lookup-page');
-            this.element.removeAttr('data-lookup-url');
+            this.element.removeAttr('data-mvc-lookup-records-per-page');
+            this.element.removeAttr('data-mvc-lookup-dialog-title');
+            this.element.removeAttr('data-mvc-lookup-sort-column');
+            this.element.removeAttr('data-mvc-lookup-sort-order');
+            this.element.removeAttr('data-mvc-lookup-filters');
+            this.element.removeAttr('data-mvc-lookup-term');
+            this.element.removeAttr('data-mvc-lookup-page');
+            this.element.removeAttr('data-mvc-lookup-url');
         },
 
         _update: function (lookup) {
