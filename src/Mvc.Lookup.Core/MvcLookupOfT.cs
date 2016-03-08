@@ -30,7 +30,7 @@ namespace NonFactors.Mvc.Lookup
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (column != null && column.Relation != null)
+            if (column?.Relation != null)
                 return property.Name + "." + GetColumnKey(GetRelationProperty(property, column.Relation));
 
             return property.Name;
@@ -40,7 +40,7 @@ namespace NonFactors.Mvc.Lookup
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (column != null && column.Relation != null)
+            if (column?.Relation != null)
                 return GetColumnHeader(GetRelationProperty(property, column.Relation));
 
             DisplayAttribute header = property.GetCustomAttribute<DisplayAttribute>(false);
@@ -175,7 +175,7 @@ namespace NonFactors.Mvc.Lookup
                 throw new LookupException("Lookup should have at least one column.");
 
             foreach (String column in Columns.Keys)
-                AddColumn(row, column, model);
+                row.Add(column, GetValue(model, column));
         }
         protected virtual void AddAdditionalData(Dictionary<String, String> row, T model)
         {
@@ -197,13 +197,9 @@ namespace NonFactors.Mvc.Lookup
         }
         private String FormEqualsQuery(String propertyName)
         {
-            return String.Format(@"({0} && {1} == @0)", FormNotNullQuery(propertyName), propertyName);
+            return $@"({FormNotNullQuery(propertyName)} && {propertyName} == @0)";
         }
 
-        private void AddColumn(Dictionary<String, String> row, String column, T model)
-        {
-            row.Add(column, GetValue(model, column));
-        }
         private String GetValue(Object model, String fullPropertyName)
         {
             if (model == null) return "";
@@ -219,7 +215,7 @@ namespace NonFactors.Mvc.Lookup
 
             Object value = property.GetValue(model) ?? "";
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (column != null && column.Format != null)
+            if (column?.Format != null)
                 value = String.Format(column.Format, value);
 
             return value.ToString();

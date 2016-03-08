@@ -20,8 +20,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             ArgumentException exception = Assert.Throws<ArgumentException>(() => new LookupAttribute(typeof(Object)));
 
-            String expected = String.Format("'{0}' type does not implement '{1}'.",
-                typeof(Object).Name, typeof(MvcLookup).Name);
+            String expected = $"'{typeof (Object).Name}' type does not implement '{typeof (MvcLookup).Name}'.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);

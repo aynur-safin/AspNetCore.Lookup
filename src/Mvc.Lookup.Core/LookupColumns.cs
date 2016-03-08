@@ -10,7 +10,6 @@ namespace NonFactors.Mvc.Lookup
         private List<LookupColumn> Columns
         {
             get;
-            set;
         }
         public IEnumerable<String> Keys
         {

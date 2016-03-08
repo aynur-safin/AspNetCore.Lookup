@@ -734,7 +734,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Mock.Of<IUrlHelper>(),
                 Mock.Of<IHtmlEncoder>());
 
-            HtmlHelper<TestModel> html = new HtmlHelper<TestModel>(
+            HtmlHelper<TestModel> htmlHelper = new HtmlHelper<TestModel>(
                 generator,
                 Mock.Of<ICompositeViewEngine>(),
                 provider,
@@ -745,9 +745,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             ViewContext context = new ViewContext();
             context.ViewData = new ViewDataDictionary<TestModel>(context.ViewData, testModel);
 
-            html.Contextualize(context);
+            htmlHelper.Contextualize(context);
 
-            return html;
+            return htmlHelper;
         }
 
         private void CreatesAutocompleteAndHiddenInput(String id, Object actual)
@@ -758,7 +758,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
         private void AddsIdAttribute(String id, Object actual)
         {
-            String pattern = String.Format(@"<input(.*) id=""{0}{1}""(.*) />", id, MvcLookup.Prefix);
+            String pattern = $@"<input(.*) id=""{id}{MvcLookup.Prefix}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
@@ -770,48 +770,48 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
         private void AddsSpecifiedClass(String classAttribute, Object actual)
         {
-            String pattern = String.Format(@"<input(.*) class=""(.*){0}(.*)""(.*) />", classAttribute);
+            String pattern = $@"<input(.*) class=""(.*){classAttribute}(.*)""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsFiltersAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-filters=""{0}""(.*) />", String.Join(",", lookup.AdditionalFilters));
+            String pattern = $@"<input(.*) data-mvc-lookup-filters=""{String.Join(",", lookup.AdditionalFilters)}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsRecordsPerPageAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-records-per-page=""{0}""(.*) />", lookup.DefaultRecordsPerPage);
+            String pattern = $@"<input(.*) data-mvc-lookup-records-per-page=""{lookup.DefaultRecordsPerPage}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsSortColumnAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-sort-column=""{0}""(.*) />", lookup.DefaultSortColumn);
+            String pattern = $@"<input(.*) data-mvc-lookup-sort-column=""{lookup.DefaultSortColumn}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsSortOrderAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-sort-order=""{0}""(.*) />", lookup.DefaultSortOrder);
+            String pattern = $@"<input(.*) data-mvc-lookup-sort-order=""{lookup.DefaultSortOrder}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsDialogTitleAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-dialog-title=""{0}""(.*) />", lookup.DialogTitle);
+            String pattern = $@"<input(.*) data-mvc-lookup-dialog-title=""{lookup.DialogTitle}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsHiddenInputAttribute(String id, Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-for=""{0}""(.*) />", id);
+            String pattern = $@"<input(.*) data-mvc-lookup-for=""{id}""(.*) />";
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsUrlAttribute(Object actual)
         {
-            String pattern = String.Format(@"<input(.*) data-mvc-lookup-url=""{0}""(.*) />", lookup.Url);
+            String pattern = $@"<input(.*) data-mvc-lookup-url=""{lookup.Url}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
@@ -828,13 +828,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
         private void AddsIdForHiddenInput(String id, Object actual)
         {
-            String pattern = String.Format(@"<input(.*) id=""{0}""(.*) />", id);
+            String pattern = $@"<input(.*) id=""{id}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }
         private void AddsValueForHiddenInput(String value, Object actual)
         {
-            String pattern = String.Format(@"/><input(.*) value=""{0}""(.*) />", value);
+            String pattern = $@"/><input(.*) value=""{value}""(.*) />";
 
             Assert.True(Regex.IsMatch(ToString(actual), pattern));
         }

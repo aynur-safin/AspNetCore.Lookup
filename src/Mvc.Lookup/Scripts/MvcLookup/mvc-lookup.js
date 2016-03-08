@@ -91,7 +91,6 @@
         _initLookupOpenSpan: function () {
             var lookupAddon = this.element.nextAll('.mvc-lookup-open-span:first');
             if (lookupAddon.length != 0) {
-                var lookup = $('#MvcLookup');
                 var that = this;
 
                 this._on(lookupAddon, {

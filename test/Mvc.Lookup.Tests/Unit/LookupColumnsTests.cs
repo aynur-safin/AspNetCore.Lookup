@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -65,7 +64,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First()));
 
-            String expected = String.Format("Can not add lookup column with the same key '{0}'.", columns.First().Key);
+            String expected = $"Can not add lookup column with the same key '{columns.First().Key}'.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -118,7 +117,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First().Key, "1"));
 
-            String expected = String.Format("Can not add lookup column with the same key '{0}'.", columns.First().Key);
+            String expected = $"Can not add lookup column with the same key '{columns.First().Key}'.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
