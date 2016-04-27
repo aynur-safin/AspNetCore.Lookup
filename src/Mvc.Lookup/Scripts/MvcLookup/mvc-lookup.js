@@ -247,9 +247,9 @@
         _update: function (lookup) {
             var that = this;
             var term = lookup.find('.mvc-lookup-search-input').val();
+            lookup.find('.mvc-lookup-error-container').fadeOut(300);
 
             var timeout = setTimeout(function () {
-                lookup.find('.mvc-lookup-error-container').fadeOut(300);
                 lookup.find('.mvc-lookup-processing').fadeIn(300);
                 lookup.find('.mvc-lookup-pager').fadeOut(300);
                 lookup.find('.mvc-lookup-data').fadeOut(300);
