@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnTests
     {
-        #region Constructor: LookupColumn(String key, String header, String cssClass = "")
+        #region LookupColumn(String key, String header, String cssClass = "")
 
         [Fact]
         public void Add_NullKey_Throws()

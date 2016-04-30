@@ -29,7 +29,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             html = MockHtmlHelper();
         }
 
-        #region Extension method: AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
+        #region AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void AutoComplete_CreatesAutocompleteAndHiddenInput()
@@ -132,7 +132,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
+        #region AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
 
         [Fact]
         public void AutoCompleteFor_WithoutModel_MissingAttributeThrows()
@@ -243,7 +243,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
+        #region AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void AutoCompleteFor_CreatesAutocompleteAndHiddenInputFromExpression()
@@ -356,7 +356,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: Lookup<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
+        #region Lookup<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void Lookup_WrapsAutocompleteInInputGroup()
@@ -471,7 +471,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
+        #region LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
 
         [Fact]
         public void LookupFor_WithoutModel_WrapsAutocompleteInInputGroup()
@@ -594,7 +594,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Extension method: LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
+        #region LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void LookupFor_WrapsAutocompleteInInputGroup()

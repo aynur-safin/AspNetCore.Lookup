@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             filter = new LookupFilter();
         }
 
-        #region Constructor: LookupFilter()
+        #region LookupFilter()
 
         [Fact]
         public void LookupFilter_SetsId()

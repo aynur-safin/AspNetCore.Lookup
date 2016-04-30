@@ -38,7 +38,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Constructor: MvcLookup()
+        #region MvcLookup()
 
         [Fact]
         public void MvcLookup_SetsDialogTitle()

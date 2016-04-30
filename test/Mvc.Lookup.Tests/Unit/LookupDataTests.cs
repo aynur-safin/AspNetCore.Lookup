@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupDataTests
     {
-        #region Constructor: LookupData()
+        #region LookupData()
 
         [Fact]
         public void LookupData_SetsFilteredRecords()

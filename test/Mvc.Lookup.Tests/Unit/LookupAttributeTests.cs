@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupAttributeTests
     {
-        #region Constructor: LookupAttribute(Type type)
+        #region LookupAttribute(Type type)
 
         [Fact]
         public void LookupAttribute_NullType_Throws()

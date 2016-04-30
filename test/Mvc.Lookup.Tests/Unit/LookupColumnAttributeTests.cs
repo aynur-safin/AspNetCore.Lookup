@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnAttributeTests
     {
-        #region Constructor: LookupColumnAttribute()
+        #region LookupColumnAttribute()
 
         [Fact]
         public void LookupColumnAttribute_NullPosition()
@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Constructor: LookupColumnAttribute(Int32 position)
+        #region LookupColumnAttribute(Int32 position)
 
         [Fact]
         public void LookupColumnAttribute_SetsPosition()

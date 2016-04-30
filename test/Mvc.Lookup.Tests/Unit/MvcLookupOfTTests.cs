@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup = lookupMock.Object;
         }
 
-        #region Property: AttributedProperties
+        #region AttributedProperties
 
         [Fact]
         public void AttributedProperties_GetsOrderedProperties()
@@ -39,7 +39,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Constructor: MvcLookup()
+        #region MvcLookup()
 
         [Fact]
         public void MvcLookup_CallsGetColumnKey()
@@ -88,7 +88,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: GetColumnKey(PropertyInfo property)
+        #region GetColumnKey(PropertyInfo property)
 
         [Fact]
         public void GetColumnKey_NullProperty_Throws()
@@ -136,7 +136,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: GetColumnHeader(PropertyInfo property)
+        #region GetColumnHeader(PropertyInfo property)
 
         [Fact]
         public void GetColumnHeader_NullProperty_Throws()
@@ -203,7 +203,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: GetColumnCssClass(PropertyInfo property)
+        #region GetColumnCssClass(PropertyInfo property)
 
         [Fact]
         public void GetColumnCssClass_ReturnsEmptyString()
@@ -213,7 +213,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: GetData()
+        #region GetData()
 
         [Fact]
         public void GetData_CallsGetModels()
@@ -313,7 +313,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: FilterById(IQueryable<T> models)
+        #region FilterById(IQueryable<T> models)
 
         [Fact]
         public void FilterById_NoIdProperty_Throws()
@@ -386,7 +386,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: FilterByAdditionalFilters(IQueryable<T> models)
+        #region FilterByAdditionalFilters(IQueryable<T> models)
 
         [Fact]
         public void FilterByAdditionalFilters_SkipsNullValues()
@@ -414,7 +414,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: FilterBySearchTerm(IQueryable<T> models)
+        #region FilterBySearchTerm(IQueryable<T> models)
 
         [Fact]
         public void FilterBySearchTerm_SkipsNullTerm()
@@ -484,7 +484,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Sort(IQueryable<T> models)
+        #region Sort(IQueryable<T> models)
 
         [Fact]
         public void Sort_ByColumn()
@@ -563,7 +563,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: FormLookupData(IQueryable<T> models)
+        #region FormLookupData(IQueryable<T> models)
 
         [Fact]
         public void FormLookupData_SetsFilteredRecords()
@@ -643,7 +643,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: AddId(Dictionary<String, String> row, T model)
+        #region AddId(Dictionary<String, String> row, T model)
 
         [Fact]
         public void AddId_NoProperty_Throws()
@@ -686,7 +686,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: AddAutocomplete(Dictionary<String, String> row, T model)
+        #region AddAutocomplete(Dictionary<String, String> row, T model)
 
         [Fact]
         public void AddAutocomplete_EmptyColumns_Throws()
@@ -757,7 +757,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: AddColumns(Dictionary<String, String> row, T model)
+        #region AddColumns(Dictionary<String, String> row, T model)
 
         [Fact]
         public void AddColumns_EmptyColumns_Throws()
@@ -809,7 +809,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: AddAdditionalData(Dictionary<String, String> row, T model)
+        #region AddAdditionalData(Dictionary<String, String> row, T model)
 
         [Fact]
         public void AddAdditionalData_DoesNothing()

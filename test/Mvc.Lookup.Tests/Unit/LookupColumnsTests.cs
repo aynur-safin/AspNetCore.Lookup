@@ -24,7 +24,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 columns.Add(column);
         }
 
-        #region Property: Keys
+        #region Keys
 
         [Fact]
         public void Keys_ReturnsColumnKeys()
@@ -37,7 +37,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Constructor: LookupColumns()
+        #region LookupColumns()
 
         [Fact]
         public void LookupColumns_AreEmpty()
@@ -49,7 +49,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Add(LookupColumn column)
+        #region Add(LookupColumn column)
 
         [Fact]
         public void Add_NullColumn_Throws()
@@ -86,7 +86,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Add(String key, String header, String cssClass = ")
+        #region Add(String key, String header, String cssClass = ")
 
         [Fact]
         public void Add_NullKey_Throws()
@@ -143,7 +143,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Remove(LookupColumn column)
+        #region Remove(LookupColumn column)
 
         [Fact]
         public void Remove_NoColumn_ReturnsFalse()
@@ -172,7 +172,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Remove(String key)
+        #region Remove(String key)
 
         [Fact]
         public void Remove_ByKey()
@@ -192,7 +192,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: Clear()
+        #region Clear()
 
         [Fact]
         public void Clear_Columns()
@@ -204,7 +204,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Method: GetEnumerator()
+        #region GetEnumerator()
 
         [Fact]
         public void GetEnumerator_ReturnsColumns()

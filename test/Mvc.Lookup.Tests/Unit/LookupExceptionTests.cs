@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupExceptionTests
     {
-        #region Constructor: LookupException(String message)
+        #region LookupException(String message)
 
         [Fact]
         public void LookupException_SetsMessage()
