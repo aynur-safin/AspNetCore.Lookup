@@ -19,6 +19,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public MvcLookupOfTTests()
         {
             lookupMock = new Mock<TestLookupProxy> { CallBase = true };
+            lookupMock.Object.CurrentFilter.RecordsPerPage = 5;
             row = new Dictionary<String, String>();
             lookup = lookupMock.Object;
         }
@@ -586,10 +587,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_FormsRows()
         {
-            Int32 expected = lookup.CurrentFilter.RecordsPerPage;
-            Int32 actual = lookup.BaseFormLookupData(lookup.BaseGetModels()).Rows.Count;
-
-            Assert.Equal(expected, actual);
+            Assert.Empty(lookup.BaseFormLookupData(lookup.BaseGetModels()).Rows);
         }
 
         [Fact]

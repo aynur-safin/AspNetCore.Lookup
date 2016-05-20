@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNet.Html.Abstractions;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Mvc.ViewFeatures;
-using Microsoft.Extensions.WebEncoders;
+﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.Encodings.Web;
 
 namespace NonFactors.Mvc.Lookup
 {
@@ -47,8 +48,8 @@ namespace NonFactors.Mvc.Lookup
         {
             TagBuilder inputGroup = new TagBuilder("div");
             inputGroup.AddCssClass("input-group");
-            inputGroup.InnerHtml.Append(html.AutoComplete(name, value, model, htmlAttributes));
-            inputGroup.InnerHtml.Append(FormLookupOpenSpan());
+            inputGroup.InnerHtml.AppendHtml(html.AutoComplete(name, value, model, htmlAttributes));
+            inputGroup.InnerHtml.AppendHtml(FormLookupOpenSpan());
 
             return inputGroup;
         }
@@ -62,8 +63,8 @@ namespace NonFactors.Mvc.Lookup
         {
             TagBuilder inputGroup = new TagBuilder("div");
             inputGroup.AddCssClass("input-group");
-            inputGroup.InnerHtml.Append(html.AutoCompleteFor(expression, model, htmlAttributes));
-            inputGroup.InnerHtml.Append(FormLookupOpenSpan());
+            inputGroup.InnerHtml.AppendHtml(html.AutoCompleteFor(expression, model, htmlAttributes));
+            inputGroup.InnerHtml.AppendHtml(FormLookupOpenSpan());
 
             return inputGroup;
         }
@@ -120,7 +121,7 @@ namespace NonFactors.Mvc.Lookup
 
             outerSpan.AddCssClass("mvc-lookup-open-span input-group-addon");
             innerSpan.AddCssClass("mvc-lookup-open-icon glyphicon");
-            outerSpan.InnerHtml.Append(innerSpan);
+            outerSpan.InnerHtml.AppendHtml(innerSpan);
 
             return outerSpan;
         }

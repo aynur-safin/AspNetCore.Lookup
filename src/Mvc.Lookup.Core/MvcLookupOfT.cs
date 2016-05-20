@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 
 namespace NonFactors.Mvc.Lookup
@@ -139,11 +139,9 @@ namespace NonFactors.Mvc.Lookup
             data.FilteredRecords = models.Count();
             data.Columns = Columns;
 
-            IQueryable<T> pagedModels = CurrentFilter.Page != 0 && CurrentFilter.RecordsPerPage != 0
-                ? models
-                    .Skip(CurrentFilter.Page * CurrentFilter.RecordsPerPage)
-                    .Take(CurrentFilter.RecordsPerPage)
-                : new T[0].AsQueryable();
+            IQueryable<T> pagedModels = models
+                .Skip(CurrentFilter.Page * CurrentFilter.RecordsPerPage)
+                .Take(CurrentFilter.RecordsPerPage);
 
             foreach (T model in pagedModels)
             {
@@ -237,7 +235,7 @@ namespace NonFactors.Mvc.Lookup
         private Boolean IsNumeric(Type type)
         {
             type = Nullable.GetUnderlyingType(type) ?? type;
-            if (type.IsEnum) return false;
+            if (type.GetTypeInfo().IsEnum) return false;
 
             switch (Type.GetTypeCode(type))
             {

@@ -1,8 +1,8 @@
-using System;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
-using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using NonFactors.Mvc.Lookup.Tests.Objects.Data;
 
 namespace Mvc.Lookup.Tests.Objects.Data.Migrations
@@ -13,7 +13,8 @@ namespace Mvc.Lookup.Tests.Objects.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348");
+                .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("NonFactors.Mvc.Lookup.Tests.Objects.TestModel", b =>
                 {
@@ -34,6 +35,12 @@ namespace Mvc.Lookup.Tests.Objects.Data.Migrations
                     b.Property<decimal>("Sum");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FirstRelationModelId");
+
+                    b.HasIndex("SecondRelationModelId");
+
+                    b.ToTable("TestModel");
                 });
 
             modelBuilder.Entity("NonFactors.Mvc.Lookup.Tests.Objects.TestRelationModel", b =>
@@ -45,6 +52,8 @@ namespace Mvc.Lookup.Tests.Objects.Data.Migrations
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
+
+                    b.ToTable("TestRelationModel");
                 });
 
             modelBuilder.Entity("NonFactors.Mvc.Lookup.Tests.Objects.TestModel", b =>

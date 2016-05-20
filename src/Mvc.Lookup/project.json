@@ -1,16 +1,18 @@
 ﻿{
   "description": "Autocomplete plus datatables like controls for ASP.NET MVC 6 projects",
-  "projectUrl": "https://github.com/NonFactors/MVC6.Lookup",
-  "licenseUrl": "http://opensource.org/licenses/MIT",
+  "packOptions": {
+    "projectUrl": "https://github.com/NonFactors/MVC6.Lookup",
+    "licenseUrl": "http://opensource.org/licenses/MIT",
+    "tags": [ "mvc lookup" ]
+  },
   "authors": [ "NonFactors" ],
-  "tags": [ "mvc lookup" ],
-  "version": "0.9.1",
+  "version": "0.9.5",
 
-  "compilationOptions": {
+  "buildOptions": {
     "warningsAsErrors": true
   },
 
   "frameworks": {
-    "dnx451": { }
+    "net451": { }
   }
 }

@@ -1,5 +1,6 @@
-using Microsoft.Data.Entity.Migrations;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Mvc.Lookup.Tests.Objects.Data.Migrations
 {
@@ -19,6 +20,7 @@ namespace Mvc.Lookup.Tests.Objects.Data.Migrations
                 {
                     table.PrimaryKey("PK_TestRelationModel", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
                 name: "TestModel",
                 columns: table => new
@@ -48,12 +50,25 @@ namespace Mvc.Lookup.Tests.Objects.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestModel_FirstRelationModelId",
+                table: "TestModel",
+                column: "FirstRelationModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestModel_SecondRelationModelId",
+                table: "TestModel",
+                column: "SecondRelationModelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("TestModel");
-            migrationBuilder.DropTable("TestRelationModel");
+            migrationBuilder.DropTable(
+                name: "TestModel");
+
+            migrationBuilder.DropTable(
+                name: "TestRelationModel");
         }
     }
 }

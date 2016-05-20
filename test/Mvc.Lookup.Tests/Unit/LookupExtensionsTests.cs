@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNet.Antiforgery;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.ModelBinding;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Mvc.ViewEngines;
-using Microsoft.AspNet.Mvc.ViewFeatures;
-using Microsoft.Extensions.OptionsModel;
-using Microsoft.Extensions.WebEncoders;
+﻿using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
+using Microsoft.Extensions.Options;
 using Moq;
 using NonFactors.Mvc.Lookup.Tests.Objects;
 using System;
 using System.IO;
 using System.Linq.Expressions;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Xunit;
 
@@ -731,16 +734,18 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Mock.Of<IAntiforgery>(),
                 optionsMock.Object,
                 provider,
-                Mock.Of<IUrlHelper>(),
-                Mock.Of<IHtmlEncoder>());
+                Mock.Of<IUrlHelperFactory>(),
+                HtmlEncoder.Default,
+                new ClientValidatorCache());
 
             HtmlHelper<TestModel> htmlHelper = new HtmlHelper<TestModel>(
                 generator,
                 Mock.Of<ICompositeViewEngine>(),
                 provider,
-                Mock.Of<IHtmlEncoder>(),
-                Mock.Of<IUrlEncoder>(),
-                Mock.Of<IJavaScriptStringEncoder>());
+                Mock.Of<IViewBufferScope>(),
+                HtmlEncoder.Default,
+                UrlEncoder.Default,
+                new ExpressionTextCache());
 
             ViewContext context = new ViewContext();
             context.ViewData = new ViewDataDictionary<TestModel>(context.ViewData, testModel);

@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
 
         public TestLookupProxy()
         {
-            models = new Context().TestModels.OrderByDescending(model => model.Id);
+            models = new Context().Set<TestModel>().OrderByDescending(model => model.Id);
         }
 
         protected override IQueryable<TestModel> GetModels()

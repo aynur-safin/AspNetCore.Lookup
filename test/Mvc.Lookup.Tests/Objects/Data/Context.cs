@@ -1,11 +1,11 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace NonFactors.Mvc.Lookup.Tests.Objects.Data
 {
     public class Context : DbContext
     {
-        public DbSet<TestModel> TestModels { get; set; }
-        public DbSet<TestRelationModel> TestRelationModels { get; set; }
+        protected DbSet<TestModel> TestModel { get; set; }
+        protected DbSet<TestRelationModel> TestRelationModel { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
