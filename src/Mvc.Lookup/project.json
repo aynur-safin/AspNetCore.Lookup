@@ -6,7 +6,7 @@
     "tags": [ "mvc lookup" ]
   },
   "authors": [ "NonFactors" ],
-  "version": "0.9.5",
+  "version": "0.9.6",
 
   "buildOptions": {
     "warningsAsErrors": true
