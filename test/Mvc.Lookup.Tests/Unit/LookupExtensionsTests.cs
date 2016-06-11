@@ -852,22 +852,22 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         private void CreatesAutocompleteAndHiddenInputFromExpression(Expression<Func<TestModel, String>> expression, Object actual)
         {
-            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), "_");
+            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), html.IdAttributeDotReplacement);
             CreatesAutocompleteAndHiddenInput(expressionId, actual);
         }
         private void AddsIdAttributeFromExpression(Expression<Func<TestModel, String>> expression, Object actual)
         {
-            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), "_");
+            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), html.IdAttributeDotReplacement);
             AddsIdAttribute(expressionId, actual);
         }
         private void AddsHiddenInputAttributeFromExpression(Expression<Func<TestModel, String>> expression, Object actual)
         {
-            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), "_");
+            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), html.IdAttributeDotReplacement);
             AddsHiddenInputAttribute(expressionId, actual);
         }
         private void AddsIdForHiddenInputFromExpression(Expression<Func<TestModel, String>> expression, Object actual)
         {
-            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), "_");
+            String expressionId = TagBuilder.CreateSanitizedId(ExpressionHelper.GetExpressionText(expression), html.IdAttributeDotReplacement);
             AddsIdForHiddenInput(expressionId, actual);
         }
 

@@ -86,7 +86,7 @@ namespace NonFactors.Mvc.Lookup
                 attributes["class"] = $"{attributes["class"]} form-control mvc-lookup-input".Trim();
             else
                 attributes["class"] = "form-control mvc-lookup-input";
-            attributes.Add("data-mvc-lookup-for", TagBuilder.CreateSanitizedId(hiddenInput, "_"));
+            attributes.Add("data-mvc-lookup-for", TagBuilder.CreateSanitizedId(hiddenInput, html.IdAttributeDotReplacement));
             attributes.Add("data-mvc-lookup-filters", String.Join(",", model.AdditionalFilters));
             attributes.Add("data-mvc-lookup-records-per-page", model.DefaultRecordsPerPage);
             attributes.Add("data-mvc-lookup-sort-column", model.DefaultSortColumn);
