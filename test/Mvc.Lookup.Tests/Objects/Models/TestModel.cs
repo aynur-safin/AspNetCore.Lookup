@@ -21,13 +21,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
         public Decimal Sum { get; set; }
         public String NullableString { get; set; }
 
-        public String FirstRelationModelId { get; set; }
-        public String SecondRelationModelId { get; set; }
-
-        [LookupColumn(1, Relation = "Value")]
-        public virtual TestRelationModel FirstRelationModel { get; set; }
-
-        [LookupColumn(1, Relation = "NoValue")]
-        public virtual TestRelationModel SecondRelationModel { get; set; }
+        public String RelationId { get; set; }
+        public virtual TestRelationModel Relation { get; set; }
     }
 }

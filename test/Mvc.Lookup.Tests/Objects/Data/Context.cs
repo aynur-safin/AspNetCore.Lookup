@@ -5,7 +5,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects.Data
     public class Context : DbContext
     {
         protected DbSet<TestModel> TestModel { get; set; }
-        protected DbSet<TestRelationModel> TestRelationModel { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

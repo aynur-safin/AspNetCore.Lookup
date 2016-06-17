@@ -110,31 +110,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void GetColumnKey_NoRelation_Throws()
-        {
-            PropertyInfo property = typeof(NoRelationModel).GetProperty("NoRelation");
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnKey(property));
-
-            String expected = $"'{property.DeclaringType.Name}.{property.Name}' does not have property named 'None'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetColumnKey_ReturnsRelationKey()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty("FirstRelationModel");
-            String relation = property.GetCustomAttribute<LookupColumnAttribute>(false).Relation;
-
-            String expected = $"{property.Name}.{relation}";
-            String actual = lookup.BaseGetColumnKey(property);
-
-            Assert.Equal(expected, actual);
-        }
-
         #endregion
 
         #region GetColumnHeader(PropertyInfo property)
@@ -163,40 +138,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             PropertyInfo property = typeof(TestModel).GetProperty("Number");
 
             String expected = property.GetCustomAttribute<DisplayAttribute>().Name;
-            String actual = lookup.BaseGetColumnHeader(property);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetColumnHeader_NoRelation_Throws()
-        {
-            PropertyInfo property = typeof(NoRelationModel).GetProperty("NoRelation");
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.BaseGetColumnHeader(property));
-
-            String expected = $"'{property.DeclaringType.Name}.{property.Name}' does not have property named 'None'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetColumnHeader_NoRelationDisplayName_ReturnsEmpty()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty("SecondRelationModel");
-            
-            String actual = lookup.BaseGetColumnHeader(property);
-
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void GetColumnHeader_ReturnsRelationDisplayName()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty("FirstRelationModel");
-
-            String expected = property.PropertyType.GetProperty("Value").GetCustomAttribute<DisplayAttribute>().Name;
             String actual = lookup.BaseGetColumnHeader(property);
 
             Assert.Equal(expected, actual);
@@ -449,9 +390,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             IQueryable<TestModel> actual = lookup.BaseFilterBySearchTerm(lookup.BaseGetModels());
             IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model =>
-                (model.Id != null && model.Id.ToLower().Contains(lookup.CurrentFilter.SearchTerm)) ||
-                (model.FirstRelationModel != null && model.FirstRelationModel.Value != null && model.FirstRelationModel.Value.ToLower().Contains(lookup.CurrentFilter.SearchTerm)) ||
-                (model.SecondRelationModel != null && model.SecondRelationModel.Value != null && model.SecondRelationModel.Value.ToLower().Contains(lookup.CurrentFilter.SearchTerm)));
+                model.Id != null && model.Id.ToLower().Contains(lookup.CurrentFilter.SearchTerm));
 
             Assert.Equal(expected, actual);
         }
@@ -463,9 +402,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             IQueryable<TestModel> actual = lookup.BaseFilterBySearchTerm(lookup.BaseGetModels());
             IQueryable<TestModel> expected = lookup.BaseGetModels().Where(model =>
-                (model.Id != null && model.Id.ToLower().Contains(lookup.CurrentFilter.SearchTerm)) ||
-                (model.FirstRelationModel != null && model.FirstRelationModel.Value != null && model.FirstRelationModel.Value.ToLower().Contains(lookup.CurrentFilter.SearchTerm)) ||
-                (model.SecondRelationModel != null && model.SecondRelationModel.Value != null && model.SecondRelationModel.Value.ToLower().Contains(lookup.CurrentFilter.SearchTerm)));
+                model.Id != null && model.Id.ToLower().Contains(lookup.CurrentFilter.SearchTerm));
 
             Assert.Equal(expected, actual);
         }
@@ -733,19 +670,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void AddAutocomplete_RelationValue()
-        {
-            lookup.Columns.Clear();
-            lookup.Columns.Add(new LookupColumn("FirstRelationModel.Value", ""));
-            TestModel model = new TestModel { FirstRelationModel = new TestRelationModel { Value = "Test" } };
-            PropertyInfo firstProperty = typeof(TestRelationModel).GetProperty("Value");
-
-            lookup.BaseAddAutocomplete(row, model);
-
-            Assert.Equal(firstProperty.GetValue(model.FirstRelationModel).ToString(), row.First().Value);
-        }
-
-        [Fact]
         public void AddAutocomplete_Element()
         {
             lookup.BaseAddAutocomplete(row, new TestModel());
@@ -795,12 +719,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AddColumns_Values()
         {
-            List<String> expected = new List<String>();
-            TestModel model = new TestModel { FirstRelationModel = new TestRelationModel { Value = "Test" } };
-            foreach (LookupColumn column in lookup.Columns)
-                expected.Add(GetValue(model, column.Key));
+            lookup.BaseAddColumns(row, new TestModel());
 
-            lookup.BaseAddColumns(row, model);
+            String[] expected = { "0", "0001-01-01", "" };
+            String[] actual = row.Values.ToArray();
 
             Assert.Equal(expected, row.Values);
         }
@@ -815,28 +737,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.BaseAddAdditionalData(row, new TestModel());
 
             Assert.Empty(row.Keys);
-        }
-
-        #endregion
-
-        #region Testing helpers
-
-        private String GetValue(Object model, String fullPropertyName)
-        {
-            if (model == null) return "";
-
-            Type type = model.GetType();
-            String[] properties = fullPropertyName.Split('.');
-            PropertyInfo property = type.GetProperty(properties[0]);
-
-            if (properties.Length > 1)
-                return GetValue(property.GetValue(model), String.Join(".", properties.Skip(1)));
-
-            Object value = property.GetValue(model) ?? "";
-            LookupColumnAttribute lookupColumn = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (lookupColumn?.Format != null) value = String.Format(lookupColumn.Format, value);
-
-            return value.ToString();
         }
 
         #endregion

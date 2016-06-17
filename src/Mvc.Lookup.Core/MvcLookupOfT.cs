@@ -27,38 +27,21 @@ namespace NonFactors.Mvc.Lookup
         }
         protected virtual String GetColumnKey(PropertyInfo property)
         {
-            if (property == null) throw new ArgumentNullException(nameof(property));
-
-            LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (column?.Relation != null)
-                return property.Name + "." + GetColumnKey(GetRelationProperty(property, column.Relation));
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
 
             return property.Name;
         }
         protected virtual String GetColumnHeader(PropertyInfo property)
         {
-            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (property == null)
+                throw new ArgumentNullException(nameof(property));
 
-            LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (column?.Relation != null)
-                return GetColumnHeader(GetRelationProperty(property, column.Relation));
-
-            DisplayAttribute header = property.GetCustomAttribute<DisplayAttribute>(false);
-            if (header != null) return header.GetName();
-
-            return "";
+            return property.GetCustomAttribute<DisplayAttribute>(false)?.GetName() ?? "";
         }
         protected virtual String GetColumnCssClass(PropertyInfo property)
         {
             return "";
-        }
-        private PropertyInfo GetRelationProperty(PropertyInfo property, String relation)
-        {
-            PropertyInfo relationProperty = property.PropertyType.GetProperty(relation);
-            if (relationProperty != null)
-                return relationProperty;
-
-            throw new LookupException($"'{property.DeclaringType.Name}.{property.Name}' does not have property named '{relation}'.");
         }
 
         public override LookupData GetData()
@@ -99,7 +82,7 @@ namespace NonFactors.Mvc.Lookup
         protected virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
             foreach (KeyValuePair<String, Object> filter in CurrentFilter.AdditionalFilters.Where(item => item.Value != null))
-                models = models.Where(FormEqualsQuery(filter.Key), filter.Value);
+                models = models.Where($@"({filter.Key} != null && {filter.Key} == @0)", filter.Value);
 
             return models;
         }
@@ -110,9 +93,9 @@ namespace NonFactors.Mvc.Lookup
             String term = CurrentFilter.SearchTerm.ToLower();
             List<String> queries = new List<String>();
 
-            foreach (String propertyName in Columns.Keys)
-                if (GetType(propertyName) == typeof(String))
-                    queries.Add(FormContainsQuery(propertyName));
+            foreach (String property in Columns.Keys)
+                if (GetType(property) == typeof(String))
+                    queries.Add($"({property} != null && {property}.ToLower().Contains(@0))");
 
             if (queries.Count == 0) return models;
 
@@ -179,37 +162,11 @@ namespace NonFactors.Mvc.Lookup
         {
         }
 
-        private String FormContainsQuery(String propertyName)
+        private String GetValue(T model, String propertyName)
         {
-            return $"({FormNotNullQuery(propertyName)} && {propertyName}.ToLower().Contains(@0))";
-        }
-        private String FormNotNullQuery(String propertyName)
-        {
-            List<String> queries = new List<String>();
-            String[] properties = propertyName.Split('.');
-
-            for (Int32 i = 0; i < properties.Length; ++i)
-                queries.Add(String.Join(".", properties.Take(i + 1)) + " != null");
-
-            return String.Join(" && ", queries);
-        }
-        private String FormEqualsQuery(String propertyName)
-        {
-            return $@"({FormNotNullQuery(propertyName)} && {propertyName} == @0)";
-        }
-
-        private String GetValue(Object model, String fullPropertyName)
-        {
-            if (model == null) return "";
-
-            Type type = model.GetType();
-            String[] properties = fullPropertyName.Split('.');
-            PropertyInfo property = type.GetProperty(properties[0]);
+            PropertyInfo property = typeof(T).GetProperty(propertyName);
             if (property == null)
-                throw new LookupException($"'{type.Name}' type does not have property named '{properties[0]}'.");
-
-            if (properties.Length > 1)
-                return GetValue(property.GetValue(model), String.Join(".", properties.Skip(1)));
+                throw new LookupException($"'{typeof(T).Name}' type does not have property named '{propertyName}'.");
 
             Object value = property.GetValue(model) ?? "";
             LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
@@ -218,19 +175,13 @@ namespace NonFactors.Mvc.Lookup
 
             return value.ToString();
         }
-        private Type GetType(String fullPropertyName)
+        private Type GetType(String propertyName)
         {
-            Type type = typeof(T);
-            foreach (String propertyName in fullPropertyName.Split('.'))
-            {
-                PropertyInfo property = type.GetProperty(propertyName);
-                if (property == null)
-                    throw new LookupException($"'{type.Name}' type does not have property named '{propertyName}'.");
+            PropertyInfo property = typeof(T).GetProperty(propertyName);
+            if (property == null)
+                throw new LookupException($"'{typeof(T).Name}' type does not have property named '{propertyName}'.");
 
-                type = property.PropertyType;
-            }
-
-            return type;
+            return property.PropertyType;
         }
         private Boolean IsNumeric(Type type)
         {

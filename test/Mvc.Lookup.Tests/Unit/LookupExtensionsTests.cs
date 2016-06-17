@@ -251,7 +251,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AutoCompleteFor_CreatesAutocompleteAndHiddenInputFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             CreatesAutocompleteAndHiddenInputFromExpression(expression, html.AutoCompleteFor(expression, lookup));
         }
@@ -259,7 +259,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AutoCompleteFor_AddsIdAttributeFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             AddsIdAttributeFromExpression(expression, html.AutoCompleteFor(expression, lookup));
         }
@@ -279,7 +279,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AutoCompleteFor_AddsHiddenInputAttributeFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             AddsHiddenInputAttributeFromExpression(expression, html.AutoCompleteFor(expression, lookup));
         }
@@ -338,7 +338,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AutoCompleteFor_AddsIdForHiddenInputFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             AddsIdForHiddenInputFromExpression(expression, html.AutoCompleteFor(expression, lookup));
         }
@@ -608,7 +608,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupFor_CreatesAutocompleteAndHiddenInputFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             CreatesAutocompleteAndHiddenInputFromExpression(expression, html.LookupFor(expression, lookup));
         }
@@ -616,7 +616,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupFor_AddsIdAttributeFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             AddsIdAttributeFromExpression(expression, html.LookupFor(expression, lookup));
         }
@@ -636,7 +636,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupFor_AddsHiddenInputAttributeFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             AddsHiddenInputAttributeFromExpression(expression, html.LookupFor(expression, lookup));
         }
@@ -695,7 +695,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupFor_AddsIdForHiddenInputFromExpression()
         {
-            Expression<Func<TestModel, String>> expression = model => model.FirstRelationModel.Value;
+            Expression<Func<TestModel, String>> expression = model => model.Relation.Value;
 
             AddsIdForHiddenInputFromExpression(expression, html.LookupFor(expression, lookup));
         }

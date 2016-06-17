@@ -14,12 +14,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void LookupColumnAttribute_NullRelation()
-        {
-            Assert.Null(new LookupColumnAttribute().Relation);
-        }
-
-        [Fact]
         public void LookupColumnAttribute_NullFormat()
         {
             Assert.Null(new LookupColumnAttribute().Format);

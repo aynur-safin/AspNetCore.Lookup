@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Mvc.Lookup.Tests.Objects.Data.Migrations
+namespace NonFactors.Mvc.Lookup.Tests.Objects.Data.Migrations
 {
     public partial class Initial : Migration
     {
@@ -27,39 +27,27 @@ namespace Mvc.Lookup.Tests.Objects.Data.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    FirstRelationModelId = table.Column<string>(nullable: true),
                     NullableString = table.Column<string>(nullable: true),
                     Number = table.Column<int>(nullable: false),
                     ParentId = table.Column<string>(nullable: true),
-                    SecondRelationModelId = table.Column<string>(nullable: true),
+                    RelationId = table.Column<string>(nullable: true),
                     Sum = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TestModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TestModel_TestRelationModel_FirstRelationModelId",
-                        column: x => x.FirstRelationModelId,
-                        principalTable: "TestRelationModel",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TestModel_TestRelationModel_SecondRelationModelId",
-                        column: x => x.SecondRelationModelId,
+                        name: "FK_TestModel_TestRelationModel_RelationId",
+                        column: x => x.RelationId,
                         principalTable: "TestRelationModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TestModel_FirstRelationModelId",
+                name: "IX_TestModel_RelationId",
                 table: "TestModel",
-                column: "FirstRelationModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TestModel_SecondRelationModelId",
-                table: "TestModel",
-                column: "SecondRelationModelId");
+                column: "RelationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
