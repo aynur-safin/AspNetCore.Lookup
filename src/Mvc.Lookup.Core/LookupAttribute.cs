@@ -9,9 +9,6 @@ namespace NonFactors.Mvc.Lookup
 
         public LookupAttribute(Type type)
         {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-
             if (!typeof(MvcLookup).IsAssignableFrom(type))
                 throw new ArgumentException($"'{type.Name}' type does not implement '{typeof(MvcLookup).Name}'.");
 

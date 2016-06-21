@@ -14,7 +14,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             columns = new LookupColumns();
             allColumns = new List<LookupColumn>();
-            allColumns.Add(new LookupColumn("Test1", "Header1"));
+            allColumns.Add(new LookupColumn("Test1", null));
             allColumns.Add(new LookupColumn("Test2", "Header2"));
 
             foreach (LookupColumn column in allColumns)
@@ -55,17 +55,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Add_SameColumnKey_Throws()
-        {
-            LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First()));
-
-            String expected = $"Can not add lookup column with the same key '{columns.First().Key}'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void Add_Column()
         {
             LookupColumn column = new LookupColumn("Test3", "3");
@@ -86,20 +75,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Add_NullKey_Throws()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => columns.Add(null, ""));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => columns.Add(null, null));
 
             Assert.Equal("key", actual.ParamName);
-        }
-
-        [Fact]
-        public void Add_SameKey_Throws()
-        {
-            LookupException exception = Assert.Throws<LookupException>(() => columns.Add(columns.First().Key, "1"));
-
-            String expected = $"Can not add lookup column with the same key '{columns.First().Key}'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
         }
 
         [Fact]

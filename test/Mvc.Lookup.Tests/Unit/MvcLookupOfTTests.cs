@@ -96,11 +96,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region GetColumnHeader(PropertyInfo property)
 
         [Fact]
-        public void GetColumnHeader_NullProperty_Throws()
+        public void GetColumnHeader_NullProperty_ReturnsNull()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.GetColumnHeader(null));
-
-            Assert.Equal("property", actual.ParamName);
+            Assert.Null(lookup.GetColumnHeader(null));
         }
 
         [Fact]
@@ -108,9 +106,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             PropertyInfo property = typeof(TestModel).GetProperty("Value");
 
-            String actual = lookup.GetColumnHeader(property);
-
-            Assert.Null(actual);
+            Assert.Null(lookup.GetColumnHeader(property));
         }
 
         [Fact]
@@ -255,7 +251,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.FilterById(null));
 
-            String expected = $"'{typeof (NoIdModel).Name}' type does not have property named 'Id'.";
+            String expected = $"'{typeof (NoIdModel).Name}' type does not have property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -291,7 +287,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterById(null));
 
-            String expected = $"'{typeof (GuidModel).Name}.Id' can not be filtered by using '' value, because it's not a string nor a number.";
+            String expected = $"'{typeof (GuidModel).Name}.Id' property type has to be a string or a number.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -330,10 +326,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #region FilterBySearchTerm(IQueryable<T> models)
 
-        [Fact]
-        public void FilterBySearchTerm_SkipsNullTerm()
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void FilterBySearchTerm_SkipsEmptyTerm(String term)
         {
-            lookup.CurrentFilter.SearchTerm = null;
+            lookup.CurrentFilter.SearchTerm = term;
 
             IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -342,15 +340,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterBySearchTerm_NoProperty_Throws()
+        public void FilterBySearchTerm_DoesNotFilterNotExistingProperties()
         {
-            lookup.CurrentFilter.SearchTerm = "Test";
+            lookup.Columns.Clear();
+            lookup.CurrentFilter.SearchTerm = "1";
             lookup.Columns.Add(new LookupColumn("Test", "Test"));
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.FilterBySearchTerm(lookup.GetModels()));
-
-            String expected = $"'{typeof (TestModel).Name}' type does not have property named 'Test'.";
-            String actual = exception.Message;
+            IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
+            IQueryable<TestModel> expected = lookup.GetModels();
 
             Assert.Equal(expected, actual);
         }
@@ -371,7 +368,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.CurrentFilter.SearchTerm = "1";
-            lookup.Columns.Add(new LookupColumn("Count", ""));
+            lookup.Columns.Add(new LookupColumn("Count", null));
 
             IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -407,33 +404,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Sort_NoColumn_Throws()
-        {
-            lookup.CurrentFilter.SortColumn = "Test";
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.Sort(lookup.GetModels()));
-
-            String expected = "Lookup does not contain sort column named 'Test'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Sort_NoDefaultProperty_Throws()
-        {
-            lookup.DefaultSortColumn = "Test";
-            lookup.CurrentFilter.SortColumn = null;
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.Sort(lookup.GetModels()));
-
-            String expected = "Lookup does not contain sort column named 'Test'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void Sort_ByFirstColumn()
         {
             lookup.DefaultSortColumn = null;
@@ -445,17 +415,26 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void Sort_NoColumns_Throws()
+        [Theory]
+        [InlineData("", "")]
+        [InlineData("", " ")]
+        [InlineData("", null)]
+
+        [InlineData(" ", "")]
+        [InlineData(" ", " ")]
+        [InlineData(" ", null)]
+        
+        [InlineData(null, "")]
+        [InlineData(null, " ")]
+        [InlineData(null, null)]
+        public void Sort_NoSortColumns(String defaultColumn, String sortColumn)
         {
             lookup.Columns.Clear();
             lookup.DefaultSortColumn = null;
             lookup.CurrentFilter.SortColumn = null;
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.Sort(lookup.GetModels()));
-
-            String expected = "Lookup should have at least one column.";
-            String actual = exception.Message;
+            
+            IQueryable<TestModel> expected = lookup.GetModels();
+            IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
 
             Assert.Equal(expected, actual);
         }
@@ -529,16 +508,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region AddId(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddId_NoProperty_Throws()
+        public void AddId_EmptyValues()
         {
             TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.AddId(row, new NoIdModel()));
+            lookup.AddId(row, new NoIdModel());
 
-            String expected = $"'{typeof (NoIdModel).Name}' type does not have property named 'Id'.";
-            String actual = exception.Message;
+            KeyValuePair<String, String> actual = row.Single();
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(MvcLookup.IdKey, actual.Key);
+            Assert.Null(actual.Value);
         }
 
         [Fact]
@@ -557,30 +536,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region AddAutocomplete(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddAutocomplete_NoColumns_Throws()
+        public void AddAutocomplete_EmptyValues()
         {
             lookup.Columns.Clear();
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.AddAutocomplete(row, new TestModel()));
+            lookup.AddAutocomplete(row, new TestModel());
+            
+            KeyValuePair<String, String> actual = row.Single();
 
-            String expected = "Lookup should have at least one column.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void AddAutocomplete_NoProperty_Throws()
-        {
-            lookup.Columns.Clear();
-            lookup.Columns.Add(new LookupColumn("Test", ""));
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.AddAutocomplete(row, new TestModel()));
-
-            String expected = $"'{typeof(TestModel).Name}' type does not have property named 'Test'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
+            Assert.Equal(MvcLookup.AcKey, actual.Key);
+            Assert.Null(actual.Value);
         }
 
         [Fact]
@@ -599,30 +564,15 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region AddColumns(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddColumns_NoColumns_Throws()
+        public void AddColumns_EmptyValues()
         {
             lookup.Columns.Clear();
+            lookup.Columns.Add(new LookupColumn("Test", null));
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.AddColumns(null, new TestModel()));
-
-            String expected = "Lookup should have at least one column.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void AddColumns_NoProperty_Throws()
-        {
-            lookup.Columns.Clear();
-            lookup.Columns.Add(new LookupColumn("Test", ""));
-
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.AddColumns(row, new TestModel()));
-
-            String expected = $"'{typeof (TestModel).Name}' type does not have property named 'Test'.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
+            lookup.AddColumns(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            
+            Assert.Equal(new String[] { null }, row.Values);
+            Assert.Equal(lookup.Columns.Keys, row.Keys);
         }
 
         [Fact]

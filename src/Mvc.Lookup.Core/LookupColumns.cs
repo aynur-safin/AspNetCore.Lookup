@@ -29,9 +29,6 @@ namespace NonFactors.Mvc.Lookup
             if (column == null)
                 throw new ArgumentNullException(nameof(column));
 
-            if (Columns.Any(col => col.Key == column.Key))
-                throw new LookupException($"Can not add lookup column with the same key '{column.Key}'.");
-
             Columns.Add(column);
         }
         public void Add(String key, String header, String cssClass = null)

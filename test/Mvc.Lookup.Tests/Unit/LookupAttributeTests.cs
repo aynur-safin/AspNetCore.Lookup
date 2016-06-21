@@ -8,14 +8,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region LookupAttribute(Type type)
 
         [Fact]
-        public void LookupAttribute_Null_Throws()
-        {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupAttribute(null));
-
-            Assert.Equal("type", actual.ParamName);
-        }
-
-        [Fact]
         public void LookupAttribute_NotLookup_Throws()
         {
             ArgumentException exception = Assert.Throws<ArgumentException>(() => new LookupAttribute(typeof(Object)));

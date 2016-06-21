@@ -10,7 +10,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Add_NullKey_Throws()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupColumn(null, ""));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupColumn(null, null));
 
             Assert.Equal("key", actual.ParamName);
         }
@@ -18,7 +18,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupColumn_Key()
         {
-            String actual = new LookupColumn("Test", "").Key;
+            String actual = new LookupColumn("Test", null).Key;
             String expected = "Test";
 
             Assert.Equal(expected, actual);
@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupColumn_Header()
         {
-            String actual = new LookupColumn("", "Test").Header;
+            String actual = new LookupColumn("Test", "Test").Header;
             String expected = "Test";
 
             Assert.Equal(expected, actual);
