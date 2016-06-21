@@ -5,20 +5,22 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
 {
     public class TestModel
     {
-        [LookupColumn(0)]
         public String Id { get; set; }
 
-        [LookupColumn]
-        [Display(Name = "TestDisplay")]
-        public Int32 Number { get; set; }
+        [LookupColumn(8)]
+        [Display(Name = "Count's value")]
+        public Int32 Count { get; set; }
 
-        [Lookup(typeof(TestLookupProxy))]
+        [LookupColumn]
+        public String Value { get; set; }
+
+        [Lookup(typeof(TestLookup<TestModel>))]
         public String ParentId { get; set; }
 
-        [LookupColumn(-5, Format = "{0:d}")]
+        [Display(Name = "Date")]
+        [LookupColumn(-3, Format = "{0:d}")]
         public DateTime CreationDate { get; set; }
 
-        public Decimal Sum { get; set; }
         public String NullableString { get; set; }
 
         public String RelationId { get; set; }

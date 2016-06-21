@@ -12,13 +12,9 @@
     "Mvc.Lookup.Core": "0.9.6",
 
     "xunit": "2.1.0",
-    "Moq": "4.2.1510.2205",
-    "NSubstitute": "1.8.2",
+    "NSubstitute": "1.10.0",
     "dotnet-test-xunit": "1.0.0-rc2-build10015",
-    "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027",
-    "Microsoft.EntityFrameworkCore": "1.0.0-rc2-final",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0-rc2-final",
-    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview1-final"
+    "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027"
   },
 
   "buildOptions": {
@@ -26,29 +22,10 @@
     "emitEntryPoint": true
   },
 
-  "tools": {
-    "Microsoft.EntityFrameworkCore.Tools": {
-      "version": "1.0.0-preview1-final",
-      "imports": [
-        "portable-net451+win8"
-      ]
-    }
-  },
-
   "testRunner": "xunit",
 
   "frameworks": {
     "net451": {
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "version": "1.0.0-rc2-3002702",
-          "type": "platform"
-        }
-      },
-      "imports": [
-        "dnxcore50",
-        "portable-net451+win8"
-      ]
     }
   }
 }

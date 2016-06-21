@@ -1,35 +1,15 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnAttributeTests
     {
-        #region LookupColumnAttribute()
-
-        [Fact]
-        public void LookupColumnAttribute_NullPosition()
-        {
-            Assert.Null(new LookupColumnAttribute().Position);
-        }
-
-        [Fact]
-        public void LookupColumnAttribute_NullFormat()
-        {
-            Assert.Null(new LookupColumnAttribute().Format);
-        }
-
-        #endregion
-
         #region LookupColumnAttribute(Int32 position)
 
         [Fact]
-        public void LookupColumnAttribute_SetsPosition()
+        public void LookupColumnAttribute_Position()
         {
-            Int32? actual = new LookupColumnAttribute(-5).Position;
-            Int32? expected = -5;
-
-            Assert.Equal(expected, actual);
+            Assert.Equal(-5, new LookupColumnAttribute(-5).Position);
         }
 
         #endregion

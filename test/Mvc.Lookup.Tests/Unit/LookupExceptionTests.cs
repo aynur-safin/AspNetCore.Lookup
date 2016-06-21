@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
@@ -10,10 +9,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupException_SetsMessage()
         {
-            String actual = new LookupException("Test").Message;
-            String expected = "Test";
-
-            Assert.Equal(expected, actual);
+            Assert.Equal("Test", new LookupException("Test").Message);
         }
 
         #endregion

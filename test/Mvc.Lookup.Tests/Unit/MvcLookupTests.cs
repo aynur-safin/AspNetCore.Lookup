@@ -1,4 +1,4 @@
-﻿using Moq;
+﻿using NSubstitute;
 using System;
 using Xunit;
 
@@ -6,13 +6,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class MvcLookupTests
     {
-        private MvcLookup lookup;
-
-        public MvcLookupTests()
-        {
-            lookup = new Mock<MvcLookup>().Object;
-        }
-
         #region Constants
 
         [Fact]
@@ -41,57 +34,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region MvcLookup()
 
         [Fact]
-        public void MvcLookup_SetsDialogTitle()
+        public void MvcLookup_Defaults()
         {
-            Assert.Null(lookup.DialogTitle);
-        }
+            MvcLookup actual = Substitute.For<MvcLookup>();
 
-        [Fact]
-        public void MvcLookup_SetsUrl()
-        {
-            Assert.Null(lookup.Url);
-        }
-
-        [Fact]
-        public void MvcLookup_SetsDefaultSortColumn()
-        {
-            Assert.Null(lookup.DefaultSortColumn);
-        }
-
-        [Fact]
-        public void MvcLookup_SetsDefaultRecordsPerPage()
-        {
-            UInt32 actual = lookup.DefaultRecordsPerPage;
-            UInt32 expected = 20;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void MvcLookup_SetsAdditionalFilters()
-        {
-            Assert.Empty(lookup.AdditionalFilters);
-        }
-
-        [Fact]
-        public void MvcLookup_SetsDefaultSortOrder()
-        {
-            LookupSortOrder actual = lookup.DefaultSortOrder;
-            LookupSortOrder expected = LookupSortOrder.Asc;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void MvcLookup_SetsColumns()
-        {
-            Assert.Empty(lookup.Columns);
-        }
-
-        [Fact]
-        public void MvcLookup_SetsCurrentFilter()
-        {
-            Assert.NotNull(lookup.CurrentFilter);
+            Assert.Equal<UInt32>(20, actual.DefaultRecordsPerPage);
+            Assert.Empty(actual.AdditionalFilters);
+            Assert.NotNull(actual.CurrentFilter);
+            Assert.Empty(actual.Columns);
         }
 
         #endregion

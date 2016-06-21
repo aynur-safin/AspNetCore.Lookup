@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Lookup
 {
     public class LookupAttribute : Attribute
     {
-        public Type Type { get; protected set; }
+        public Type Type { get; }
 
         public LookupAttribute(Type type)
         {

@@ -12,13 +12,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         public LookupColumnsTests()
         {
-            allColumns = new List<LookupColumn>
-            {
-                new LookupColumn("Test1", "Header1", "Class1"),
-                new LookupColumn("Test2", "Header2", "Class2")
-            };
-
             columns = new LookupColumns();
+            allColumns = new List<LookupColumn>();
+            allColumns.Add(new LookupColumn("Test1", "Header1"));
+            allColumns.Add(new LookupColumn("Test2", "Header2"));
 
             foreach (LookupColumn column in allColumns)
                 columns.Add(column);
@@ -40,11 +37,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region LookupColumns()
 
         [Fact]
-        public void LookupColumns_AreEmpty()
+        public void LookupColumns_Empty()
         {
-            columns = new LookupColumns();
-
-            Assert.Empty(columns);
+            Assert.Empty(new LookupColumns());
         }
 
         #endregion
@@ -86,7 +81,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Add(String key, String header, String cssClass = ")
+        #region Add(String key, String header, String cssClass = null)
 
         [Fact]
         public void Add_NullKey_Throws()
@@ -94,22 +89,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => columns.Add(null, ""));
 
             Assert.Equal("key", actual.ParamName);
-        }
-
-        [Fact]
-        public void Add_NullHeader_Throws()
-        {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => columns.Add("", null));
-
-            Assert.Equal("header", actual.ParamName);
-        }
-
-        [Fact]
-        public void Add_NullCssClass_Throws()
-        {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => columns.Add("", "", null));
-
-            Assert.Equal("cssClass", actual.ParamName);
         }
 
         [Fact]
@@ -146,19 +125,17 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Remove(LookupColumn column)
 
         [Fact]
-        public void Remove_NoColumn_ReturnsFalse()
+        public void Remove_NoColumn()
         {
-            Assert.False(columns.Remove(new LookupColumn("Test1", "")));
+            Assert.False(columns.Remove(new LookupColumn("Test1", "Header1")));
             Assert.Equal(allColumns, columns);
         }
 
         [Fact]
         public void Remove_Column()
         {
-            allColumns.RemoveAt(0);
-
             Assert.True(columns.Remove(columns.First()));
-            Assert.Equal(allColumns, columns);
+            Assert.Equal(allColumns.Skip(1), columns);
         }
 
         [Fact]
@@ -184,7 +161,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Remove_NoKey_ReturnsFalse()
+        public void Remove_NoKey()
         {
             Assert.False(columns.Remove("Test3"));
             Assert.Equal(allColumns, columns);
@@ -211,15 +188,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             IEnumerable<LookupColumn> actual = columns.ToArray();
             IEnumerable<LookupColumn> expected = allColumns;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetEnumerator_ReturnsSameColumns()
-        {
-            IEnumerable<LookupColumn> expected = columns.ToArray();
-            IEnumerable<LookupColumn> actual = columns;
 
             Assert.Equal(expected, actual);
         }

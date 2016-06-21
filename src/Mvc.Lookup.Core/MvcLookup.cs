@@ -9,16 +9,16 @@ namespace NonFactors.Mvc.Lookup
         public const String IdKey = "LookupIdKey";
         public const String AcKey = "LookupAcKey";
 
-        public String Url { get; protected set; }
-        public String DialogTitle { get; protected set; }
+        public String Url { get; set; }
+        public String DialogTitle { get; set; }
 
+        public LookupColumns Columns { get; set; }
         public LookupFilter CurrentFilter { get; set; }
-        public LookupColumns Columns { get; protected set; }
-        public IList<String> AdditionalFilters { get; protected set; }
+        public IList<String> AdditionalFilters { get; set; }
 
-        public String DefaultSortColumn { get; protected set; }
-        public UInt32 DefaultRecordsPerPage { get; protected set; }
-        public LookupSortOrder DefaultSortOrder { get; protected set; }
+        public String DefaultSortColumn { get; set; }
+        public UInt32 DefaultRecordsPerPage { get; set; }
+        public LookupSortOrder DefaultSortOrder { get; set; }
 
         protected MvcLookup()
         {

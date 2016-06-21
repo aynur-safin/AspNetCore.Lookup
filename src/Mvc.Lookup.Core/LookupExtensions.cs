@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.Encodings.Web;
 
 namespace NonFactors.Mvc.Lookup
 {
@@ -16,13 +14,12 @@ namespace NonFactors.Mvc.Lookup
         public static IHtmlContent AutoComplete<TModel>(this IHtmlHelper<TModel> html,
             String name, Object value, MvcLookup model, Object htmlAttributes = null)
         {
-            using (StringWriter writer = new StringWriter())
-            {
-                FormAutoComplete(html, model, name, htmlAttributes).WriteTo(writer, HtmlEncoder.Default);
-                FormHiddenInput(html, name, value).WriteTo(writer, HtmlEncoder.Default);
+            HtmlContentBuilder autocomplete = new HtmlContentBuilder();
 
-                return new HtmlString(writer.ToString());
-            }
+            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
+            autocomplete.AppendHtml(FormHiddenInput(html, name, value));
+
+            return autocomplete;
         }
         public static IHtmlContent AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
@@ -33,25 +30,24 @@ namespace NonFactors.Mvc.Lookup
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
             String name = ExpressionHelper.GetExpressionText(expression);
+            HtmlContentBuilder autocomplete = new HtmlContentBuilder();
 
-            using (StringWriter writer = new StringWriter())
-            {
-                FormAutoComplete(html, model, name, htmlAttributes).WriteTo(writer, HtmlEncoder.Default);
-                FormHiddenInputFor(html, expression).WriteTo(writer, HtmlEncoder.Default);
+            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
+            autocomplete.AppendHtml(FormHiddenInputFor(html, expression));
 
-                return new HtmlString(writer.ToString());
-            }
+            return autocomplete;
         }
 
         public static IHtmlContent Lookup<TModel>(this IHtmlHelper<TModel> html,
             String name, Object value, MvcLookup model, Object htmlAttributes = null)
         {
-            TagBuilder inputGroup = new TagBuilder("div");
-            inputGroup.AddCssClass("input-group");
-            inputGroup.InnerHtml.AppendHtml(html.AutoComplete(name, value, model, htmlAttributes));
-            inputGroup.InnerHtml.AppendHtml(FormLookupOpenSpan());
+            TagBuilder lookup = new TagBuilder("div");
 
-            return inputGroup;
+            lookup.InnerHtml.AppendHtml(html.AutoComplete(name, value, model, htmlAttributes));
+            lookup.InnerHtml.AppendHtml(FormLookupOpenSpan());
+            lookup.AddCssClass("input-group");
+
+            return lookup;
         }
         public static IHtmlContent LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)

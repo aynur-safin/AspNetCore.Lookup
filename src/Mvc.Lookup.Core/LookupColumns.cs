@@ -34,9 +34,9 @@ namespace NonFactors.Mvc.Lookup
 
             Columns.Add(column);
         }
-        public void Add(String key, String header, String cssClass = "")
+        public void Add(String key, String header, String cssClass = null)
         {
-            Add(new LookupColumn(key, header, cssClass));
+            Add(new LookupColumn(key, header) { CssClass = cssClass });
         }
         public Boolean Remove(LookupColumn column)
         {
