@@ -37,7 +37,7 @@ namespace NonFactors.Mvc.Lookup
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            return property.GetCustomAttribute<DisplayAttribute>(false)?.GetName();
+            return property.GetCustomAttribute<DisplayAttribute>(false)?.GetShortName();
         }
         public virtual String GetColumnCssClass(PropertyInfo property)
         {

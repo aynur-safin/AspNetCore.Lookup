@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     Id = i + "I",
                     Count = i + 10,
                     Value = i + "V",
-                    CreationDate = new DateTime(2014, 12, 10).AddDays(i)
+                    Date = new DateTime(2014, 12, 10).AddDays(i)
                 });
         }
 
@@ -54,8 +54,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupColumns columns = new LookupColumns();
             columns.Add(new LookupColumn("Value", null));
-            columns.Add(new LookupColumn("CreationDate", "Date"));
-            columns.Add(new LookupColumn("Count", "Count's value"));
+            columns.Add(new LookupColumn("Date", "Date"));
+            columns.Add(new LookupColumn("Count", "Value"));
 
             IEnumerator<LookupColumn> expected = columns.GetEnumerator();
             IEnumerator<LookupColumn> actual = lookup.Columns.GetEnumerator();
@@ -116,9 +116,20 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetColumnHeader_ReturnsDisplayName()
         {
-            PropertyInfo property = typeof(TestModel).GetProperty("Count");
+            PropertyInfo property = typeof(TestModel).GetProperty("Date");
 
             String expected = property.GetCustomAttribute<DisplayAttribute>().Name;
+            String actual = lookup.GetColumnHeader(property);
+
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void GetColumnHeader_ReturnsDisplayShortName()
+        {
+            PropertyInfo property = typeof(TestModel).GetProperty("Count");
+
+            String expected = property.GetCustomAttribute<DisplayAttribute>().ShortName;
             String actual = lookup.GetColumnHeader(property);
 
             Assert.Equal(expected, actual);
@@ -147,7 +158,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 19).ToShortDateString(), actual.Rows[0]["CreationDate"]);
+            Assert.Equal(new DateTime(2014, 12, 19).ToShortDateString(), actual.Rows[0]["Date"]);
             Assert.Equal("9V", actual.Rows[0][MvcLookup.AcKey]);
             Assert.Equal("9I", actual.Rows[0][MvcLookup.IdKey]);
             Assert.Equal("9V", actual.Rows[0]["Value"]);
@@ -168,7 +179,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 16).ToShortDateString(), actual.Rows[0]["CreationDate"]);
+            Assert.Equal(new DateTime(2014, 12, 16).ToShortDateString(), actual.Rows[0]["Date"]);
             Assert.Equal("6V", actual.Rows[0][MvcLookup.AcKey]);
             Assert.Equal("6I", actual.Rows[0][MvcLookup.IdKey]);
             Assert.Equal("6V", actual.Rows[0]["Value"]);
@@ -188,13 +199,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToShortDateString(), actual.Rows[0]["CreationDate"]);
+            Assert.Equal(new DateTime(2014, 12, 25).ToShortDateString(), actual.Rows[0]["Date"]);
             Assert.Equal("15V", actual.Rows[0][MvcLookup.AcKey]);
             Assert.Equal("15I", actual.Rows[0][MvcLookup.IdKey]);
             Assert.Equal("15V", actual.Rows[0]["Value"]);
             Assert.Equal("25", actual.Rows[0]["Count"]);
 
-            Assert.Equal(new DateTime(2014, 12, 15).ToShortDateString(), actual.Rows[1]["CreationDate"]);
+            Assert.Equal(new DateTime(2014, 12, 15).ToShortDateString(), actual.Rows[1]["Date"]);
             Assert.Equal("5V", actual.Rows[1][MvcLookup.AcKey]);
             Assert.Equal("5I", actual.Rows[1][MvcLookup.IdKey]);
             Assert.Equal("5V", actual.Rows[1]["Value"]);
@@ -216,13 +227,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 15).ToShortDateString(), actual.Rows[0]["CreationDate"]);
+            Assert.Equal(new DateTime(2014, 12, 15).ToShortDateString(), actual.Rows[0]["Date"]);
             Assert.Equal("5V", actual.Rows[0][MvcLookup.AcKey]);
             Assert.Equal("5I", actual.Rows[0][MvcLookup.IdKey]);
             Assert.Equal("5V", actual.Rows[0]["Value"]);
             Assert.Equal("15", actual.Rows[0]["Count"]);
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToShortDateString(), actual.Rows[1]["CreationDate"]);
+            Assert.Equal(new DateTime(2014, 12, 25).ToShortDateString(), actual.Rows[1]["Date"]);
             Assert.Equal("15V", actual.Rows[1][MvcLookup.AcKey]);
             Assert.Equal("15I", actual.Rows[1][MvcLookup.IdKey]);
             Assert.Equal("15V", actual.Rows[1]["Value"]);
@@ -306,11 +317,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.CurrentFilter.AdditionalFilters.Add("Id", "9I");
             lookup.CurrentFilter.AdditionalFilters.Add("Count", 9);
-            lookup.CurrentFilter.AdditionalFilters.Add("CreationDate", new DateTime(2014, 12, 15));
+            lookup.CurrentFilter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 15));
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels().Where(model =>
-                model.Id == "9I" && model.Count == 9 && model.CreationDate == new DateTime(2014, 12, 15));
+                model.Id == "9I" && model.Count == 9 && model.Date == new DateTime(2014, 12, 15));
 
             Assert.Equal(expected, actual);
         }
@@ -485,7 +496,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     [MvcLookup.IdKey] = "6I",
                     [MvcLookup.AcKey] = "6V",
                     ["Value"] = "6V",
-                    ["CreationDate"] = new DateTime(2014, 12, 16).ToShortDateString(),
+                    ["Date"] = new DateTime(2014, 12, 16).ToShortDateString(),
                     ["Count"] = "16"
                 },
                 new Dictionary<String, String>
@@ -493,7 +504,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     [MvcLookup.IdKey] = "7I",
                     [MvcLookup.AcKey] = "7V",
                     ["Value"] = "7V",
-                    ["CreationDate"] = new DateTime(2014, 12, 17).ToShortDateString(),
+                    ["Date"] = new DateTime(2014, 12, 17).ToShortDateString(),
                     ["Count"] = "17"
                 },
                 new Dictionary<String, String>
@@ -501,7 +512,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     [MvcLookup.IdKey] = "8I",
                     [MvcLookup.AcKey] = "8V",
                     ["Value"] = "8V",
-                    ["CreationDate"] = new DateTime(2014, 12, 18).ToShortDateString(),
+                    ["Date"] = new DateTime(2014, 12, 18).ToShortDateString(),
                     ["Count"] = "18"
                 }
             }.GetEnumerator();
@@ -617,7 +628,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AddColumns_Values()
         {
-            lookup.AddColumns(row, new TestModel { Value = "Test", CreationDate = DateTime.Now.Date, Count = 4 });
+            lookup.AddColumns(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
             Assert.Equal(new[] { "Test", DateTime.Now.Date.ToShortDateString(), "4" }, row.Values);
             Assert.Equal(lookup.Columns.Keys, row.Keys);
