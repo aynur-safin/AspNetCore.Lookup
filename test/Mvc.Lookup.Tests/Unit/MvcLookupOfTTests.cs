@@ -17,6 +17,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             row = new Dictionary<String, String>();
             lookup = new TestLookup<TestModel>();
+            lookup.Filter.Page = 0;
 
             for (Int32 i = 0; i < 20; i++)
                 lookup.Models.Add(new TestModel
