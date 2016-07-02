@@ -63,7 +63,7 @@
                     $.ajax({
                         url: that._formAutocompleteUrl(request.search),
                         success: function (data) {
-                            response($.map(data.Rows, function (item) {
+                            response($.map(data.rows, function (item) {
                                 return {
                                     label: item.LookupAcKey,
                                     value: item.LookupAcKey,
@@ -121,8 +121,8 @@
                             })
                             .val(that._limitTo(that.options.rows, 1, 99));
 
-                        lookup.find('.mvc-lookup-search-input').attr('placeholder', $.fn.mvclookup.lang.Search);
-                        lookup.find('.mvc-lookup-error-span').html($.fn.mvclookup.lang.Error);
+                        lookup.find('.mvc-lookup-search-input').attr('placeholder', $.fn.mvclookup.lang.search);
+                        lookup.find('.mvc-lookup-error-span').html($.fn.mvclookup.lang.error);
                         lookup.dialog('option', 'title', that.options.title);
                         lookup.find('.mvc-lookup-table-head').empty();
                         lookup.find('.mvc-lookup-table-body').empty();
@@ -150,19 +150,19 @@
 
         _formAutocompleteUrl: function (search) {
             return this.options.url +
-                '?Search=' + search +
-                '&SortOrder=Asc' +
-                '&Rows=20' +
-                '&Page=0' +
+                '?search=' + search +
+                '&sortOrder=Asc' +
+                '&rows=20' +
+                '&page=0' +
                 this._formFiltersQuery();
         },
         _formLookupUrl: function (search) {
             return this.options.url +
-                '?Search=' + search +
-                '&SortColumn=' + this.options.sortColumn +
-                '&SortOrder=' + this.options.sortOrder +
-                '&Rows=' + this.options.rows +
-                '&Page=' + this.options.page +
+                '?search=' + search +
+                '&sortColumn=' + this.options.sortColumn +
+                '&sortOrder=' + this.options.sortOrder +
+                '&rows=' + this.options.rows +
+                '&page=' + this.options.page +
                 this._formFiltersQuery();
         },
         _formFiltersQuery: function () {
@@ -196,11 +196,11 @@
             var id = $(that.options.hiddenElement).val();
             if (id) {
                 $.ajax({
-                    url: that.options.url + '?Id=' + id + '&Rows=1' + this._formFiltersQuery(),
+                    url: that.options.url + '?id=' + id + '&rows=1' + this._formFiltersQuery(),
                     cache: false,
                     success: function (data) {
-                        if (data.Rows.length > 0) {
-                            that._select(data.Rows[0], true);
+                        if (data.rows.length > 0) {
+                            that._select(data.rows[0], true);
                         }
                     }
                 });
@@ -259,9 +259,9 @@
                 url: that._formLookupUrl(search),
                 cache: false,
                 success: function (data) {
-                    that._updateHeader(lookup, data.Columns);
+                    that._updateHeader(lookup, data.columns);
                     that._updateData(lookup, data);
-                    that._updateNavbar(lookup, data.FilteredRows);
+                    that._updateNavbar(lookup, data.filteredRows);
 
                     clearTimeout(timeout);
                     lookup.find('.mvc-lookup-processing').fadeOut(300);
@@ -284,10 +284,10 @@
 
             for (var i = 0; i < columns.length; i++) {
                 var column = columns[i];
-                header += '<th class="' + (column.CssClass || '') + '" data-column="' + column.Key + '"><span class="mvc-lookup-header-title">' + (column.Header || '') + '</span>';
-                if (that.options.sortColumn == column.Key || (that.options.sortColumn == '' && i == 0)) {
+                header += '<th class="' + (column.cssClass || '') + '" data-column="' + column.key + '"><span class="mvc-lookup-header-title">' + (column.header || '') + '</span>';
+                if (that.options.sortColumn == column.key || (that.options.sortColumn == '' && i == 0)) {
                     header += '<span class="mvc-lookup-sort-arrow ' + (that.options.sortOrder == 'Asc' ? 'asc' : 'desc') + '"></span></th>';
-                    that.options.sortColumn = column.Key;
+                    that.options.sortColumn = column.key;
                 } else {
                     header += '<span class="mvc-lookup-sort-arrow"></span></th>';
                 }
@@ -311,21 +311,21 @@
             });
         },
         _updateData: function (lookup, data) {
-            if (data.Rows.length == 0) {
-                var columns = (data.Columns) ? data.Columns.length + 1 : 1;
-                lookup.find('.mvc-lookup-table-body').html('<tr><td colspan="' + columns + '" style="text-align: center">' + $.fn.mvclookup.lang.NoDataFound + '</td></tr>');
+            if (data.rows.length == 0) {
+                var columns = (data.columns) ? data.columns.length + 1 : 1;
+                lookup.find('.mvc-lookup-table-body').html('<tr><td colspan="' + columns + '" style="text-align: center">' + $.fn.mvclookup.lang.noData + '</td></tr>');
 
                 return;
             }
 
             var tableData = '';
-            for (var i = 0; i < data.Rows.length; i++) {
+            for (var i = 0; i < data.rows.length; i++) {
                 var tableRow = '<tr>';
-                var row = data.Rows[i];
+                var row = data.rows[i];
 
-                for (var j = 0; j < data.Columns.length; j++) {
-                    var column = data.Columns[j];
-                    tableRow += '<td class="' + (column.CssClass || '') + '">' + (row[column.Key] || '') + '</td>';
+                for (var j = 0; j < data.columns.length; j++) {
+                    var column = data.columns[j];
+                    tableRow += '<td class="' + (column.cssClass || '') + '">' + (row[column.key] || '') + '</td>';
                 }
 
                 tableRow += '<td class="mvc-lookup-select-cell"><div class="mvc-lookup-select-container"><i></i></div></td></tr>';
@@ -335,7 +335,7 @@
             lookup.find('.mvc-lookup-table-body').html(tableData);
             var selectRows = lookup.find('.mvc-lookup-table-body tr');
             for (var k = 0; k < selectRows.length; k++) {
-                this._bindSelect(lookup, selectRows[k], data.Rows[k]);
+                this._bindSelect(lookup, selectRows[k], data.rows[k]);
             }
         },
         _updateNavbar: function (lookup, filteredRows) {
@@ -410,9 +410,9 @@
     });
 
     $.fn.mvclookup.lang = {
-        Error: 'Error while retrieving records',
-        NoDataFound: 'No data found',
-        Search: 'Search...'
+        error: 'Error while retrieving records',
+        noData: 'No data found',
+        search: 'Search...'
     };
 
     var lookup = $('#MvcLookup');
