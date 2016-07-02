@@ -16,16 +16,12 @@ namespace NonFactors.Mvc.Lookup
         public LookupColumns Columns { get; set; }
         public IList<String> AdditionalFilters { get; set; }
 
-        public UInt32 DefaultRows { get; set; }
-        public String DefaultSortColumn { get; set; }
-        public LookupSortOrder DefaultSortOrder { get; set; }
-
         protected MvcLookup()
         {
             AdditionalFilters = new List<String>();
             Columns = new LookupColumns();
             Filter = new LookupFilter();
-            DefaultRows = 20;
+            Filter.Rows = 20;
         }
 
         public abstract LookupData GetData();

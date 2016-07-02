@@ -9,16 +9,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
 
         public TestLookup()
         {
-            DefaultRows = 7;
-            Filter.Rows = 10;
+            Filter.Rows = 7;
             Models = new List<T>();
+            Filter.SortColumn = "Id";
             Filter.Search = "Look up";
             Title = "Test lookup title";
-            DefaultSortColumn = "SortCol";
             Url = "http://localhost/Test";
             AdditionalFilters.Add("Test1");
             AdditionalFilters.Add("Test2");
-            DefaultSortOrder = LookupSortOrder.Asc;
         }
 
         public override IQueryable<T> GetModels()

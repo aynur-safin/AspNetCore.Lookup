@@ -1,5 +1,4 @@
 ﻿using NSubstitute;
-using System;
 using Xunit;
 
 namespace NonFactors.Mvc.Lookup.Tests.Unit
@@ -38,9 +37,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             MvcLookup actual = Substitute.For<MvcLookup>();
 
-            Assert.Equal<UInt32>(20, actual.DefaultRows);
             Assert.Empty(actual.AdditionalFilters);
-            Assert.NotNull(actual.Filter);
+            Assert.Equal(20, actual.Filter.Rows);
             Assert.Empty(actual.Columns);
         }
 

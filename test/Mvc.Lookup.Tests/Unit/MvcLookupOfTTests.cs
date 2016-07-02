@@ -18,9 +18,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             row = new Dictionary<String, String>();
             lookup = new TestLookup<TestModel>();
 
-            lookup.DefaultSortColumn = null;
-            lookup.Filter.Search = null;
-
             for (Int32 i = 0; i < 20; i++)
                 lookup.Models.Add(new TestModel
                 {
@@ -392,21 +389,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void Sort_ByDefaultSortColumn()
-        {
-            lookup.DefaultSortColumn = "Count";
-            lookup.Filter.SortColumn = null;
-
-            IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Count);
-            IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void Sort_ByFirstColumn()
         {
-            lookup.DefaultSortColumn = null;
             lookup.Filter.SortColumn = null;
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Value);
@@ -416,22 +400,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Theory]
-        [InlineData("", "")]
-        [InlineData("", " ")]
-        [InlineData("", null)]
-
-        [InlineData(" ", "")]
-        [InlineData(" ", " ")]
-        [InlineData(" ", null)]
-        
-        [InlineData(null, "")]
-        [InlineData(null, " ")]
-        [InlineData(null, null)]
-        public void Sort_NoSortColumns(String defaultColumn, String sortColumn)
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void Sort_NoSortColumns(String column)
         {
             lookup.Columns.Clear();
-            lookup.DefaultSortColumn = null;
-            lookup.Filter.SortColumn = null;
+            lookup.Filter.SortColumn = column;
             
             IQueryable<TestModel> expected = lookup.GetModels();
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());

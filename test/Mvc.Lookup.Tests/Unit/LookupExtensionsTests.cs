@@ -28,15 +28,15 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             html = MockHtmlHelper();
             lookup = new TestLookup<TestModel>();
 
-            lookup.DefaultRows = 11;
+            lookup.Filter.Rows = 11;
             lookup.AdditionalFilters.Clear();
             lookup.Filter.Search = "Terminal";
-            lookup.DefaultSortColumn = "First";
+            lookup.Filter.SortColumn = "First";
             lookup.Title = "Dialog lookup title";
             lookup.AdditionalFilters.Add("Add1");
             lookup.AdditionalFilters.Add("Add2");
             lookup.Url = "http://localhost/Lookup";
-            lookup.DefaultSortOrder = LookupSortOrder.Desc;
+            lookup.Filter.SortOrder = LookupSortOrder.Desc;
         }
 
         #region AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
@@ -75,7 +75,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<input attribute=\"attr\" class=\"classes form-control mvc-lookup-input\" " +
                     "data-mvc-lookup-filters=\"Test1,Test2\" data-mvc-lookup-for=\"ParentId\" data-mvc-lookup-page=\"0\" " +
-                    "data-mvc-lookup-rows=\"7\" data-mvc-lookup-search=\"\" data-mvc-lookup-sort-column=\"SortCol\" " +
+                    "data-mvc-lookup-rows=\"7\" data-mvc-lookup-search=\"\" data-mvc-lookup-sort-column=\"Id\" " +
                     "data-mvc-lookup-sort-order=\"Asc\" data-mvc-lookup-title=\"Test lookup title\" data-mvc-lookup-url=\"http://localhost/Test\" " +
                     "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
                 "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />";
@@ -146,7 +146,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 "<div class=\"input-group\">" +
                     "<input attribute=\"attr\" class=\"classes form-control mvc-lookup-input\" " +
                     "data-mvc-lookup-filters=\"Test1,Test2\" data-mvc-lookup-for=\"ParentId\" data-mvc-lookup-page=\"0\" " +
-                    "data-mvc-lookup-rows=\"7\" data-mvc-lookup-search=\"\" data-mvc-lookup-sort-column=\"SortCol\" " +
+                    "data-mvc-lookup-rows=\"7\" data-mvc-lookup-search=\"\" data-mvc-lookup-sort-column=\"Id\" " +
                     "data-mvc-lookup-sort-order=\"Asc\" data-mvc-lookup-title=\"Test lookup title\" data-mvc-lookup-url=\"http://localhost/Test\" " +
                     "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
                     "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
