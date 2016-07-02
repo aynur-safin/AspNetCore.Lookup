@@ -38,9 +38,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             MvcLookup actual = Substitute.For<MvcLookup>();
 
-            Assert.Equal<UInt32>(20, actual.DefaultRecordsPerPage);
+            Assert.Equal<UInt32>(20, actual.DefaultRows);
             Assert.Empty(actual.AdditionalFilters);
-            Assert.NotNull(actual.CurrentFilter);
+            Assert.NotNull(actual.Filter);
             Assert.Empty(actual.Columns);
         }
 

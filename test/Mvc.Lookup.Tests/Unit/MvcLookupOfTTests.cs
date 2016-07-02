@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup = new TestLookup<TestModel>();
 
             lookup.DefaultSortColumn = null;
-            lookup.CurrentFilter.SearchTerm = null;
+            lookup.Filter.Search = null;
 
             for (Int32 i = 0; i < 20; i++)
                 lookup.Models.Add(new TestModel
@@ -148,9 +148,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_FiltersById()
         {
-            lookup.CurrentFilter.Id = "9I";
-            lookup.CurrentFilter.SearchTerm = "Term";
-            lookup.CurrentFilter.AdditionalFilters.Add("Value", "5V");
+            lookup.Filter.Id = "9I";
+            lookup.Filter.Search = "Term";
+            lookup.Filter.AdditionalFilters.Add("Value", "5V");
 
             LookupData actual = lookup.GetData();
 
@@ -161,15 +161,15 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("19", actual.Rows[0]["Count"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
-            Assert.Equal(1, actual.FilteredRecords);
+            Assert.Equal(1, actual.FilteredRows);
             Assert.Single(actual.Rows);
         }
 
         [Fact]
         public void GetData_FiltersByAdditionalFilters()
         {
-            lookup.CurrentFilter.SearchTerm = "6V";
-            lookup.CurrentFilter.AdditionalFilters.Add("Count", 16);
+            lookup.Filter.Search = "6V";
+            lookup.Filter.AdditionalFilters.Add("Count", 16);
 
             lookup.GetData();
 
@@ -182,14 +182,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("16", actual.Rows[0]["Count"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
-            Assert.Equal(1, actual.FilteredRecords);
+            Assert.Equal(1, actual.FilteredRows);
             Assert.Single(actual.Rows);
         }
 
         [Fact]
-        public void GetData_FiltersBySearchTerm()
+        public void GetData_FiltersBySearch()
         {
-            lookup.CurrentFilter.SearchTerm = "5V";
+            lookup.Filter.Search = "5V";
 
             lookup.GetData();
 
@@ -208,16 +208,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("15", actual.Rows[1]["Count"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
-            Assert.Equal(2, actual.FilteredRecords);
+            Assert.Equal(2, actual.FilteredRows);
             Assert.Equal(2, actual.Rows.Count);
         }
 
         [Fact]
         public void GetData_Sorts()
         {
-            lookup.CurrentFilter.SortOrder = LookupSortOrder.Asc;
-            lookup.CurrentFilter.SortColumn = "Count";
-            lookup.CurrentFilter.SearchTerm = "5V";
+            lookup.Filter.SortOrder = LookupSortOrder.Asc;
+            lookup.Filter.SortColumn = "Count";
+            lookup.Filter.Search = "5V";
 
             lookup.GetData();
 
@@ -236,7 +236,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("25", actual.Rows[1]["Count"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
-            Assert.Equal(2, actual.FilteredRecords);
+            Assert.Equal(2, actual.FilteredRows);
             Assert.Equal(2, actual.Rows.Count);
         }
 
@@ -260,9 +260,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterById_String()
         {
-            lookup.CurrentFilter.Id = "9I";
+            lookup.Filter.Id = "9I";
 
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id == lookup.CurrentFilter.Id);
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id == lookup.Filter.Id);
             IQueryable<TestModel> actual = lookup.FilterById(lookup.GetModels());
 
             Assert.Equal(expected, actual);
@@ -274,7 +274,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             TestLookup<NumericModel> lookup = new TestLookup<NumericModel>();
             for (Int32 i = 0; i < 20; i++) lookup.Models.Add(new NumericModel { Id = i });
 
-            lookup.CurrentFilter.Id = "9.0";
+            lookup.Filter.Id = "9.0";
 
             IQueryable<NumericModel> expected = lookup.GetModels().Where(model => model.Id == 9);
             IQueryable<NumericModel> actual = lookup.FilterById(lookup.GetModels());
@@ -300,7 +300,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByAdditionalFilters_SkipsNullValues()
         {
-            lookup.CurrentFilter.AdditionalFilters.Add("Id", null);
+            lookup.Filter.AdditionalFilters.Add("Id", null);
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -311,9 +311,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByAdditionalFilters_Filters()
         {
-            lookup.CurrentFilter.AdditionalFilters.Add("Id", "9I");
-            lookup.CurrentFilter.AdditionalFilters.Add("Count", 9);
-            lookup.CurrentFilter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 15));
+            lookup.Filter.AdditionalFilters.Add("Id", "9I");
+            lookup.Filter.AdditionalFilters.Add("Count", 9);
+            lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 15));
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels().Where(model =>
@@ -324,53 +324,53 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region FilterBySearchTerm(IQueryable<T> models)
+        #region FilterBySearch(IQueryable<T> models)
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void FilterBySearchTerm_SkipsEmptyTerm(String term)
+        public void FilterBySearch_SkipsEmptySearch(String search)
         {
-            lookup.CurrentFilter.SearchTerm = term;
+            lookup.Filter.Search = search;
 
-            IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterBySearchTerm_DoesNotFilterNotExistingProperties()
+        public void FilterBySearch_DoesNotFilterNotExistingProperties()
         {
             lookup.Columns.Clear();
-            lookup.CurrentFilter.SearchTerm = "1";
+            lookup.Filter.Search = "1";
             lookup.Columns.Add(new LookupColumn("Test", "Test"));
 
-            IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterBySearchTerm_UsesContainsSearch()
+        public void FilterBySearch_UsesContainsSearch()
         {
-            lookup.CurrentFilter.SearchTerm = "1";
+            lookup.Filter.Search = "1";
 
             IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id.Contains("1"));
-            IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterBySearchTerm_DoesNotFilterNonStringProperties()
+        public void FilterBySearch_DoesNotFilterNonStringProperties()
         {
             lookup.Columns.Clear();
-            lookup.CurrentFilter.SearchTerm = "1";
+            lookup.Filter.Search = "1";
             lookup.Columns.Add(new LookupColumn("Count", null));
 
-            IQueryable<TestModel> actual = lookup.FilterBySearchTerm(lookup.GetModels());
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
 
             Assert.Equal(expected, actual);
@@ -383,7 +383,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Sort_ByColumn()
         {
-            lookup.CurrentFilter.SortColumn = "Count";
+            lookup.Filter.SortColumn = "Count";
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Count);
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -395,7 +395,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void Sort_ByDefaultSortColumn()
         {
             lookup.DefaultSortColumn = "Count";
-            lookup.CurrentFilter.SortColumn = null;
+            lookup.Filter.SortColumn = null;
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Count);
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -407,7 +407,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void Sort_ByFirstColumn()
         {
             lookup.DefaultSortColumn = null;
-            lookup.CurrentFilter.SortColumn = null;
+            lookup.Filter.SortColumn = null;
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Value);
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -431,7 +431,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.DefaultSortColumn = null;
-            lookup.CurrentFilter.SortColumn = null;
+            lookup.Filter.SortColumn = null;
             
             IQueryable<TestModel> expected = lookup.GetModels();
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -444,9 +444,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region FormLookupData(IQueryable<T> models)
 
         [Fact]
-        public void FormLookupData_FilteredRecords()
+        public void FormLookupData_FilteredRows()
         {
-            Int32 actual = lookup.FormLookupData(lookup.GetModels()).FilteredRecords;
+            Int32 actual = lookup.FormLookupData(lookup.GetModels()).FilteredRows;
             Int32 expected = lookup.GetModels().Count();
 
             Assert.Equal(expected, actual);
@@ -464,8 +464,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_Rows()
         {
-            lookup.CurrentFilter.Page = 2;
-            lookup.CurrentFilter.RecordsPerPage = 3;
+            lookup.Filter.Page = 2;
+            lookup.Filter.Rows = 3;
 
             IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels()).Rows.GetEnumerator();
             IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>

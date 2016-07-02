@@ -44,22 +44,22 @@ namespace NonFactors.Mvc.Lookup
         public override LookupData GetData()
         {
             IQueryable<T> models = GetModels();
-            models = Filter(models);
+            models = FilterByRequest(models);
             models = Sort(models);
 
             return FormLookupData(models);
         }
         public abstract IQueryable<T> GetModels();
 
-        private IQueryable<T> Filter(IQueryable<T> models)
+        private IQueryable<T> FilterByRequest(IQueryable<T> models)
         {
-            if (CurrentFilter.Id != null)
+            if (Filter.Id != null)
                 return FilterById(models);
 
-            if (CurrentFilter.AdditionalFilters.Count > 0)
+            if (Filter.AdditionalFilters.Count > 0)
                 models = FilterByAdditionalFilters(models);
 
-            return FilterBySearchTerm(models);
+            return FilterBySearch(models);
         }
         public virtual IQueryable<T> FilterById(IQueryable<T> models)
         {
@@ -68,24 +68,17 @@ namespace NonFactors.Mvc.Lookup
                 throw new LookupException($"'{typeof(T).Name}' type does not have property named 'Id', required for automatic id filtering.");
 
             if (idProperty.PropertyType == typeof(String))
-                return models.Where("Id = @0", CurrentFilter.Id);
+                return models.Where("Id = @0", Filter.Id);
 
             Decimal id;
-            if (IsNumeric(idProperty.PropertyType) && Decimal.TryParse(CurrentFilter.Id, out id))
+            if (IsNumeric(idProperty.PropertyType) && Decimal.TryParse(Filter.Id, out id))
                 return models.Where("Id = @0", id);
 
             throw new LookupException($"'{typeof(T).Name}.Id' property type has to be a string or a number.");
         }
-        public virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
+        public virtual IQueryable<T> FilterBySearch(IQueryable<T> models)
         {
-            foreach (KeyValuePair<String, Object> filter in CurrentFilter.AdditionalFilters.Where(item => item.Value != null))
-                models = models.Where($"({filter.Key} != null && {filter.Key} == @0)", filter.Value);
-
-            return models;
-        }
-        public virtual IQueryable<T> FilterBySearchTerm(IQueryable<T> models)
-        {
-            if (String.IsNullOrEmpty(CurrentFilter.SearchTerm))
+            if (String.IsNullOrEmpty(Filter.Search))
                 return models;
 
             List<String> queries = new List<String>();
@@ -95,27 +88,34 @@ namespace NonFactors.Mvc.Lookup
 
             if (queries.Count == 0) return models;
 
-            return models.Where(String.Join(" || ", queries), CurrentFilter.SearchTerm.ToLower());
+            return models.Where(String.Join(" || ", queries), Filter.Search.ToLower());
+        }
+        public virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
+        {
+            foreach (KeyValuePair<String, Object> filter in Filter.AdditionalFilters.Where((KeyValuePair<String, Object> item) => item.Value != null))
+                models = models.Where($"({filter.Key} != null && {filter.Key} == @0)", filter.Value);
+
+            return models;
         }
 
         public virtual IQueryable<T> Sort(IQueryable<T> models)
         {
-            String column = CurrentFilter.SortColumn ?? DefaultSortColumn ?? Columns.Keys.FirstOrDefault();
+            String column = Filter.SortColumn ?? DefaultSortColumn ?? Columns.Keys.FirstOrDefault();
             if (String.IsNullOrWhiteSpace(column))
                 return models;
 
-            return models.OrderBy(column + " " + CurrentFilter.SortOrder);
+            return models.OrderBy(column + " " + Filter.SortOrder);
         }
 
         public virtual LookupData FormLookupData(IQueryable<T> models)
         {
             LookupData data = new LookupData();
-            data.FilteredRecords = models.Count();
+            data.FilteredRows = models.Count();
             data.Columns = Columns;
 
             IQueryable<T> pagedModels = models
-                .Skip(CurrentFilter.Page * CurrentFilter.RecordsPerPage)
-                .Take(CurrentFilter.RecordsPerPage);
+                .Skip(Filter.Page * Filter.Rows)
+                .Take(Filter.Rows);
 
             foreach (T model in pagedModels)
             {

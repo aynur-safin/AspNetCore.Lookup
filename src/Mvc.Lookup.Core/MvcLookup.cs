@@ -10,22 +10,22 @@ namespace NonFactors.Mvc.Lookup
         public const String AcKey = "LookupAcKey";
 
         public String Url { get; set; }
-        public String DialogTitle { get; set; }
+        public String Title { get; set; }
 
+        public LookupFilter Filter { get; set; }
         public LookupColumns Columns { get; set; }
-        public LookupFilter CurrentFilter { get; set; }
         public IList<String> AdditionalFilters { get; set; }
 
+        public UInt32 DefaultRows { get; set; }
         public String DefaultSortColumn { get; set; }
-        public UInt32 DefaultRecordsPerPage { get; set; }
         public LookupSortOrder DefaultSortOrder { get; set; }
 
         protected MvcLookup()
         {
             AdditionalFilters = new List<String>();
-            CurrentFilter = new LookupFilter();
             Columns = new LookupColumns();
-            DefaultRecordsPerPage = 20;
+            Filter = new LookupFilter();
+            DefaultRows = 20;
         }
 
         public abstract LookupData GetData();
