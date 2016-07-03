@@ -23,7 +23,11 @@ namespace NonFactors.Mvc.Lookup
         protected MvcLookup()
         {
             foreach (PropertyInfo property in AttributedProperties)
-                Columns.Add(GetColumnKey(property), GetColumnHeader(property), GetColumnCssClass(property));
+                Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
+                {
+                    Hidden = property.GetCustomAttribute<LookupColumnAttribute>(false).Hidden,
+                    CssClass = GetColumnCssClass(property)
+                });
         }
         public virtual String GetColumnKey(PropertyInfo property)
         {
@@ -82,7 +86,7 @@ namespace NonFactors.Mvc.Lookup
                 return models;
 
             List<String> queries = new List<String>();
-            foreach (String property in Columns.Keys)
+            foreach (String property in Columns.Where(column => !column.Hidden).Select(column => column.Key))
                 if (typeof(T).GetProperty(property)?.PropertyType == typeof(String))
                     queries.Add($"({property} != null && {property}.ToLower().Contains(@0))");
 
@@ -100,7 +104,7 @@ namespace NonFactors.Mvc.Lookup
 
         public virtual IQueryable<T> Sort(IQueryable<T> models)
         {
-            String column = Filter.SortColumn ?? Columns.Keys.FirstOrDefault();
+            String column = Filter.SortColumn ?? Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault();
 
             if (String.IsNullOrWhiteSpace(column))
                 return models;
@@ -137,7 +141,7 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual void AddAutocomplete(Dictionary<String, String> row, T model)
         {
-            row.Add(AcKey, GetValue(model, Columns.Keys.FirstOrDefault() ?? ""));
+            row.Add(AcKey, GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? ""));
         }
         public virtual void AddColumns(Dictionary<String, String> row, T model)
         {

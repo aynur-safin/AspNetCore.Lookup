@@ -284,6 +284,10 @@
 
             for (var i = 0; i < columns.length; i++) {
                 var column = columns[i];
+                if (column.hidden) {
+                    continue;
+                }
+
                 header += '<th class="' + (column.cssClass || '') + '" data-column="' + column.key + '"><span class="mvc-lookup-header-title">' + (column.header || '') + '</span>';
                 if (that.options.sortColumn == column.key || (that.options.sortColumn == '' && i == 0)) {
                     header += '<span class="mvc-lookup-sort-arrow ' + (that.options.sortOrder == 'Asc' ? 'asc' : 'desc') + '"></span></th>';
@@ -325,6 +329,10 @@
 
                 for (var j = 0; j < data.columns.length; j++) {
                     var column = data.columns[j];
+                    if (column.hidden) {
+                        continue;
+                    }
+
                     tableRow += '<td class="' + (column.cssClass || '') + '">' + (row[column.key] || '') + '</td>';
                 }
 

@@ -5,6 +5,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
 {
     public class TestModel
     {
+        [LookupColumn(Hidden = true)]
         public String Id { get; set; }
 
         [LookupColumn(8)]
