@@ -13,13 +13,13 @@ namespace NonFactors.Mvc.Lookup
         public String Title { get; set; }
 
         public LookupFilter Filter { get; set; }
-        public LookupColumns Columns { get; set; }
+        public IList<LookupColumn> Columns { get; set; }
         public IList<String> AdditionalFilters { get; set; }
 
         protected MvcLookup()
         {
             AdditionalFilters = new List<String>();
-            Columns = new LookupColumns();
+            Columns = new List<LookupColumn>();
             Filter = new LookupFilter();
             Filter.Rows = 20;
         }

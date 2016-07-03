@@ -145,8 +145,8 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual void AddColumns(Dictionary<String, String> row, T model)
         {
-            foreach (String column in Columns.Keys)
-                row[column] = GetValue(model, column);
+            foreach (LookupColumn column in Columns)
+                row[column.Key] = GetValue(model, column.Key);
         }
         public virtual void AddAdditionalData(Dictionary<String, String> row, T model)
         {

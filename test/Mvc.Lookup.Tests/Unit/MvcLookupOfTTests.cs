@@ -50,7 +50,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void MvcLookup_AddsColumns()
         {
-            LookupColumns columns = new LookupColumns();
+            List<LookupColumn> columns = new List<LookupColumn>();
             columns.Add(new LookupColumn("Id", null) { Hidden = true });
             columns.Add(new LookupColumn("Value", null) { Hidden = false });
             columns.Add(new LookupColumn("Date", "Date") { Hidden = false });
@@ -433,8 +433,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_Columns()
         {
-            LookupColumns actual = lookup.FormLookupData(lookup.GetModels()).Columns;
-            LookupColumns expected = lookup.Columns;
+            IList<LookupColumn> actual = lookup.FormLookupData(lookup.GetModels()).Columns;
+            IList<LookupColumn> expected = lookup.Columns;
 
             Assert.Equal(expected, actual);
         }
@@ -553,7 +553,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.AddColumns(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
             
             Assert.Equal(new String[] { null }, row.Values);
-            Assert.Equal(lookup.Columns.Keys, row.Keys);
+            Assert.Equal(new[] { "Test" }, row.Keys);
         }
 
         [Fact]
@@ -562,7 +562,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.AddColumns(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
             Assert.Equal(new[] { null, "Test", DateTime.Now.Date.ToShortDateString(), "4" }, row.Values);
-            Assert.Equal(lookup.Columns.Keys, row.Keys);
+            Assert.Equal(lookup.Columns.Select(column => column.Key), row.Keys);
         }
 
         #endregion
