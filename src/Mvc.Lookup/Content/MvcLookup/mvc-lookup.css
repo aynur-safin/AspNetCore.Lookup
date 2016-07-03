@@ -207,6 +207,6 @@
         cursor: pointer;
     }
 
-        .mvc-lookup-pager .pagination > li > a {
+        .mvc-lookup-pager .pagination > li > span {
             padding: 2px 8px;
         }
