@@ -127,8 +127,7 @@ namespace NonFactors.Mvc.Lookup
                 Dictionary<String, String> row = new Dictionary<String, String>();
                 AddId(row, model);
                 AddAutocomplete(row, model);
-                AddColumns(row, model);
-                AddAdditionalData(row, model);
+                AddData(row, model);
 
                 data.Rows.Add(row);
             }
@@ -143,13 +142,10 @@ namespace NonFactors.Mvc.Lookup
         {
             row.Add(AcKey, GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? ""));
         }
-        public virtual void AddColumns(Dictionary<String, String> row, T model)
+        public virtual void AddData(Dictionary<String, String> row, T model)
         {
             foreach (LookupColumn column in Columns)
                 row[column.Key] = GetValue(model, column.Key);
-        }
-        public virtual void AddAdditionalData(Dictionary<String, String> row, T model)
-        {
         }
 
         private String GetValue(T model, String propertyName)

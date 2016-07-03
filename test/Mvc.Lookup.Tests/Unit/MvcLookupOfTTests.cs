@@ -542,39 +542,27 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region AddColumns(Dictionary<String, String> row, T model)
+        #region AddData(Dictionary<String, String> row, T model)
 
         [Fact]
-        public void AddColumns_EmptyValues()
+        public void AddData_EmptyValues()
         {
             lookup.Columns.Clear();
             lookup.Columns.Add(new LookupColumn("Test", null));
 
-            lookup.AddColumns(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            lookup.AddData(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
             
             Assert.Equal(new String[] { null }, row.Values);
             Assert.Equal(new[] { "Test" }, row.Keys);
         }
 
         [Fact]
-        public void AddColumns_Values()
+        public void AddData_Values()
         {
-            lookup.AddColumns(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            lookup.AddData(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
             Assert.Equal(new[] { null, "Test", DateTime.Now.Date.ToShortDateString(), "4" }, row.Values);
             Assert.Equal(lookup.Columns.Select(column => column.Key), row.Keys);
-        }
-
-        #endregion
-
-        #region AddAdditionalData(Dictionary<String, String> row, T model)
-
-        [Fact]
-        public void AddAdditionalData_DoesNothing()
-        {
-            lookup.AddAdditionalData(row, new TestModel());
-
-            Assert.Empty(row.Keys);
         }
 
         #endregion
