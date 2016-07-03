@@ -61,7 +61,7 @@
             this.element.autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: that._formAutocompleteUrl(request.search),
+                        url: that._formAutocompleteUrl(request.term),
                         success: function (data) {
                             response($.map(data.rows, function (item) {
                                 return {
