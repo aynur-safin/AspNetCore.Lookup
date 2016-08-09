@@ -120,7 +120,7 @@ namespace NonFactors.Mvc.Lookup
 
             IQueryable<T> pagedModels = models
                 .Skip(Filter.Page * Filter.Rows)
-                .Take(Filter.Rows);
+                .Take(Math.Min(Filter.Rows, 99));
 
             foreach (T model in pagedModels)
             {
