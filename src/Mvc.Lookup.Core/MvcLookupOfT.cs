@@ -96,7 +96,7 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
-            foreach (KeyValuePair<String, Object> filter in Filter.AdditionalFilters.Where((KeyValuePair<String, Object> item) => item.Value != null))
+            foreach (KeyValuePair<String, Object> filter in Filter.AdditionalFilters.Where(item => item.Value != null))
                 models = models.Where($"({filter.Key} != null && {filter.Key} == @0)", filter.Value);
 
             return models;

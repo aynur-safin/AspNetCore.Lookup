@@ -220,11 +220,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             return htmlHelper;
         }
 
-        private String ToString(IHtmlContent html)
+        private String ToString(IHtmlContent content)
         {
             using (StringWriter writer = new StringWriter())
             {
-                html.WriteTo(writer, HtmlEncoder.Default);
+                content.WriteTo(writer, HtmlEncoder.Default);
 
                 return writer.ToString();
             }
