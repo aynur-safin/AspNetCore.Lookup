@@ -7,12 +7,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
     {
         #region LookupAttribute(Type type)
 
-        [Fact]
-        public void LookupAttribute_NotLookup_Throws()
+        [Theory]
+        [InlineData(null)]
+        [InlineData(typeof(Object))]
+        public void LookupAttribute_NotLookup_Throws(Type type)
         {
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => new LookupAttribute(typeof(Object)));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => new LookupAttribute(type));
 
-            String expected = $"'{typeof (Object).Name}' type does not implement '{typeof (MvcLookup).Name}'.";
+            String expected = $"'{type?.Name}' type does not implement '{typeof (MvcLookup).Name}'.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
