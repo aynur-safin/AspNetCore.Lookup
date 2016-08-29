@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 1.0.0
+ * Mvc.Lookup 1.1.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -17,9 +17,9 @@
     width: 100%;
 }
 
-.mvc-lookup-dialog .ui-dialog-title {
-    min-height: 21px;
-}
+    .mvc-lookup-dialog .ui-dialog-title {
+        min-height: 21px;
+    }
 
 .mvc-lookup {
     -webkit-box-sizing: content-box;
@@ -47,24 +47,32 @@
 }
 
     .mvc-lookup-search-group .mvc-lookup-search-box {
-        margin-right: -55px;
+        margin-right: -65px;
         height: 100%;
         width: 100%;
         float: left;
     }
 
     .mvc-lookup-search-group .mvc-lookup-search-box-content {
-        margin-right: 55px;
+        margin-right: 65px;
         height: 100%;
     }
 
     .mvc-lookup-search-group .mvc-lookup-spinner-box {
         height: 100%;
         float: right;
-        width: 55px;
+        width: 65px;
     }
 
         .mvc-lookup-search-group .mvc-lookup-spinner-box > span {
+            border-bottom-color: #CCCCCC;
+            border-bottom-left-radius: 0;
+            border-top-color: #CCCCCC;
+            border-top-left-radius: 0;
+            border-right: medium none;
+            border-left: 0 none;
+            padding-bottom: 0;
+            padding-top: 0;
             height: 100%;
         }
 
@@ -78,7 +86,7 @@
 
     .mvc-lookup-search-group .mvc-lookup-items-per-page {
         background-color: #EEEEEE;
-        padding-right: 16px;
+        padding-right: 1.6em;
         text-align: center;
         color: #555555;
         display: block;
@@ -87,28 +95,20 @@
         margin: 0;
     }
 
-    .mvc-lookup-search-group span {
-        border-bottom-color: #CCCCCC;
-        border-bottom-left-radius: 0;
-        border-top-color: #CCCCCC;
-        border-top-left-radius: 0;
-        border-right: medium none;
-        border-left: 0 none;
-        padding-bottom: 0;
-        padding-top: 0;
-    }
-
-        .mvc-lookup-search-group span a:first-of-type {
+        .mvc-lookup-search-group span .ui-spinner-button {
             border-right: 1px solid #CCCCCC;
             border-left: 1px solid #CCCCCC;
             cursor: pointer;
+            width: 1.6em;
         }
 
-        .mvc-lookup-search-group span a:last-of-type {
-            border-right: 1px solid #CCCCCC;
-            border-left: 1px solid #CCCCCC;
+        .mvc-lookup-search-group span .ui-spinner-down {
             border-top: 1px solid #CCCCCC;
-            cursor: pointer;
+        }
+
+        .mvc-lookup-search-group span .ui-icon {
+            margin-left: -8px;
+            left: 50%;
         }
 
 .mvc-lookup-processing {

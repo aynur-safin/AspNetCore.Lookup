@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 1.0.0
+ * Mvc.Lookup 1.1.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -27,10 +27,11 @@
             var o = this.options;
 
             o.hiddenElement = $('#' + e.attr('data-mvc-lookup-for'))[0];
-            o.filters = e.attr('data-mvc-lookup-filters').split(',');
             o.sortColumn = e.attr('data-mvc-lookup-sort-column');
             o.sortOrder = e.attr('data-mvc-lookup-sort-order');
             o.page = parseInt(e.attr('data-mvc-lookup-page'));
+            var filters = e.attr('data-mvc-lookup-filters');
+            o.filters = filters ? filters.split(',') : [];
             o.search = e.attr('data-mvc-lookup-search');
             o.title = e.attr('data-mvc-lookup-title');
             o.rows = e.attr('data-mvc-lookup-rows');
