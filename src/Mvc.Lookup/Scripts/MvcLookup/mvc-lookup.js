@@ -98,7 +98,7 @@
                     click: function () {
                         var timeout;
                         lookup
-                            .find('.mvc-lookup-search-input')
+                            .find('.mvc-lookup-search')
                             .off('keyup.mvclookup')
                             .on('keyup.mvclookup', function () {
                                 var input = this;
@@ -111,7 +111,7 @@
                             })
                             .val(that.options.search);
                         lookup
-                            .find('.mvc-lookup-items-per-page')
+                            .find('.mvc-lookup-rows input')
                             .spinner({
                                 change: function () {
                                     this.value = that._limitTo(this.value, 1, 99);
@@ -122,11 +122,11 @@
                             })
                             .val(that._limitTo(that.options.rows, 1, 99));
 
-                        lookup.find('.mvc-lookup-search-input').attr('placeholder', $.fn.mvclookup.lang.search);
-                        lookup.find('.mvc-lookup-error-span').html($.fn.mvclookup.lang.error);
+                        lookup.find('.mvc-lookup-search').attr('placeholder', $.fn.mvclookup.lang.search);
+                        lookup.find('.mvc-lookup-error').html($.fn.mvclookup.lang.error);
                         lookup.dialog('option', 'title', that.options.title);
-                        lookup.find('.mvc-lookup-table-head').empty();
-                        lookup.find('.mvc-lookup-table-body').empty();
+                        lookup.find('thead').empty();
+                        lookup.find('tbody').empty();
                         that._update(lookup);
 
                         setTimeout(function () {
@@ -247,13 +247,13 @@
 
         _update: function (lookup) {
             var that = this;
-            var search = lookup.find('.mvc-lookup-search-input').val();
-            lookup.find('.mvc-lookup-error-container').fadeOut(300);
+            var search = lookup.find('.mvc-lookup-search').val();
+            lookup.find('.mvc-lookup-error').fadeOut(300);
 
             var timeout = setTimeout(function () {
-                lookup.find('.mvc-lookup-processing').fadeIn(300);
-                lookup.find('.mvc-lookup-pager').fadeOut(300);
-                lookup.find('.mvc-lookup-data').fadeOut(300);
+                lookup.find('.mvc-lookup-loading').fadeIn(300);
+                lookup.find('.pagination').fadeOut(300);
+                lookup.find('table').fadeOut(300);
             }, 500);
 
             $.ajax({
@@ -265,17 +265,17 @@
                     that._updateNavbar(lookup, data.filteredRows);
 
                     clearTimeout(timeout);
-                    lookup.find('.mvc-lookup-processing').fadeOut(300);
-                    lookup.find('.mvc-lookup-error-container').hide();
-                    lookup.find('.mvc-lookup-pager').fadeIn(300);
-                    lookup.find('.mvc-lookup-data').fadeIn(300);
+                    lookup.find('.mvc-lookup-error').hide();
+                    lookup.find('.mvc-lookup-loading').fadeOut(300);
+                    lookup.find('.pagination').fadeIn(300);
+                    lookup.find('table').fadeIn(300);
                 },
                 error: function () {
                     clearTimeout(timeout);
-                    lookup.find('.mvc-lookup-error-container').fadeIn(300);
-                    lookup.find('.mvc-lookup-processing').hide();
-                    lookup.find('.mvc-lookup-pager').hide();
-                    lookup.find('.mvc-lookup-data').hide();
+                    lookup.find('.mvc-lookup-error').fadeIn(300);
+                    lookup.find('.mvc-lookup-loading').hide();
+                    lookup.find('.pagination').hide();
+                    lookup.find('table').hide();
                 }
             });
         },
@@ -289,17 +289,17 @@
                     continue;
                 }
 
-                header += '<th class="' + (column.cssClass || '') + '" data-column="' + column.key + '"><span class="mvc-lookup-header-title">' + (column.header || '') + '</span>';
+                header += '<th class="' + (column.cssClass || '');
                 if (that.options.sortColumn == column.key || (that.options.sortColumn == '' && i == 0)) {
-                    header += '<span class="mvc-lookup-sort-arrow ' + (that.options.sortOrder == 'Asc' ? 'asc' : 'desc') + '"></span></th>';
+                    header += ' mvc-lookup-' + (that.options.sortOrder == 'Asc' ? 'asc' : 'desc');
                     that.options.sortColumn = column.key;
-                } else {
-                    header += '<span class="mvc-lookup-sort-arrow"></span></th>';
                 }
+
+                header += '" data-column="' + column.key + '">' + (column.header || '') + '</th>';
             }
 
-            lookup.find('.mvc-lookup-table-head').html('<tr>' + header + '<th class="mvc-lookup-select-header"></th></tr>');
-            lookup.find('.mvc-lookup-table-head th').click(function () {
+            lookup.find('thead').html('<tr>' + header + '<th></th></tr>');
+            lookup.find('th').click(function () {
                 var header = $(this);
                 if (!header.attr('data-column')) {
                     return false;
@@ -318,7 +318,7 @@
         _updateData: function (lookup, data) {
             if (data.rows.length == 0) {
                 var columns = (data.columns) ? data.columns.length + 1 : 1;
-                lookup.find('.mvc-lookup-table-body').html('<tr><td colspan="' + columns + '" style="text-align: center">' + $.fn.mvclookup.lang.noData + '</td></tr>');
+                lookup.find('tbody').html('<tr><td colspan="' + columns + '" style="text-align: center">' + $.fn.mvclookup.lang.noData + '</td></tr>');
 
                 return;
             }
@@ -334,28 +334,28 @@
                         continue;
                     }
 
-                    tableRow += '<td class="' + (column.cssClass || '') + '">' + (row[column.key] || '') + '</td>';
+                    tableRow += '<td' + (column.cssClass ? ' class="' + column.cssClass + '">' : '>') + (row[column.key] || '') + '</td>';
                 }
 
-                tableRow += '<td class="mvc-lookup-select-cell"><div class="mvc-lookup-select-container"><i></i></div></td></tr>';
+                tableRow += '<td></td></tr>';
                 tableData += tableRow;
             }
 
-            lookup.find('.mvc-lookup-table-body').html(tableData);
-            var selectRows = lookup.find('.mvc-lookup-table-body tr');
+            lookup.find('tbody').html(tableData);
+            var selectRows = lookup.find('tbody tr');
             for (var k = 0; k < selectRows.length; k++) {
                 this._bindSelect(lookup, selectRows[k], data.rows[k]);
             }
         },
         _updateNavbar: function (lookup, filteredRows) {
-            var pageLength = lookup.find('.mvc-lookup-items-per-page').val();
+            var pageLength = lookup.find('.mvc-lookup-rows input').val();
             var totalPages = parseInt(filteredRows / pageLength) + 1;
             if (filteredRows % pageLength == 0) {
                 totalPages--;
             }
 
             if (totalPages == 0) {
-                lookup.find('.mvc-lookup-pager > .pagination').empty();
+                lookup.find('.pagination').empty();
             } else {
                 this._paginate(totalPages);
             }
@@ -372,19 +372,14 @@
             }
 
             while (page < totalPages && page < startingPage + 5) {
-                var liClass = '';
-                if (page == this.options.page) {
-                    liClass = ' class="active"';
-                }
-
-                pagination += '<li' + liClass + '><span data-page="' + page + '">' + (++page) + '</span></li>';
+                pagination += '<li' + (page == this.options.page ? ' class="active"' : '') + '><span data-page="' + page + '">' + (++page) + '</span></li>';
             }
 
             if (totalPages > 5 && currentPage < (totalPages - 1)) {
                 pagination += '<li><span data-page="' + (currentPage + 1) + '">&rsaquo;</span></li><li><span data-page="' + (totalPages - 1) + '">&raquo;</span></li>';
             }
 
-            lookup.find('.mvc-lookup-pager > .pagination').html(pagination).find('li:not(.active) > span').click(function (e) {
+            lookup.find('.pagination').html(pagination).find('li:not(.active) > span').click(function (e) {
                 that.options.page = parseInt($(this).data('page'));
                 that._update(lookup);
             });
@@ -426,7 +421,7 @@
     var lookup = $('#MvcLookup');
 
     $(function () {
-        lookup.find('.mvc-lookup-items-per-page').spinner({ min: 1, max: 99 });
+        lookup.find('.mvc-lookup-rows input').spinner({ min: 1, max: 99 });
         lookup.dialog({
             dialogClass: 'mvc-lookup-dialog',
             autoOpen: false,
