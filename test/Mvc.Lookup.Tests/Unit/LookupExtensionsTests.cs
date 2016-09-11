@@ -40,12 +40,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Filter.SortOrder = LookupSortOrder.Desc;
         }
 
-        #region AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
+        #region AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
 
         [Fact]
         public void AutoComplete_FromModel()
         {
-            String actual = ToString(html.AutoComplete("Test", "Value", lookup, new { @class = "classes", attribute = "attr" }));
+            String actual = ToString(html.AutoComplete("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<input attribute=\"attr\" class=\"classes form-control mvc-lookup-input\" " +
                     "data-mvc-lookup-filters=\"Add1,Add2\" data-mvc-lookup-for=\"Test\" data-mvc-lookup-page=\"2\" " +
@@ -105,12 +105,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region Lookup<TModel>(this IHtmlHelper<TModel> html, String name, Object value, MvcLookup model, Object htmlAttributes = null)
+        #region Lookup<TModel>(this IHtmlHelper<TModel> html, String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
 
         [Fact]
         public void Lookup_FromModel()
         {
-            String actual = ToString(html.Lookup("Test", "Value", lookup, new { @class = "classes", attribute = "attr" }));
+            String actual = ToString(html.Lookup("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div class=\"input-group\">" +
                     "<input attribute=\"attr\" class=\"classes form-control mvc-lookup-input\" " +

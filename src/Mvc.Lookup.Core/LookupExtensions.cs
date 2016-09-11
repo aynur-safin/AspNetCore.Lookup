@@ -12,7 +12,7 @@ namespace NonFactors.Mvc.Lookup
     public static class LookupExtensions
     {
         public static IHtmlContent AutoComplete<TModel>(this IHtmlHelper<TModel> html,
-            String name, Object value, MvcLookup model, Object htmlAttributes = null)
+            String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
         {
             HtmlContentBuilder autocomplete = new HtmlContentBuilder();
 
@@ -39,11 +39,11 @@ namespace NonFactors.Mvc.Lookup
         }
 
         public static IHtmlContent Lookup<TModel>(this IHtmlHelper<TModel> html,
-            String name, Object value, MvcLookup model, Object htmlAttributes = null)
+            String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
         {
             TagBuilder lookup = new TagBuilder("div");
 
-            lookup.InnerHtml.AppendHtml(html.AutoComplete(name, value, model, htmlAttributes));
+            lookup.InnerHtml.AppendHtml(html.AutoComplete(name, model, value, htmlAttributes));
             lookup.InnerHtml.AppendHtml(FormLookupOpenSpan());
             lookup.AddCssClass("input-group");
 
