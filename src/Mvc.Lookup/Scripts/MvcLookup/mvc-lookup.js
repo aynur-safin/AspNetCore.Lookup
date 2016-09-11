@@ -100,14 +100,16 @@
                         lookup
                             .find('.mvc-lookup-search')
                             .off('keyup.mvclookup')
-                            .on('keyup.mvclookup', function () {
-                                var input = this;
-                                clearTimeout(timeout);
-                                timeout = setTimeout(function () {
-                                    that.options.search = input.value;
-                                    that.options.page = 0;
-                                    that._update(lookup);
-                                }, 500);
+                            .on('keyup.mvclookup', function (e) {
+                                if (e.keyCode < 112 || e.keyCode > 126) {
+                                    var input = this;
+                                    clearTimeout(timeout);
+                                    timeout = setTimeout(function () {
+                                        that.options.search = input.value;
+                                        that.options.page = 0;
+                                        that._update(lookup);
+                                    }, 500);
+                                }
                             })
                             .val(that.options.search);
                         lookup
