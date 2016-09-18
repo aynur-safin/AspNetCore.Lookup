@@ -67,18 +67,20 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual IQueryable<T> FilterById(IQueryable<T> models)
         {
-            PropertyInfo idProperty = typeof(T).GetProperty("Id");
-            if (idProperty == null)
-                throw new LookupException($"'{typeof(T).Name}' type does not have property named 'Id', required for automatic id filtering.");
+            PropertyInfo key = typeof(T).GetProperties()
+                .FirstOrDefault(prop => prop.IsDefined(typeof(KeyAttribute))) ?? typeof(T).GetProperty("Id");
 
-            if (idProperty.PropertyType == typeof(String))
-                return models.Where("Id = @0", Filter.Id);
+            if (key == null)
+                throw new LookupException($"'{typeof(T).Name}' type does not have key or property named 'Id', required for automatic id filtering.");
+
+            if (key.PropertyType == typeof(String))
+                return models.Where($"{key.Name} = @0", Filter.Id);
 
             Decimal id;
-            if (IsNumeric(idProperty.PropertyType) && Decimal.TryParse(Filter.Id, out id))
-                return models.Where("Id = @0", id);
+            if (IsNumeric(key.PropertyType) && Decimal.TryParse(Filter.Id, out id))
+                return models.Where($"{key.Name} = @0", id);
 
-            throw new LookupException($"'{typeof(T).Name}.Id' property type has to be a string or a number.");
+            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string or a number.");
         }
         public virtual IQueryable<T> FilterBySearch(IQueryable<T> models)
         {

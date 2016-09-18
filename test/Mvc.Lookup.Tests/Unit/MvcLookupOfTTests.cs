@@ -251,7 +251,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             LookupException exception = Assert.Throws<LookupException>(() => lookup.FilterById(null));
 
-            String expected = $"'{typeof (NoIdModel).Name}' type does not have property named 'Id', required for automatic id filtering.";
+            String expected = $"'{typeof (NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -269,14 +269,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterById_Number()
+        public void FilterById_NumberKey()
         {
             TestLookup<NumericModel> lookup = new TestLookup<NumericModel>();
-            for (Int32 i = 0; i < 20; i++) lookup.Models.Add(new NumericModel { Id = i });
+            for (Int32 i = 0; i < 20; i++) lookup.Models.Add(new NumericModel { Value = i });
 
             lookup.Filter.Id = "9.0";
 
-            IQueryable<NumericModel> expected = lookup.GetModels().Where(model => model.Id == 9);
+            IQueryable<NumericModel> expected = lookup.GetModels().Where(model => model.Value == 9);
             IQueryable<NumericModel> actual = lookup.FilterById(lookup.GetModels());
 
             Assert.Equal(expected, actual);
