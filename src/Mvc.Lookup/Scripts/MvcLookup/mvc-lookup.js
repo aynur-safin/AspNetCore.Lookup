@@ -425,6 +425,7 @@
     $(function () {
         lookup.find('.mvc-lookup-rows input').spinner({ min: 1, max: 99 });
         lookup.dialog({
+            classes: { 'ui-dialog': 'mvc-lookup-dialog' },
             dialogClass: 'mvc-lookup-dialog',
             autoOpen: false,
             minHeight: 210,
