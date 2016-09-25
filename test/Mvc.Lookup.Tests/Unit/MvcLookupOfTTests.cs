@@ -312,12 +312,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByAdditionalFilters_Filters()
         {
             lookup.Filter.AdditionalFilters.Add("Id", "9I");
-            lookup.Filter.AdditionalFilters.Add("Count", 9);
-            lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 15));
+            lookup.Filter.AdditionalFilters.Add("Count", 19);
+            lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 19));
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels().Where(model =>
-                model.Id == "9I" && model.Count == 9 && model.Date == new DateTime(2014, 12, 15));
+                model.Id == "9I" && model.Count == 19 && model.Date == new DateTime(2014, 12, 19));
 
             Assert.Equal(expected, actual);
         }
