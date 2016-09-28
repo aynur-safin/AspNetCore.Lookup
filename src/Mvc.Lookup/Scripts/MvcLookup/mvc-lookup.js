@@ -97,6 +97,10 @@
 
                 this._on(lookupAddon, {
                     click: function () {
+                        if (that.element.is('[readonly]') || that.element.is('[disabled]')) {
+                            return;
+                        }
+
                         var timeout;
                         lookup
                             .find('.mvc-lookup-search')
