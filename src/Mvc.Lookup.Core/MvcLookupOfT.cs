@@ -9,6 +9,8 @@ namespace NonFactors.Mvc.Lookup
 {
     public abstract class MvcLookup<T> : MvcLookup where T : class
     {
+        public Func<T, String> Id { get; set; }
+        public Func<T, String> Autocomplete { get; set; }
         public virtual IEnumerable<PropertyInfo> AttributedProperties
         {
             get
@@ -22,6 +24,9 @@ namespace NonFactors.Mvc.Lookup
 
         protected MvcLookup()
         {
+            Id = (model) => GetValue(model, "Id");
+            Autocomplete = (model) => GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? "");
+
             foreach (PropertyInfo property in AttributedProperties)
                 Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
                 {
@@ -138,11 +143,11 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual void AddId(Dictionary<String, String> row, T model)
         {
-            row.Add(IdKey, GetValue(model, "Id"));
+            row.Add(IdKey, Id(model));
         }
         public virtual void AddAutocomplete(Dictionary<String, String> row, T model)
         {
-            row.Add(AcKey, GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? ""));
+            row.Add(AcKey, Autocomplete(model));
         }
         public virtual void AddData(Dictionary<String, String> row, T model)
         {

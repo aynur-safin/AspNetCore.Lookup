@@ -489,6 +489,20 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region AddId(Dictionary<String, String> row, T model)
 
         [Fact]
+        public void AddId_FromFunction()
+        {
+            TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
+            lookup.Id = (model) => "1";
+
+            lookup.AddId(row, new NoIdModel());
+
+            KeyValuePair<String, String> actual = row.Single();
+
+            Assert.Equal(MvcLookup.IdKey, actual.Key);
+            Assert.Equal("1", actual.Value);
+        }
+
+        [Fact]
         public void AddId_EmptyValues()
         {
             TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
@@ -515,6 +529,19 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #endregion
 
         #region AddAutocomplete(Dictionary<String, String> row, T model)
+
+        [Fact]
+        public void AddAutocomplete_FromFunction()
+        {
+            lookup.Autocomplete = (model) => "Auto";
+
+            lookup.AddAutocomplete(row, new TestModel { Value = "Test" });
+
+            KeyValuePair<String, String> actual = row.Single();
+
+            Assert.Equal(MvcLookup.AcKey, actual.Key);
+            Assert.Equal("Auto", actual.Value);
+        }
 
         [Fact]
         public void AddAutocomplete_EmptyValues()
