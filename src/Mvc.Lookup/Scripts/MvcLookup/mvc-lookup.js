@@ -445,6 +445,13 @@
             modal: true
         });
 
+        $('.mvc-lookup-dialog').resizable({
+            handles: 'w,e',
+            stop: function (event, ui) {
+                $(this).css('height', 'auto');
+            }
+        });
+
         $('.mvc-lookup-input').mvclookup();
     });
 })(jQuery);
