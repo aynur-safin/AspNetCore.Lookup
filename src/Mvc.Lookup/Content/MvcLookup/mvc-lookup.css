@@ -8,6 +8,49 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
+.mvc-lookup-group {
+    display: table;
+}
+
+.mvc-lookup-browse,
+.mvc-lookup-group .mvc-lookup-input {
+    display: table-cell;
+}
+
+.mvc-lookup-input {
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    padding: 6px 12px;
+    display: block;
+    height: 34px;
+    width: 100%;
+}
+
+.mvc-lookup-browse {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid #CCCCCC;
+    background-color: #EEEEEE;
+    vertical-align: middle;
+    padding: 0 12px;
+    cursor: pointer;
+    border-left: 0;
+    line-height: 1;
+    width: 1%;
+}
+
+    .mvc-lookup-browse::before {
+        content: '\1F50D';
+    }
+
+.mvc-lookup-dialog .ui-dialog-title {
+    line-height: 1.4em;
+    min-height: 1.4em;
+}
+
 .mvc-lookup,
 .mvc-lookup-dialog,
 .mvc-lookup-dialog:after,
@@ -17,22 +60,9 @@
     box-sizing: content-box;
 }
 
-    .mvc-lookup-dialog .ui-dialog-title {
-        line-height: 1.4em;
-        min-height: 1.4em;
-    }
-
-.mvc-lookup-open-span {
-    cursor: pointer;
-}
-
-    .mvc-lookup-open-span .mvc-lookup-open-icon::before {
-        content: '\e003';
-    }
-
 .mvc-lookup {
     font-size: 0.9em;
-    min-width: 350px;
+    min-width: 427px;
     display: none;
 }
 
@@ -50,6 +80,7 @@
     border-bottom-left-radius: 4px;
     border-top-left-radius: 4px;
     border: 1px solid #CCCCCC;
+    box-sizing: border-box;
     display: table-cell;
     padding: 6px 12px;
     width: 100%;
@@ -72,6 +103,7 @@
     .mvc-lookup-rows input {
         background-color: #EEEEEE;
         padding: 6px 1.6em 6px 0;
+        box-sizing: border-box;
         text-align: center;
         height: 100%;
         width: 5em;
@@ -91,6 +123,7 @@
 
     .mvc-lookup-rows .ui-icon {
         margin-left: -8px;
+        cursor: pointer;
         left: 50%;
     }
 
@@ -108,13 +141,28 @@
 }
 
 .mvc-lookup-error {
+    background-color: #F2DEDE;
+    border: 1px solid #EBCCD1;
     text-align: center;
+    color: #A94442;
     margin: 30px 0;
     display: none;
+    padding: 15px;
 }
 
 .mvc-lookup table {
+    border-collapse: collapse;
+    border: 1px solid #DDDDDD;
     margin-bottom: 0.8em;
+    width: 100%;
+}
+
+.mvc-lookup tbody tr:nth-of-type(2n+1) {
+    background-color: #F9F9F9;
+}
+
+.mvc-lookup tbody tr:hover {
+    background-color: #F5F5F5;
 }
 
 .mvc-lookup tr {
@@ -133,33 +181,59 @@
 
 .mvc-lookup thead > tr > th,
 .mvc-lookup tbody > tr > td {
+    border: 1px solid #DDDDDD;
+    line-height: 1.42857143;
     padding: 0.3em 0.6em;
 }
 
-.mvc-lookup td:last-child {
+.mvc-lookup td:not(:first-child):last-child {
     text-align: center;
     font-weight: bold;
-    width: 2.5em;
+    width: 1em;
 }
 
-    .mvc-lookup td:last-child::after {
+    .mvc-lookup td:not(:first-child):last-child::after {
         content: '\25CF';
     }
 
-.mvc-lookup tr:hover td:last-child::after {
+.mvc-lookup tr:hover td:not(:first-child):last-child::after {
     content: '\2714';
     color: #5CB85C;
 }
 
-.mvc-lookup .pagination {
-    float: right;
+.mvc-lookup ul {
+    text-align: right;
     margin: 0;
 }
 
-    .mvc-lookup .pagination > li {
+    .mvc-lookup ul li {
+        display: inline;
         cursor: pointer;
     }
 
-        .mvc-lookup .pagination > li > span {
-            padding: 0.2em 0.5em;
+        .mvc-lookup ul li + li span {
+            border-left: 0;
         }
+
+    .mvc-lookup ul span {
+        border: 1px solid #DDDDDD;
+        box-sizing: content-box;
+        display: inline-block;
+        padding: 0.4em 0.6em;
+        text-align: center;
+        min-width: 0.9em;
+        color: #777777;
+    }
+
+        .mvc-lookup ul span:focus,
+        .mvc-lookup ul span:hover {
+            background-color: #EEEEEE;
+            color: #777777;
+        }
+
+.mvc-lookup .active span,
+.mvc-lookup .active span:hover {
+    background-color: rgba(77, 78, 80, 0.76);
+    border-color: rgba(77, 78, 80, 0.76);
+    color: #FFFFFF;
+}

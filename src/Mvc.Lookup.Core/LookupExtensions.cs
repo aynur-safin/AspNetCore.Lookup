@@ -44,8 +44,8 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder lookup = new TagBuilder("div");
 
             lookup.InnerHtml.AppendHtml(html.AutoComplete(name, model, value, htmlAttributes));
-            lookup.InnerHtml.AppendHtml(FormLookupOpenSpan());
-            lookup.AddCssClass("input-group");
+            lookup.InnerHtml.AppendHtml(FormLookupBrowse());
+            lookup.AddCssClass("mvc-lookup-group");
 
             return lookup;
         }
@@ -58,9 +58,9 @@ namespace NonFactors.Mvc.Lookup
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
             TagBuilder inputGroup = new TagBuilder("div");
-            inputGroup.AddCssClass("input-group");
+            inputGroup.AddCssClass("mvc-lookup-group");
             inputGroup.InnerHtml.AppendHtml(html.AutoCompleteFor(expression, model, htmlAttributes));
-            inputGroup.InnerHtml.AppendHtml(FormLookupOpenSpan());
+            inputGroup.InnerHtml.AppendHtml(FormLookupBrowse());
 
             return inputGroup;
         }
@@ -79,9 +79,9 @@ namespace NonFactors.Mvc.Lookup
         {
             IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
             if (attributes.ContainsKey("class"))
-                attributes["class"] = $"{attributes["class"]} form-control mvc-lookup-input".Trim();
+                attributes["class"] = $"{attributes["class"]} mvc-lookup-input".Trim();
             else
-                attributes["class"] = "form-control mvc-lookup-input";
+                attributes["class"] = "mvc-lookup-input";
             attributes.Add("data-mvc-lookup-for", TagBuilder.CreateSanitizedId(hiddenInput, html.IdAttributeDotReplacement));
             attributes.Add("data-mvc-lookup-filters", String.Join(",", model.AdditionalFilters));
             attributes.Add("data-mvc-lookup-sort-column", model.Filter.SortColumn);
@@ -110,16 +110,12 @@ namespace NonFactors.Mvc.Lookup
             return html.Hidden(name, value, attributes);
         }
 
-        private static IHtmlContent FormLookupOpenSpan()
+        private static IHtmlContent FormLookupBrowse()
         {
-            TagBuilder outerSpan = new TagBuilder("span");
-            TagBuilder innerSpan = new TagBuilder("span");
+            TagBuilder browse = new TagBuilder("span");
+            browse.AddCssClass("mvc-lookup-browse");
 
-            outerSpan.AddCssClass("mvc-lookup-open-span input-group-addon");
-            innerSpan.AddCssClass("mvc-lookup-open-icon glyphicon");
-            outerSpan.InnerHtml.AppendHtml(innerSpan);
-
-            return outerSpan;
+            return browse;
         }
     }
 }

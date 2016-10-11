@@ -91,11 +91,11 @@
             this.element.prevAll('.ui-helper-hidden-accessible').remove();
         },
         _initLookupOpenSpan: function () {
-            var lookupAddon = this.element.nextAll('.mvc-lookup-open-span:first');
-            if (lookupAddon.length != 0) {
+            var browse = this.element.nextAll('.mvc-lookup-browse:first');
+            if (browse.length != 0) {
                 var that = this;
 
-                this._on(lookupAddon, {
+                this._on(browse, {
                     click: function () {
                         if (that.element.is('[readonly]') || that.element.is('[disabled]')) {
                             return;
@@ -244,8 +244,8 @@
 
             var timeout = setTimeout(function () {
                 lookup.find('.mvc-lookup-loading').fadeIn(300);
-                lookup.find('.pagination').fadeOut(300);
                 lookup.find('table').fadeOut(300);
+                lookup.find('ul').fadeOut(300);
             }, 500);
 
             $.ajax({
@@ -259,15 +259,15 @@
                     clearTimeout(timeout);
                     lookup.find('.mvc-lookup-error').hide();
                     lookup.find('.mvc-lookup-loading').fadeOut(300);
-                    lookup.find('.pagination').fadeIn(300);
                     lookup.find('table').fadeIn(300);
+                    lookup.find('ul').fadeIn(300);
                 },
                 error: function () {
                     clearTimeout(timeout);
                     lookup.find('.mvc-lookup-error').fadeIn(300);
                     lookup.find('.mvc-lookup-loading').hide();
-                    lookup.find('.pagination').hide();
                     lookup.find('table').hide();
+                    lookup.find('ul').hide();
                 }
             });
         },
@@ -347,7 +347,7 @@
             }
 
             if (totalPages == 0) {
-                lookup.find('.pagination').empty();
+                lookup.find('ul').empty();
             } else {
                 this._paginate(totalPages);
             }
@@ -371,7 +371,7 @@
                 pagination += '<li><span data-page="' + (currentPage + 1) + '">&rsaquo;</span></li><li><span data-page="' + (totalPages - 1) + '">&raquo;</span></li>';
             }
 
-            lookup.find('.pagination').html(pagination).find('li:not(.active) > span').click(function (e) {
+            lookup.find('ul').html(pagination).find('li:not(.active) > span').click(function (e) {
                 that.options.page = parseInt($(this).data('page'));
                 that._update(lookup);
             });
