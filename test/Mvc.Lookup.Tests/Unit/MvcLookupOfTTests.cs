@@ -312,7 +312,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByAdditionalFilters_Filters()
         {
             lookup.Filter.AdditionalFilters.Add("Id", "9I");
-            lookup.Filter.AdditionalFilters.Add("Count", 19);
+            lookup.Filter.AdditionalFilters.Add("Count", new[] { 19, 30 });
             lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 19));
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());

@@ -40,19 +40,18 @@
         },
         _initFilters: function () {
             for (var i = 0; i < this.options.filters.length; i++) {
-                this._initFilter($('#' + this.options.filters[i]));
+                this._initFilter($('[name="' + this.options.filters[i] + '"]'));
             }
         },
-        _initFilter: function (filter) {
+        _initFilter: function (filters) {
             var that = this;
-            that._on(filter, {
-                change: function () {
-                    var event = $.Event(that._select);
+            that._on(filters, {
+                change: function (e) {
                     if (that.options.filterChange) {
-                        that.options.filterChange(event, that.element[0], that.options.hiddenElement, filter[0]);
+                        that.options.filterChange(e, that.element[0], that.options.hiddenElement);
                     }
 
-                    if (!event.isDefaultPrevented()) {
+                    if (!e.isDefaultPrevented()) {
                         that._select(null, true);
                     }
                 }
@@ -174,15 +173,15 @@
                 this._formFiltersQuery();
         },
         _formFiltersQuery: function () {
-            var additionaFilter = '';
+            var query = '';
             for (var i = 0; i < this.options.filters.length; i++) {
-                var filter = $('#' + this.options.filters[i]);
-                if (filter.length == 1) {
-                    additionaFilter += '&' + this.options.filters[i] + '=' + filter.val();
+                var filters = $('[name="' + this.options.filters[i] + '"]');
+                for (var j = 0; j < filters.length; j++) {
+                    query += '&' + this.options.filters[i] + '=' + filters[j].value;
                 }
             }
 
-            return additionaFilter;
+            return query;
         },
 
         _defaultSelect: function (data, triggerChanges) {
