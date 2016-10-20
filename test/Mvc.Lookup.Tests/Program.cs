@@ -1,4 +1,4 @@
-﻿namespace Mvc.Lookup.Tests
+﻿namespace NonFactors.Mvc.Lookup.Tests
 {
     public class Program
     {
