@@ -189,7 +189,7 @@
 .mvc-lookup td:not(:first-child):last-child {
     text-align: center;
     font-weight: bold;
-    width: 1em;
+    width: 2.5em;
 }
 
     .mvc-lookup td:not(:first-child):last-child::after {
