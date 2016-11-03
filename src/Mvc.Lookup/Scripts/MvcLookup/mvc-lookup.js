@@ -10,10 +10,6 @@
 (function ($) {
     $.widget('mvc.mvclookup', {
         _create: function () {
-            if (!this.element.hasClass('mvc-lookup-input')) {
-                return;
-            }
-
             this._initOptions();
             this._initFilters();
             this._initAutocomplete();
@@ -156,12 +152,7 @@
         },
 
         _formAutocompleteUrl: function (search) {
-            return this.options.url +
-                '?search=' + search +
-                '&sortOrder=Asc' +
-                '&rows=20' +
-                '&page=0' +
-                this._formFiltersQuery();
+            return this.options.url + '?search=' + search + '&rows=20' + this._formFiltersQuery();
         },
         _formLookupUrl: function (search) {
             return this.options.url +
@@ -210,20 +201,7 @@
         },
 
         _limitTo: function (value, min, max) {
-            value = parseInt(value);
-            if (isNaN(value)) {
-                return 20;
-            }
-
-            if (value < min) {
-                return min;
-            }
-
-            if (value > max) {
-                return max;
-            }
-
-            return value;
+            return Math.min(Math.max(parseInt(value), min), max) || 20;
         },
         _cleanUp: function () {
             this.element.removeAttr('data-mvc-lookup-sort-column');
