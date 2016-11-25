@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -193,7 +194,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 provider,
                 Substitute.For<IUrlHelperFactory>(),
                 HtmlEncoder.Default,
-                new ClientValidatorCache());
+                new ClientValidatorCache(),
+                new DefaultValidationHtmlAttributeProvider(options, provider, new ClientValidatorCache()));
 
             HtmlHelper<TestModel> htmlHelper = new HtmlHelper<TestModel>(
                 generator,
@@ -207,6 +209,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             TestModel model = new TestModel();
             model.ParentId = "Model's parent ID";
             ViewContext context = new ViewContext();
+            context.HttpContext = new DefaultHttpContext();
             context.ViewData = new ViewDataDictionary<TestModel>(context.ViewData, model);
 
             htmlHelper.Contextualize(context);

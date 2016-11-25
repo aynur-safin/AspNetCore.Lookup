@@ -9,8 +9,8 @@
   "version": "1.1.0",
 
   "dependencies": {
-    "System.Linq.Dynamic.Core": "1.0.5",
-    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.0.0"
+    "System.Linq.Dynamic.Core": "1.0.6.8",
+    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.0"
   },
 
   "buildOptions": {
@@ -21,7 +21,7 @@
     "net451": { },
     "netstandard1.6": {
       "dependencies": {
-        "System.Linq.Queryable": "4.0.1"
+        "System.Linq.Queryable": "4.3.0"
       }
     }
   }
