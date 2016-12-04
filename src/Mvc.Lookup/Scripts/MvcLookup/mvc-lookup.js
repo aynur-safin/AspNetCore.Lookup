@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 1.1.0
+ * Mvc.Lookup 2.0.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -133,16 +133,14 @@
 
                         setTimeout(function () {
                             var dialog = lookup.dialog('open').parent();
-                            dialog.position({
-                                my: "center",
-                                at: "center",
-                                of: window
-                            });
 
                             if (parseInt(dialog.css('left')) < 0) {
                                 dialog.css('left', 0);
                             }
-                            if (parseInt(dialog.css('top')) < 0) {
+                            if (parseInt(dialog.css('top')) > 100) {
+                                dialog.css('top', '100px');
+                            }
+                            else if (parseInt(dialog.css('top')) < 0) {
                                 dialog.css('top', 0);
                             }
                         }, 100);

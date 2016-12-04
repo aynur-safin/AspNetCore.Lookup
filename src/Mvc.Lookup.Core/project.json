@@ -6,7 +6,7 @@
     "tags": [ "mvc lookup" ]
   },
   "authors": [ "NonFactors" ],
-  "version": "1.1.0",
+  "version": "2.0.0",
 
   "dependencies": {
     "System.Linq.Dynamic.Core": "1.0.6.8",

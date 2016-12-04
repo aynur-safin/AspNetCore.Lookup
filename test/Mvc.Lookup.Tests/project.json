@@ -6,10 +6,10 @@
     "tags": [ "mvc lookup" ]
   },
   "authors": [ "NonFactors" ],
-  "version": "1.1.0",
+  "version": "2.0.0",
 
   "dependencies": {
-    "Mvc.Lookup.Core": "1.1.0",
+    "Mvc.Lookup.Core": "2.0.0",
 
     "NSubstitute": "2.0.0-rc",
     "xunit": "2.2.0-beta4-build3444",
