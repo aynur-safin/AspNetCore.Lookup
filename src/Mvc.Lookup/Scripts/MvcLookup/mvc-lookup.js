@@ -150,15 +150,15 @@
         },
 
         _formAutocompleteUrl: function (search) {
-            return this.options.url + '?search=' + search + '&rows=20' + this._formFiltersQuery();
+            return this.options.url + '?search=' + encodeURIComponent(search) + '&rows=20' + this._formFiltersQuery();
         },
         _formLookupUrl: function (search) {
             return this.options.url +
-                '?search=' + search +
-                '&sortColumn=' + this.options.sortColumn +
-                '&sortOrder=' + this.options.sortOrder +
-                '&rows=' + this.options.rows +
-                '&page=' + this.options.page +
+                '?search=' + encodeURIComponent(search) +
+                '&sortColumn=' + encodeURIComponent(this.options.sortColumn) +
+                '&sortOrder=' + encodeURIComponent(this.options.sortOrder) +
+                '&rows=' + encodeURIComponent(this.options.rows) +
+                '&page=' + encodeURIComponent(this.options.page) +
                 this._formFiltersQuery();
         },
         _formFiltersQuery: function () {
@@ -166,7 +166,7 @@
             for (var i = 0; i < this.options.filters.length; i++) {
                 var filters = $('[name="' + this.options.filters[i] + '"]');
                 for (var j = 0; j < filters.length; j++) {
-                    query += '&' + this.options.filters[i] + '=' + filters[j].value;
+                    query += '&' + encodeURIComponent(this.options.filters[i]) + '=' + encodeURIComponent(filters[j].value);
                 }
             }
 
@@ -368,7 +368,7 @@
             var id = $(that.options.hiddenElement).val();
             if (id) {
                 $.ajax({
-                    url: that.options.url + '?id=' + id + '&rows=1' + this._formFiltersQuery(),
+                    url: that.options.url + '?id=' + encodeURIComponent(id) + '&rows=1' + this._formFiltersQuery(),
                     cache: false,
                     success: function (data) {
                         if (data.rows.length > 0) {
