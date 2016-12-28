@@ -23,16 +23,15 @@
             var e = this.element;
             var o = this.options;
 
-            o.hiddenElement = $('#' + e.attr('data-mvc-lookup-for'))[0];
-            o.sortColumn = e.attr('data-mvc-lookup-sort-column');
-            o.sortOrder = e.attr('data-mvc-lookup-sort-order');
-            o.page = parseInt(e.attr('data-mvc-lookup-page'));
-            var filters = e.attr('data-mvc-lookup-filters');
-            o.filters = filters ? filters.split(',') : [];
-            o.search = e.attr('data-mvc-lookup-search');
-            o.title = e.attr('data-mvc-lookup-title');
-            o.rows = e.attr('data-mvc-lookup-rows');
-            o.url = e.attr('data-mvc-lookup-url');
+            o.filters = e.attr('data-filters').split(',').filter(Boolean);
+            o.hiddenElement = $('#' + e.attr('data-for'))[0];
+            o.page = parseInt(e.attr('data-page'));
+            o.search = e.attr('data-search');
+            o.order = e.attr('data-order');
+            o.title = e.attr('data-title');
+            o.rows = e.attr('data-rows');
+            o.sort = e.attr('data-sort');
+            o.url = e.attr('data-url');
         },
         _initFilters: function () {
             for (var i = 0; i < this.options.filters.length; i++) {
@@ -155,8 +154,8 @@
         _formLookupUrl: function (search) {
             return this.options.url +
                 '?search=' + encodeURIComponent(search) +
-                '&sortColumn=' + encodeURIComponent(this.options.sortColumn) +
-                '&sortOrder=' + encodeURIComponent(this.options.sortOrder) +
+                '&sort=' + encodeURIComponent(this.options.sort) +
+                '&order=' + encodeURIComponent(this.options.order) +
                 '&rows=' + encodeURIComponent(this.options.rows) +
                 '&page=' + encodeURIComponent(this.options.page) +
                 this._formFiltersQuery();
@@ -202,14 +201,14 @@
             return Math.min(Math.max(parseInt(value), min), max) || 20;
         },
         _cleanUp: function () {
-            this.element.removeAttr('data-mvc-lookup-sort-column');
-            this.element.removeAttr('data-mvc-lookup-sort-order');
-            this.element.removeAttr('data-mvc-lookup-filters');
-            this.element.removeAttr('data-mvc-lookup-search');
-            this.element.removeAttr('data-mvc-lookup-title');
-            this.element.removeAttr('data-mvc-lookup-rows');
-            this.element.removeAttr('data-mvc-lookup-page');
-            this.element.removeAttr('data-mvc-lookup-url');
+            this.element.removeAttr('data-filters');
+            this.element.removeAttr('data-search');
+            this.element.removeAttr('data-order');
+            this.element.removeAttr('data-title');
+            this.element.removeAttr('data-page');
+            this.element.removeAttr('data-rows');
+            this.element.removeAttr('data-sort');
+            this.element.removeAttr('data-url');
         },
 
         _update: function (lookup) {
@@ -257,9 +256,9 @@
                 }
 
                 header += '<th class="' + (column.cssClass || '');
-                if (that.options.sortColumn == column.key || (that.options.sortColumn == '' && i == 0)) {
-                    header += ' mvc-lookup-' + (that.options.sortOrder == 'Asc' ? 'asc' : 'desc');
-                    that.options.sortColumn = column.key;
+                if (that.options.sort == column.key || (that.options.sort == '' && i == 0)) {
+                    header += ' mvc-lookup-' + (that.options.order == 'Asc' ? 'asc' : 'desc');
+                    that.options.sort = column.key;
                 }
 
                 header += '" data-column="' + column.key + '">' + (column.header || '') + '</th>';
@@ -272,13 +271,13 @@
                     return false;
                 }
 
-                if (that.options.sortColumn == header.attr('data-column')) {
-                    that.options.sortOrder = that.options.sortOrder == 'Asc' ? 'Desc' : 'Asc';
+                if (that.options.sort == header.attr('data-column')) {
+                    that.options.order = that.options.order == 'Asc' ? 'Desc' : 'Asc';
                 } else {
-                    that.options.sortOrder = 'Asc';
+                    that.options.order = 'Asc';
                 }
 
-                that.options.sortColumn = header.attr('data-column');
+                that.options.sort = header.attr('data-column');
                 that._update(lookup);
             });
         },
@@ -385,14 +384,14 @@
             var e = this.element;
             var o = this.options;
 
-            e.attr('data-mvc-lookup-filters', o.filters.join());
-            e.attr('data-mvc-lookup-sort-column', o.sortColumn);
-            e.attr('data-mvc-lookup-sort-order', o.sortOrder);
-            e.attr('data-mvc-lookup-search', o.search);
-            e.attr('data-mvc-lookup-title', o.title);
-            e.attr('data-mvc-lookup-rows', o.rows);
-            e.attr('data-mvc-lookup-page', o.page);
-            e.attr('data-mvc-lookup-url', o.url);
+            e.attr('data-filters', o.filters.join());
+            e.attr('data-search', o.search);
+            e.attr('data-order', o.order);
+            e.attr('data-title', o.title);
+            e.attr('data-page', o.page);
+            e.attr('data-rows', o.rows);
+            e.attr('data-sort', o.sort);
+            e.attr('data-url', o.url);
             e.autocomplete('destroy');
 
             return this._super();

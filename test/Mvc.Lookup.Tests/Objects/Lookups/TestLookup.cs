@@ -11,9 +11,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
         {
             Filter.Page = 3;
             Filter.Rows = 7;
+            Filter.Sort = "Id";
             Models = new List<T>();
             Filter.Search = "Term";
-            Filter.SortColumn = "Id";
             Title = "Test lookup title";
             Url = "http://localhost/Test";
             AdditionalFilters.Add("Test1");

@@ -215,8 +215,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_Sorts()
         {
-            lookup.Filter.SortOrder = LookupSortOrder.Asc;
-            lookup.Filter.SortColumn = "Count";
+            lookup.Filter.Order = LookupSortOrder.Asc;
+            lookup.Filter.Sort = "Count";
             lookup.Filter.Search = "5V";
 
             lookup.GetData();
@@ -383,7 +383,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Sort_ByColumn()
         {
-            lookup.Filter.SortColumn = "Count";
+            lookup.Filter.Sort = "Count";
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Count);
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -394,7 +394,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Sort_ByFirstColumn()
         {
-            lookup.Filter.SortColumn = null;
+            lookup.Filter.Sort = null;
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Value);
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -409,7 +409,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void Sort_NoSortColumns(String column)
         {
             lookup.Columns.Clear();
-            lookup.Filter.SortColumn = column;
+            lookup.Filter.Sort = column;
             
             IQueryable<TestModel> expected = lookup.GetModels();
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());

@@ -82,15 +82,15 @@ namespace NonFactors.Mvc.Lookup
                 attributes["class"] = $"{attributes["class"]} mvc-lookup-input".Trim();
             else
                 attributes["class"] = "mvc-lookup-input";
-            attributes["data-mvc-lookup-for"] = TagBuilder.CreateSanitizedId(hiddenInput, html.IdAttributeDotReplacement);
-            attributes["data-mvc-lookup-filters"] = String.Join(",", model.AdditionalFilters);
-            attributes["data-mvc-lookup-sort-column"] = model.Filter.SortColumn;
-            attributes["data-mvc-lookup-sort-order"] = model.Filter.SortOrder;
-            attributes["data-mvc-lookup-search"] = model.Filter.Search;
-            attributes["data-mvc-lookup-page"] = model.Filter.Page;
-            attributes["data-mvc-lookup-rows"] = model.Filter.Rows;
-            attributes["data-mvc-lookup-title"] = model.Title;
-            attributes["data-mvc-lookup-url"] = model.Url;
+            attributes["data-for"] = TagBuilder.CreateSanitizedId(hiddenInput, html.IdAttributeDotReplacement);
+            attributes["data-filters"] = String.Join(",", model.AdditionalFilters);
+            attributes["data-search"] = model.Filter.Search;
+            attributes["data-order"] = model.Filter.Order;
+            attributes["data-page"] = model.Filter.Page;
+            attributes["data-rows"] = model.Filter.Rows;
+            attributes["data-sort"] = model.Filter.Sort;
+            attributes["data-title"] = model.Title;
+            attributes["data-url"] = model.Url;
 
             return html.TextBox(hiddenInput + MvcLookup.Prefix, null, attributes);
         }
