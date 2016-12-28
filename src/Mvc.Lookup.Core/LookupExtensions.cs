@@ -82,15 +82,15 @@ namespace NonFactors.Mvc.Lookup
                 attributes["class"] = $"{attributes["class"]} mvc-lookup-input".Trim();
             else
                 attributes["class"] = "mvc-lookup-input";
-            attributes.Add("data-mvc-lookup-for", TagBuilder.CreateSanitizedId(hiddenInput, html.IdAttributeDotReplacement));
-            attributes.Add("data-mvc-lookup-filters", String.Join(",", model.AdditionalFilters));
-            attributes.Add("data-mvc-lookup-sort-column", model.Filter.SortColumn);
-            attributes.Add("data-mvc-lookup-sort-order", model.Filter.SortOrder);
-            attributes.Add("data-mvc-lookup-search", model.Filter.Search);
-            attributes.Add("data-mvc-lookup-page", model.Filter.Page);
-            attributes.Add("data-mvc-lookup-rows", model.Filter.Rows);
-            attributes.Add("data-mvc-lookup-title", model.Title);
-            attributes.Add("data-mvc-lookup-url", model.Url);
+            attributes["data-mvc-lookup-for"] = TagBuilder.CreateSanitizedId(hiddenInput, html.IdAttributeDotReplacement);
+            attributes["data-mvc-lookup-filters"] = String.Join(",", model.AdditionalFilters);
+            attributes["data-mvc-lookup-sort-column"] = model.Filter.SortColumn;
+            attributes["data-mvc-lookup-sort-order"] = model.Filter.SortOrder;
+            attributes["data-mvc-lookup-search"] = model.Filter.Search;
+            attributes["data-mvc-lookup-page"] = model.Filter.Page;
+            attributes["data-mvc-lookup-rows"] = model.Filter.Rows;
+            attributes["data-mvc-lookup-title"] = model.Title;
+            attributes["data-mvc-lookup-url"] = model.Url;
 
             return html.TextBox(hiddenInput + MvcLookup.Prefix, null, attributes);
         }
@@ -98,14 +98,14 @@ namespace NonFactors.Mvc.Lookup
         private static IHtmlContent FormHiddenInputFor<TModel, TProperty>(IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
         {
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes.Add("class", "mvc-lookup-hidden-input");
+            attributes["class"] = "mvc-lookup-hidden-input";
 
             return html.HiddenFor(expression, attributes);
         }
         private static IHtmlContent FormHiddenInput(IHtmlHelper html, String name, Object value)
         {
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes.Add("class", "mvc-lookup-hidden-input");
+            attributes["class"] = "mvc-lookup-hidden-input";
 
             return html.Hidden(name, value, attributes);
         }

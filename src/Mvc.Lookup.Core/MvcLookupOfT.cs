@@ -147,11 +147,11 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual void AddId(Dictionary<String, String> row, T model)
         {
-            row.Add(IdKey, Id(model));
+            row[IdKey] = Id(model);
         }
         public virtual void AddAutocomplete(Dictionary<String, String> row, T model)
         {
-            row.Add(AcKey, Autocomplete(model));
+            row[AcKey] = Autocomplete(model);
         }
         public virtual void AddData(Dictionary<String, String> row, T model)
         {
