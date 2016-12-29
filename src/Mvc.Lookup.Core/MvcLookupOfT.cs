@@ -118,7 +118,7 @@ namespace NonFactors.Mvc.Lookup
             String column = Filter.Sort ?? Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault();
 
             if (String.IsNullOrWhiteSpace(column))
-                return models;
+                return models.OrderBy(model => 0);
 
             return models.OrderBy(column + " " + Filter.Order);
         }
