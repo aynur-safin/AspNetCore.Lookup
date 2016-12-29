@@ -250,6 +250,7 @@
             });
         },
         _updateHeader: function (lookup, columns) {
+            var sorted = false;
             var that = this;
             var header = '';
 
@@ -260,9 +261,10 @@
                 }
 
                 header += '<th class="' + (column.cssClass || '');
-                if (that.options.sort == column.key || (that.options.sort == '' && i == 0)) {
+                if (that.options.sort == column.key || (that.options.sort == '' && !sorted)) {
                     header += ' mvc-lookup-' + (that.options.order == 'Asc' ? 'asc' : 'desc');
                     that.options.sort = column.key;
+                    sorted = true;
                 }
 
                 header += '" data-column="' + column.key + '">' + (column.header || '') + '</th>';
