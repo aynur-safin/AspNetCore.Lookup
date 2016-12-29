@@ -149,7 +149,11 @@
         },
 
         _formAutocompleteUrl: function (search) {
-            return this.options.url + '?search=' + encodeURIComponent(search) + '&rows=20' + this._formFiltersQuery();
+            return this.options.url +
+                '?search=' + encodeURIComponent(search) +
+                '&sort=' + encodeURIComponent(this.options.sort) +
+                '&order=' + encodeURIComponent(this.options.order) +
+                '&rows=20' + this._formFiltersQuery();
         },
         _formLookupUrl: function (search) {
             return this.options.url +
