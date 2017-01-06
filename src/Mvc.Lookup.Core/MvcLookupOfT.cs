@@ -57,7 +57,7 @@ namespace NonFactors.Mvc.Lookup
             models = FilterByRequest(models);
             models = Sort(models);
 
-            return FormLookupData(models);
+            return FormLookupData(models, Page(models));
         }
         public abstract IQueryable<T> GetModels();
 
@@ -123,17 +123,22 @@ namespace NonFactors.Mvc.Lookup
             return models.OrderBy(column + " " + Filter.Order);
         }
 
-        public virtual LookupData FormLookupData(IQueryable<T> models)
+        public virtual IQueryable<T> Page(IQueryable<T> models)
         {
-            LookupData data = new LookupData();
-            data.FilteredRows = models.Count();
-            data.Columns = Columns;
-
-            IQueryable<T> pagedModels = models
+            return models
                 .Skip(Filter.Page * Filter.Rows)
                 .Take(Math.Min(Filter.Rows, 99));
+        }
 
-            foreach (T model in pagedModels)
+        public virtual LookupData FormLookupData(IQueryable<T> filtered, IQueryable<T> paged)
+        {
+            LookupData data = new LookupData
+            {
+                FilteredRows = filtered.Count(),
+                Columns = Columns
+            };
+
+            foreach (T model in paged)
             {
                 Dictionary<String, String> row = new Dictionary<String, String>();
                 AddId(row, model);

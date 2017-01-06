@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup = new TestLookup<TestModel>();
             lookup.Filter.Page = 0;
 
-            for (Int32 i = 0; i < 20; i++)
+            for (Int32 i = 0; i < 200; i++)
                 lookup.Models.Add(new TestModel
                 {
                     Id = i + "I",
@@ -189,23 +189,24 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_FiltersBySearch()
         {
-            lookup.Filter.Search = "5V";
+            lookup.Filter.Search = "33V";
+            lookup.Filter.Sort = "Count";
 
             lookup.GetData();
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("15V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("15I", actual.Rows[0][MvcLookup.IdKey]);
-            Assert.Equal("15V", actual.Rows[0]["Value"]);
-            Assert.Equal("25", actual.Rows[0]["Count"]);
+            Assert.Equal(new DateTime(2015, 1, 12).ToString("d"), actual.Rows[0]["Date"]);
+            Assert.Equal("33V", actual.Rows[0][MvcLookup.AcKey]);
+            Assert.Equal("33I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("33V", actual.Rows[0]["Value"]);
+            Assert.Equal("43", actual.Rows[0]["Count"]);
 
-            Assert.Equal(new DateTime(2014, 12, 15).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("5V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("5I", actual.Rows[1][MvcLookup.IdKey]);
-            Assert.Equal("5V", actual.Rows[1]["Value"]);
-            Assert.Equal("15", actual.Rows[1]["Count"]);
+            Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[1]["Date"]);
+            Assert.Equal("133V", actual.Rows[1][MvcLookup.AcKey]);
+            Assert.Equal("133I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("133V", actual.Rows[1]["Value"]);
+            Assert.Equal("143", actual.Rows[1]["Count"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.FilteredRows);
@@ -216,28 +217,24 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void GetData_Sorts()
         {
             lookup.Filter.Order = LookupSortOrder.Asc;
+            lookup.Filter.Search = "55V";
             lookup.Filter.Sort = "Count";
-            lookup.Filter.Search = "5V";
 
             lookup.GetData();
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 15).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("5V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("5I", actual.Rows[0][MvcLookup.IdKey]);
-            Assert.Equal("5V", actual.Rows[0]["Value"]);
-            Assert.Equal("15", actual.Rows[0]["Count"]);
+            Assert.Equal(new DateTime(2015, 2, 3).ToString("d"), actual.Rows[0]["Date"]);
+            Assert.Equal("55V", actual.Rows[0][MvcLookup.AcKey]);
+            Assert.Equal("55I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("55V", actual.Rows[0]["Value"]);
+            Assert.Equal("65", actual.Rows[0]["Count"]);
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("15I", actual.Rows[1][MvcLookup.IdKey]);
-            Assert.Equal("15V", actual.Rows[1]["Value"]);
-            Assert.Equal("25", actual.Rows[1]["Count"]);
-
-            Assert.Equal(lookup.Columns, actual.Columns);
-            Assert.Equal(2, actual.FilteredRows);
-            Assert.Equal(2, actual.Rows.Count);
+            Assert.Equal(new DateTime(2015, 5, 14).ToString("d"), actual.Rows[1]["Date"]);
+            Assert.Equal("155V", actual.Rows[1][MvcLookup.AcKey]);
+            Assert.Equal("155I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("155V", actual.Rows[1]["Value"]);
+            Assert.Equal("165", actual.Rows[1]["Count"]);
         }
 
         #endregion
@@ -419,12 +416,47 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region FormLookupData(IQueryable<T> models)
+        #region Page(IQueryable<T> models)
+
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(0, 1, 1)]
+        [InlineData(0, 5, 5)]
+        [InlineData(1, 0, 0)]
+        [InlineData(1, 1, 1)]
+        [InlineData(1, 5, 5)]
+        [InlineData(19, 0, 0)]
+        [InlineData(19, 1, 1)]
+        [InlineData(20, 0, 0)]
+        [InlineData(20, 1, 1)]
+        [InlineData(20, 5, 5)]
+        [InlineData(199, 0, 0)]
+        [InlineData(199, 1, 1)]
+        [InlineData(199, 5, 5)]
+        [InlineData(200, 0, 0)]
+        [InlineData(0, 98, 98)]
+        [InlineData(0, 99, 99)]
+        [InlineData(0, 100, 99)]
+        [InlineData(0, 150, 99)]
+        public void Page_Rows(Int32 page, Int32 rows, Int32 takeRows)
+        {
+            lookup.Filter.Page = page;
+            lookup.Filter.Rows = rows;
+
+            IQueryable<TestModel> expected = lookup.GetModels().Skip(page * rows).Take(takeRows);
+            IQueryable<TestModel> actual = lookup.Page(lookup.GetModels());
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region FormLookupData(IQueryable<T> filtered, IQueryable<T> paged)
 
         [Fact]
         public void FormLookupData_FilteredRows()
         {
-            Int32 actual = lookup.FormLookupData(lookup.GetModels()).FilteredRows;
+            Int32 actual = lookup.FormLookupData(lookup.GetModels(), lookup.GetModels().Take(1)).FilteredRows;
             Int32 expected = lookup.GetModels().Count();
 
             Assert.Equal(expected, actual);
@@ -433,19 +465,18 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_Columns()
         {
-            IList<LookupColumn> actual = lookup.FormLookupData(lookup.GetModels()).Columns;
-            IList<LookupColumn> expected = lookup.Columns;
+            Object actual = lookup.FormLookupData(lookup.GetModels(), lookup.GetModels()).Columns;
+            Object expected = lookup.Columns;
 
-            Assert.Equal(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         [Fact]
         public void FormLookupData_Rows()
         {
-            lookup.Filter.Page = 2;
-            lookup.Filter.Rows = 3;
+            IQueryable<TestModel> paged = lookup.GetModels().Skip(6).Take(3);
 
-            IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels()).Rows.GetEnumerator();
+            IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), paged).Rows.GetEnumerator();
             IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>
             {
                 new Dictionary<String, String>
