@@ -414,6 +414,12 @@
 
     $(function () {
         lookup.find('.mvc-lookup-rows input').spinner({ min: 1, max: 99 });
+        lookup.on('keyup', '.mvc-lookup-rows input', function (e) {
+            if (e.which == 13) {
+                $(this).blur();
+            }
+        });
+
         lookup.dialog({
             classes: { 'ui-dialog': 'mvc-lookup-dialog' },
             dialogClass: 'mvc-lookup-dialog',
