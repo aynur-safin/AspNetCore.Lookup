@@ -128,6 +128,7 @@
                         lookup.dialog('option', 'title', that.options.title);
                         lookup.find('thead').empty();
                         lookup.find('tbody').empty();
+                        lookup.find('ul').hide();
                         that._update(lookup);
 
                         setTimeout(function () {
