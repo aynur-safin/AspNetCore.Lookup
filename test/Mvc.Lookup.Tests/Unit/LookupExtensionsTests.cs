@@ -48,12 +48,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.AutoComplete("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
             String expected =
+                "<input class=\"mvc-lookup-hidden-input\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                 "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
                     "data-filters=\"Add1,Add2\" data-for=\"Test\" data-order=\"Desc\" " +
                     "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                     "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
-                    "id=\"TestLookup\" name=\"TestLookup\" type=\"text\" value=\"\" />" +
-                "<input class=\"mvc-lookup-hidden-input\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />";
+                    "id=\"TestLookup\" name=\"TestLookup\" type=\"text\" value=\"\" />";
 
             Assert.Equal(expected, actual);
         }
@@ -75,12 +75,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.AutoCompleteFor(model => model.ParentId, new { @class = "classes", attribute = "attr" }));
             String expected =
+                "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                 "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
                     "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-order=\"Asc\" " +
                     "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
                     "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\" " +
-                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
-                "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />";
+                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />";
 
             Assert.Equal(expected, actual);
         }
@@ -94,12 +94,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.AutoCompleteFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
+                "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                 "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
                     "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-order=\"Desc\" " +
                     "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                     "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
-                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
-                "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />";
+                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />";
 
             Assert.Equal(expected, actual);
         }
@@ -114,12 +114,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String actual = ToString(html.Lookup("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div class=\"mvc-lookup-group\">" +
+                    "<input class=\"mvc-lookup-hidden-input\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Test\" data-order=\"Desc\" " +
                         "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
                         "id=\"TestLookup\" name=\"TestLookup\" type=\"text\" value=\"\" />" +
-                    "<input class=\"mvc-lookup-hidden-input\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "<span class=\"mvc-lookup-browse\"></span>" +
                 "</div>";
 
@@ -144,12 +144,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String actual = ToString(html.LookupFor(model => model.ParentId, new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div class=\"mvc-lookup-group\">" +
-                    "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                    "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-order=\"Asc\" " +
-                    "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
-                    "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\" " +
-                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
                     "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                    "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
+                        "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-order=\"Asc\" " +
+                        "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
+                        "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\" " +
+                        "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
                     "<span class=\"mvc-lookup-browse\"></span>" +
                 "</div>";
 
@@ -166,12 +166,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String actual = ToString(html.LookupFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div class=\"mvc-lookup-group\">" +
-                    "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                    "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-order=\"Desc\" " +
-                    "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
-                    "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
-                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
                     "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                    "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
+                        "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-order=\"Desc\" " +
+                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
+                        "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
                     "<span class=\"mvc-lookup-browse\"></span>" +
                 "</div>";
 

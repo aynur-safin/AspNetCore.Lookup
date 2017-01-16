@@ -16,8 +16,8 @@ namespace NonFactors.Mvc.Lookup
         {
             HtmlContentBuilder autocomplete = new HtmlContentBuilder();
 
-            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
             autocomplete.AppendHtml(FormHiddenInput(html, name, value));
+            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
 
             return autocomplete;
         }
@@ -32,8 +32,8 @@ namespace NonFactors.Mvc.Lookup
             String name = ExpressionHelper.GetExpressionText(expression);
             HtmlContentBuilder autocomplete = new HtmlContentBuilder();
 
-            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
             autocomplete.AppendHtml(FormHiddenInputFor(html, expression));
+            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
 
             return autocomplete;
         }
@@ -44,7 +44,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder lookup = new TagBuilder("div");
 
             lookup.InnerHtml.AppendHtml(html.AutoComplete(name, model, value, htmlAttributes));
-            lookup.InnerHtml.AppendHtml(FormLookupBrowse());
+            lookup.InnerHtml.AppendHtml(FormLookupBrowse(name));
             lookup.AddCssClass("mvc-lookup-group");
 
             return lookup;
@@ -60,7 +60,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder inputGroup = new TagBuilder("div");
             inputGroup.AddCssClass("mvc-lookup-group");
             inputGroup.InnerHtml.AppendHtml(html.AutoCompleteFor(expression, model, htmlAttributes));
-            inputGroup.InnerHtml.AppendHtml(FormLookupBrowse());
+            inputGroup.InnerHtml.AppendHtml(FormLookupBrowse(ExpressionHelper.GetExpressionText(expression)));
 
             return inputGroup;
         }
@@ -110,10 +110,11 @@ namespace NonFactors.Mvc.Lookup
             return html.Hidden(name, value, attributes);
         }
 
-        private static IHtmlContent FormLookupBrowse()
+        private static IHtmlContent FormLookupBrowse(String name)
         {
             TagBuilder browse = new TagBuilder("span");
             browse.AddCssClass("mvc-lookup-browse");
+            browse.Attributes["data-for"] = name;
 
             return browse;
         }

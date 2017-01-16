@@ -144,8 +144,8 @@
     background-color: #F2DEDE;
     border: 1px solid #EBCCD1;
     text-align: center;
+    margin-top: 30px;
     color: #A94442;
-    margin: 30px 0;
     display: none;
     padding: 15px;
 }
@@ -199,6 +199,10 @@
 .mvc-lookup tr:hover td:not(:first-child):last-child::after {
     content: '\2714';
     color: #5CB85C;
+}
+
+.mvc-lookup-empty {
+    text-align: center;
 }
 
 .mvc-lookup ul {
