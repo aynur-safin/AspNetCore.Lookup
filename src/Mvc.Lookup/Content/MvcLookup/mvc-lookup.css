@@ -12,10 +12,10 @@
     display: table;
 }
 
-.mvc-lookup-browse,
-.mvc-lookup-group .mvc-lookup-input {
-    display: table-cell;
-}
+    .mvc-lookup-browse,
+    .mvc-lookup-group .mvc-lookup-input {
+        display: table-cell;
+    }
 
 .mvc-lookup-input {
     box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
@@ -86,8 +86,10 @@
     width: 100%;
 }
 
-.mvc-lookup-rows {
+.mvc-lookup-rows,
+.mvc-lookup-selector {
     vertical-align: middle;
+    white-space: nowrap;
     display: table-cell;
     width: 1%;
 }
@@ -127,6 +129,20 @@
         left: 50%;
     }
 
+    .mvc-lookup-selector button {
+        background-color: rgba(94, 186, 103, 0.81);
+        border: 1px solid #5C9845;
+        border-radius: 4px;
+        margin-left: 10px;
+        padding: 6px 8px;
+        min-width: 7em;
+        color: #FFFFFF;
+    }
+
+        .mvc-lookup-selector button:hover {
+            background-color: rgba(92, 175, 100, 0.81);
+        }
+
 .mvc-lookup-loading {
     background: url('data:image/gif;base64,R0lGODlhEAAQAPMPAJycnBQUFODg4L6+vnp6egAAAFhYWDY2NoqKivDw8CQkJGhoaEZGRqysrAQEBP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgAPACwAAAAAEAAQAAAEcfDJl+gydeonlEhFIVCbJBRK4ojJqAkjUiArnEkJM4OOYXymjEDnGLhwQFyicTjiNAiGD1CiJK5RBoNaul6tA8ItqEkgAgxnyzghKABmBEzQoLA5I8Fh0AAI5E8TCQYEDwBUAnAlAgQjhxIDYyUDA1URACH5BAUKAA8ALAAAAAAPABAAAARd8Mn5yJKJTiaVFEGjSUeiOIJSDKMEKAFQcJMRJ8FhFUWWSYbCQTAZEFu01qOxIBBYygfAsFhAox/A6DdpMAxbwQ/BaCQADYH6KNYsBAPzVUPQxiVzDCBzfxyVaiMRACH5BAUKAA8ALAAAAAAQAA8AAARa8Mn5AKJYLslUSkcmOUbSJYaYVEXTNZMwSMTRgAyCHIWAFD1NIBUDAAuzyWCxUhYukoEOIMh8rg2CVsR9wLqUBaLZBRAGiQH6qpIgBPCEgIwBzOAPOfeLz1MiACH5BAUKAA8ALAAAAAAQABAAAARc8MkpAb2SpGeYNAP2HATnLdgmBUMXookgIYvMEADgJVagEqSH6jFQiB4liqyW2AAaDdEiEHCAcgDZZVHoHiihi2AsUAkQluNkkH2M1UJJYtAcHgeyJtwtt8P1GBEAIfkEBQoACAAsAAAAABAADgAABEUQyYkIoVgaWQrP3NYhASgRXgeQmBEMSHFYXhVPRrFh9UrtmMNEgAD4gp1CyXLJlD5DzECWOU6mHSJCa0pmuJQBUAIGRQAAIfkEBQoADgAsAAAAABAAEAAABGvQyenGoNilJhGRhJAlBIcgDqKImbAIpxCg1NCICGARR6UwksQAMUhMEgKD48CSCDiUBANg1AiuVQrAYGAgrtgMQKEILKIYwQGAQTYdTwkwKDAmqoFC0hHIZhoFSg5QaBMKBRcjaQVsGY5+EQAh+QQFCgAPACwAAAAAEAAQAAAEW/DJ+YSgWA4JAM/c1XgAA0pIMj5Mg1nJ0wwWsEjMLQl0tgQGTOKCWbgmiSSosVgEk8pMg3E4EE4TQyOK3TwWMRBhoXgkbodToIB4XHmgxJpIjDsKF8cxbjiEKREAIfkEBQoADgAsAQABAA8ADwAABFbQSSHHkE3qWu9Y2+Zdy+UkpyZQTkM4goFIiYCGxPFu94aYoeCAQMwENR+D7EgrBWusmsKx2xQKCARjOmP4CgSFAuCYhQRXSiBxODYKl8DaoQCqNIZjBAAh+QQFCgAPACwAAAAAEAAQAAAEXfDJ+VKiWN4nhBwbJlwdB4RU4nUJ4mGbZQ2NhAAZDCx4jgEvH0WAKAonAoKy9lEMMK4ho1DoTRgBhMZROHgUgMaC8QAoFhLA03Y41HrBiSLRfhgcPsf3ICHnNko5EQAh+QQFCgAOACwAAAEAEAAPAAAEWtDJ6VKSgmpp5dha922ZJpTACE4NMlxUSanOEtwL2OzDUfwMEADgSpwAAZkEsHK8JonFgSlR1BIKRsOBMDgNBElDBjAwBoEtTHNwmB2E9mZgdTCCNeUGgQBFAAAh+QQFCgAPACwAAAEAEAAPAAAEWPDJSV+qeCZRBcfCRRUFUonJ8A1k8U2CWhFF04mSomfP4AsGRyBAyPgan0SDgbFVDJKXBLFwPg6PIsPgAywkBIBkIBE3CAsBlhdgoh8AJki+gCaKvLIYEwEAIfkEBQoADwAsAAABAA8ADwAABFrwyRGEvPiOorKXRtF8UvcIReEJyWkC45WwGOAMWSshB8MgnplAQFAYgbmhpTUweHAywiPgaSCgTuCCMGwATrDTJDBASBeWh059WDzMjwZhfXG/pY8vKR7DRAAAOw==') no-repeat center;
     background-color: #FFFFFF;
@@ -152,16 +168,16 @@
 
 .mvc-lookup table {
     border-collapse: collapse;
-    border: 1px solid #DDDDDD;
     margin-bottom: 0.8em;
+    border: none;
     width: 100%;
 }
 
-.mvc-lookup tbody tr:nth-of-type(2n+1) {
-    background-color: #F9F9F9;
+.mvc-lookup tr:hover {
+    background-color: #ECECEC;
 }
 
-.mvc-lookup tbody tr:hover {
+.mvc-lookup .selected {
     background-color: #F5F5F5;
 }
 
@@ -186,6 +202,12 @@
     padding: 0.3em 0.6em;
 }
 
+.mvc-lookup .mvc-lookup-split td {
+    background-color: #FFFFFF;
+    cursor: default;
+    border: none;
+}
+
 .mvc-lookup td:not(:first-child):last-child {
     text-align: center;
     font-weight: bold;
@@ -196,9 +218,15 @@
         content: '\25CF';
     }
 
-.mvc-lookup tr:hover td:not(:first-child):last-child::after {
+.mvc-lookup tr:hover td:not(:first-child):last-child::after,
+.mvc-lookup .selected td:not(:first-child):last-child::after {
     content: '\2714';
     color: #5CB85C;
+}
+
+.mvc-lookup .selected:hover td:not(:first-child):last-child::after {
+    content: '\2718';
+    color: #D65A5A;
 }
 
 .mvc-lookup-empty {

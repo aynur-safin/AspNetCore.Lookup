@@ -50,7 +50,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<input class=\"mvc-lookup-hidden-input\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                 "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                    "data-filters=\"Add1,Add2\" data-for=\"Test\" data-order=\"Desc\" " +
+                    "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"false\" data-order=\"Desc\" " +
                     "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                     "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
                     "id=\"TestLookup\" name=\"TestLookup\" type=\"text\" value=\"\" />";
@@ -77,7 +77,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                 "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                    "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-order=\"Asc\" " +
+                    "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Asc\" " +
                     "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
                     "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\" " +
                     "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />";
@@ -96,7 +96,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                 "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                    "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-order=\"Desc\" " +
+                    "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
                     "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                     "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
                     "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />";
@@ -116,11 +116,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 "<div class=\"mvc-lookup-group\">" +
                     "<input class=\"mvc-lookup-hidden-input\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                        "data-filters=\"Add1,Add2\" data-for=\"Test\" data-order=\"Desc\" " +
+                        "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"false\" data-order=\"Desc\" " +
                         "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
                         "id=\"TestLookup\" name=\"TestLookup\" type=\"text\" value=\"\" />" +
-                    "<span class=\"mvc-lookup-browse\"></span>" +
+                    "<span class=\"mvc-lookup-browse\" data-for=\"Test\"></span>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -146,11 +146,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 "<div class=\"mvc-lookup-group\">" +
                     "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                        "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-order=\"Asc\" " +
-                        "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
-                        "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\" " +
-                        "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
-                    "<span class=\"mvc-lookup-browse\"></span>" +
+                    "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Asc\" " +
+                    "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
+                    "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\" " +
+                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
+                    "<span class=\"mvc-lookup-browse\" data-for=\"ParentId\"></span>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -168,11 +168,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 "<div class=\"mvc-lookup-group\">" +
                     "<input class=\"mvc-lookup-hidden-input\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "<input attribute=\"attr\" class=\"classes mvc-lookup-input\" " +
-                        "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
-                        "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
-                        "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
-                    "<span class=\"mvc-lookup-browse\"></span>" +
+                    "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
+                    "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                    "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\" " +
+                    "id=\"ParentIdLookup\" name=\"ParentIdLookup\" type=\"text\" value=\"\" />" +
+                    "<span class=\"mvc-lookup-browse\" data-for=\"ParentId\"></span>" +
                 "</div>";
 
             Assert.Equal(expected, actual);

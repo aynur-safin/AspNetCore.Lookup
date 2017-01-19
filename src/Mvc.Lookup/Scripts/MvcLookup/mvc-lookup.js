@@ -25,7 +25,7 @@ var MvcLookupFilter = (function () {
                 '&order=' + encodeURIComponent(filter.order) +
                 '&rows=' + encodeURIComponent(filter.rows) +
                 '&page=' + encodeURIComponent(filter.page) +
-                (filter.id ? '&id=' + encodeURIComponent(filter.id) : '');
+                (filter.ids ? filter.ids : '');
 
             for (var i = 0; i < this.additionalFilters.length; i++) {
                 var filters = $('[name="' + this.additionalFilters[i] + '"]');
@@ -53,6 +53,7 @@ var MvcLookupDialog = (function () {
         this.search = this.instance.find('.mvc-lookup-search');
         this.loader = this.instance.find('.mvc-lookup-loading');
         this.rows = this.instance.find('.mvc-lookup-rows input');
+        this.selector = this.instance.find('.mvc-lookup-selector button');
 
         this.instance.dialog({
             classes: { 'ui-dialog': 'mvc-lookup-dialog' },
@@ -74,9 +75,12 @@ var MvcLookupDialog = (function () {
         open: function () {
             this.error.html(this.lang('error'));
             this.search.val(this.filter.search);
+            this.selected = this.lookup.selected.slice();
             this.search.attr('placeholder', this.lang('search'));
             this.rows.val(this.limitTo(this.filter.rows, 1, 99));
             this.instance.dialog('option', 'title', this.lookup.title);
+            this.selector.parent().css('display', this.lookup.multi ? '' : 'none');
+            this.selector.text(this.lang('select').replace('{0}', this.lookup.selected.length));
 
             this.bind();
             this.refresh();
@@ -110,7 +114,7 @@ var MvcLookupDialog = (function () {
 
             $.ajax({
                 cache: false,
-                url: dialog.lookup.url + dialog.filter.getQuery(),
+                url: dialog.lookup.url + dialog.filter.getQuery() + dialog.selected.map(function (x) { return '&selected=' + x.LookupIdKey; }).join(''),
                 success: function (data) {
                     clearTimeout(loading);
                     dialog.render(data);
@@ -158,16 +162,13 @@ var MvcLookupDialog = (function () {
         },
         renderBody: function (columns, rows) {
             if (rows.length == 0) {
-                var empty = document.createElement('tr');
-                var td = document.createElement('td');
-                empty.appendChild(td);
-
-                td.setAttribute('colspan', columns.length + 1);
-                td.innerHTML = this.lang('noData');
-                td.className = 'mvc-lookup-empty';
+                var empty = this.createEmptyRow(columns);
+                empty.children[0].innerHTML = this.lang('noData');
+                empty.className = 'mvc-lookup-empty';
 
                 this.tableBody.append(empty);
             }
+
             for (var i = 0; i < rows.length; i++) {
                 var tr = this.createDataRow(rows[i]);
                 var selection = document.createElement('td');
@@ -184,10 +185,19 @@ var MvcLookupDialog = (function () {
 
                 tr.appendChild(selection);
                 this.tableBody.append(tr);
+
+                if (i == this.selected.length - 1) {
+                    var separator = this.createEmptyRow(columns);
+                    separator.className = 'mvc-lookup-split';
+
+                    this.tableBody.append(separator);
+                }
             }
         },
         renderFooter: function (filteredRows) {
+            this.totalRows = filteredRows + this.selected.length;
             var totalPages = Math.ceil(filteredRows / this.filter.rows);
+
             if (totalPages > 0) {
                 var startingPage = Math.floor(this.filter.page / 5) * 5;
 
@@ -209,12 +219,45 @@ var MvcLookupDialog = (function () {
 
         createDataRow: function (data) {
             var dialog = this;
+            var lookup = this.lookup;
             var row = document.createElement('tr');
-            $(row).on('click.mvclookup', function (e) {
-                dialog.lookup.select(data, true);
+            if (dialog.indexOfSelected(data.LookupIdKey) >= 0) {
+                row.className = 'selected';
+            }
 
-                dialog.close();
+            $(row).on('click.mvclookup', function (e) {
+                var index = dialog.indexOfSelected(data.LookupIdKey);
+                if (index >= 0) {
+                    dialog.selected.splice(index, 1);
+
+                    $(this).removeClass('selected');
+                } else {
+                    if (lookup.multi) {
+                        dialog.selected.push(data);
+                    } else {
+                        dialog.selected = [data];
+                    }
+
+                    $(this).addClass('selected');
+                }
+
+                if (lookup.multi) {
+                    dialog.selector.text(dialog.lang('select').replace('{0}', dialog.selected.length));
+                } else {
+                    lookup.select(dialog.selected, false);
+
+                    dialog.close();
+                }
             });
+
+            return row;
+        },
+        createEmptyRow: function (columns) {
+            var row = document.createElement('tr');
+            var td = document.createElement('td');
+            row.appendChild(td);
+
+            td.setAttribute('colspan', columns.length + 1);
 
             return row;
         },
@@ -256,7 +299,12 @@ var MvcLookupDialog = (function () {
                 page.className = 'active';
             } else {
                 $(content).on('click.mvclookup', function (e) {
-                    dialog.filter.page = value;
+                    var expectedPages = Math.ceil((dialog.totalRows - dialog.selected.length) / dialog.filter.rows);
+                    if (value <= expectedPages) {
+                        dialog.filter.page = value - 1;
+                    } else {
+                        dialog.filter.page = value;
+                    }
 
                     dialog.refresh();
                 });
@@ -265,6 +313,15 @@ var MvcLookupDialog = (function () {
             dialog.pager.append(page);
         },
 
+        indexOfSelected: function (id) {
+            for (var i = 0; i < this.selected.length; i++) {
+                if (this.selected[i].LookupIdKey == id) {
+                    return i;
+                }
+            }
+
+            return -1;
+        },
         limitTo: function (value, min, max) {
             return Math.min(Math.max(parseInt(value), min), max) || 20;
         },
@@ -276,6 +333,15 @@ var MvcLookupDialog = (function () {
             var timeout;
             var dialog = this;
             var filter = this.filter;
+
+            dialog.instance.dialog('option', 'close', function () {
+                if (dialog.lookup.multi) {
+                    dialog.lookup.select(dialog.selected, true);
+                }
+            });
+            dialog.selector.off('click').on('click', function () {
+                dialog.close();
+            });
 
             this.search.off('keyup.mvclookup').on('keyup.mvclookup', function (e) {
                 if (e.keyCode < 112 || e.keyCode > 126) {
@@ -312,13 +378,16 @@ var MvcLookupDialog = (function () {
 }());
 var MvcLookup = (function () {
     function MvcLookup(element, options) {
-        this.url = element.attr('data-url');
-        this.title = element.attr('data-title');
+        this.multi = element.attr('data-multi') == 'true';
         this.filter = new MvcLookupFilter(element);
+        this.title = element.attr('data-title');
+        this.for = element.attr('data-for');
+        this.url = element.attr('data-url');
+        this.selected = [];
 
         this.element = element;
-        this.hiddenElement = $('#' + element.attr('data-for'));
-        this.browse = $('.mvc-lookup-browse[data-for="' + element.attr('data-for') + '"]');
+        this.hiddenElements = $('[name="' + this.for + '"]');
+        this.browse = $('.mvc-lookup-browse[data-for="' + this.for + '"]');
 
         this.dialog = new MvcLookupDialog(this);
         this.events = {};
@@ -338,20 +407,25 @@ var MvcLookup = (function () {
         },
         reload: function (triggerChanges) {
             var lookup = this;
-            var id = lookup.hiddenElement.val();
-
-            if (id) {
+            var ids = $.grep(lookup.hiddenElements.map(function (i, e) { return encodeURIComponent(e.value); }).get(), Boolean);
+            if (ids.length > 0) {
                 $.ajax({
-                    url: lookup.url + lookup.filter.getQuery({ id: id, rows: 1 }),
+                    url: lookup.url + lookup.filter.getQuery({ ids: '&ids=' + ids.join('&ids='), rows: ids.length }),
                     cache: false,
                     success: function (data) {
                         if (data.rows.length > 0) {
-                            lookup.select(data.rows[0], triggerChanges);
+                            var selected = [];
+                            for (var i = 0; i < data.rows.length; i++) {
+                                var index = ids.indexOf(data.rows[i].LookupIdKey);
+                                selected[index] = data.rows[i];
+                            }
+
+                            lookup.select(selected, triggerChanges);
                         }
                     }
                 });
             } else {
-                lookup.select(null, triggerChanges);
+                lookup.select([], triggerChanges);
             }
         },
 
@@ -365,18 +439,50 @@ var MvcLookup = (function () {
                 }
             }
 
-            this.hiddenElement.val(data ? data.LookupIdKey : '');
-            this.element.val(data ? data.LookupAcKey : '');
+            this.selected = data;
+            if (this.multi) {
+                this.hiddenElements.remove();
+            }
+
+            if (data.length > 0) {
+                if (this.multi) {
+                    this.element.val(data.map(function (x) { return '"' + x.LookupAcKey + '"'; }).join(', '));
+                    this.hiddenElements = this.createHiddenElements(data);
+                    this.element.before(this.hiddenElements);
+                } else {
+                    this.hiddenElements.val(data[0].LookupIdKey);
+                    this.element.val(data[0].LookupAcKey);
+                }
+            } else {
+                this.hiddenElements.val('');
+                this.element.val('');
+            }
 
             if (triggerChanges) {
-                this.hiddenElement.change();
+                this.hiddenElements.change();
                 this.element.change();
             }
         },
 
+        createHiddenElements: function (data) {
+            var elements = [];
+
+            for (var i = 0; i < data.length; i++) {
+                var element = document.createElement('input');
+                element.className = 'mvc-lookup-hidden-input';
+                element.setAttribute('type', 'hidden');
+                element.setAttribute('name', this.for);
+                element.value = data[i].LookupIdKey;
+
+                elements[i] = element;
+            }
+
+            return $(elements);
+        },
         cleanUp: function () {
             this.element.removeAttr('data-filters');
             this.element.removeAttr('data-search');
+            this.element.removeAttr('data-multi');
             this.element.removeAttr('data-order');
             this.element.removeAttr('data-title');
             this.element.removeAttr('data-page');
@@ -403,14 +509,14 @@ var MvcLookup = (function () {
                     });
                 },
                 select: function (e, selection) {
-                    lookup.select(selection.item.item, true);
+                    lookup.select([selection.item.item], true);
                     e.preventDefault();
                 },
                 minLength: 1,
                 delay: 500
             }).on('keyup.mvclookup', function (e) {
-                if (e.which != 9 && this.value.length == 0 && lookup.hiddenElement.val()) {
-                    lookup.select(null, true);
+                if (e.which != 9 && this.value.length == 0 && lookup.hiddenElements.val()) {
+                    lookup.select([], true);
                 }
             });
 
@@ -430,7 +536,7 @@ var MvcLookup = (function () {
                     }
 
                     if (!e.isDefaultPrevented()) {
-                        lookup.select(null, true);
+                        lookup.select([], true);
                     }
                 });
             }
@@ -453,5 +559,6 @@ $.fn.mvclookup = function (options) {
 $.fn.mvclookup.lang = {
     error: 'Error while retrieving records',
     noData: 'No data found',
+    select: 'Select ({0})',
     search: 'Search...'
 };

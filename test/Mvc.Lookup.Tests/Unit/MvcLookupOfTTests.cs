@@ -146,10 +146,13 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region GetData()
 
         [Fact]
-        public void GetData_FiltersById()
+        public void GetData_FiltersByIds()
         {
-            lookup.Filter.Id = "9I";
+            lookup.Filter.Ids.Add("9I");
+            lookup.Filter.Ids.Add("15I");
+            lookup.Filter.Sort = "Count";
             lookup.Filter.Search = "Term";
+            lookup.Filter.Selected.Add("17I");
             lookup.Filter.AdditionalFilters.Add("Value", "5V");
 
             LookupData actual = lookup.GetData();
@@ -160,9 +163,50 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("9V", actual.Rows[0]["Value"]);
             Assert.Equal("19", actual.Rows[0]["Count"]);
 
+            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
+            Assert.Equal("15V", actual.Rows[1][MvcLookup.AcKey]);
+            Assert.Equal("15I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("15V", actual.Rows[1]["Value"]);
+            Assert.Equal("25", actual.Rows[1]["Count"]);
+
+            Assert.Equal(lookup.Columns, actual.Columns);
+            Assert.Equal(2, actual.FilteredRows);
+            Assert.Equal(2, actual.Rows.Count);
+        }
+
+        [Fact]
+        public void GetData_FiltersByNotSelected()
+        {
+            lookup.Filter.Sort = "Count";
+            lookup.Filter.Search = "133V";
+            lookup.Filter.Selected.Add("15I");
+            lookup.Filter.Selected.Add("125I");
+
+            lookup.GetData();
+
+            LookupData actual = lookup.GetData();
+
+            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[0]["Date"]);
+            Assert.Equal("15V", actual.Rows[0][MvcLookup.AcKey]);
+            Assert.Equal("15I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("15V", actual.Rows[0]["Value"]);
+            Assert.Equal("25", actual.Rows[0]["Count"]);
+
+            Assert.Equal(new DateTime(2015, 4, 14).ToString("d"), actual.Rows[1]["Date"]);
+            Assert.Equal("125V", actual.Rows[1][MvcLookup.AcKey]);
+            Assert.Equal("125I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("125V", actual.Rows[1]["Value"]);
+            Assert.Equal("135", actual.Rows[1]["Count"]);
+
+            Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[2]["Date"]);
+            Assert.Equal("133V", actual.Rows[2][MvcLookup.AcKey]);
+            Assert.Equal("133I", actual.Rows[2][MvcLookup.IdKey]);
+            Assert.Equal("133V", actual.Rows[2]["Value"]);
+            Assert.Equal("143", actual.Rows[2]["Count"]);
+
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(1, actual.FilteredRows);
-            Assert.Single(actual.Rows);
+            Assert.Equal(3, actual.Rows.Count);
         }
 
         [Fact]
@@ -239,14 +283,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region FilterById(IQueryable<T> models)
+        #region FilterByIds(IQueryable<T> models)
 
         [Fact]
-        public void FilterById_NoIdProperty_Throws()
+        public void FilterByIds_NoIdProperty_Throws()
         {
             TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.FilterById(null));
+            LookupException exception = Assert.Throws<LookupException>(() => lookup.FilterByIds(null, null));
 
             String expected = $"'{typeof (NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
@@ -255,34 +299,32 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterById_String()
+        public void FilterByIds_String()
         {
-            lookup.Filter.Id = "9I";
+            List<String> ids = new List<String> { "9I", "10I" };
 
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id == lookup.Filter.Id);
-            IQueryable<TestModel> actual = lookup.FilterById(lookup.GetModels());
+            IQueryable<TestModel> actual = lookup.FilterByIds(lookup.GetModels(), ids);
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterById_NumberKey()
+        public void FilterByIds_NumberKey()
         {
             TestLookup<NumericModel> lookup = new TestLookup<NumericModel>();
             for (Int32 i = 0; i < 20; i++) lookup.Models.Add(new NumericModel { Value = i });
 
-            lookup.Filter.Id = "9.0";
-
-            IQueryable<NumericModel> expected = lookup.GetModels().Where(model => model.Value == 9);
-            IQueryable<NumericModel> actual = lookup.FilterById(lookup.GetModels());
+            IQueryable<NumericModel> actual = lookup.FilterByIds(lookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<NumericModel> expected = lookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FilterById_NotSupportedIdType_Throws()
+        public void FilterByIds_NotSupportedIdType_Throws()
         {
-            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterById(null));
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterByIds(null, new String[0]));
 
             String expected = $"'{typeof (GuidModel).Name}.Id' property type has to be a string or a number.";
             String actual = exception.Message;
@@ -451,12 +493,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region FormLookupData(IQueryable<T> filtered, IQueryable<T> paged)
+        #region FormLookupData(IQueryable<T> filtered, IQueryable<T> selected, IQueryable<T> notSelected)
 
         [Fact]
         public void FormLookupData_FilteredRows()
         {
-            Int32 actual = lookup.FormLookupData(lookup.GetModels(), lookup.GetModels().Take(1)).FilteredRows;
+            Int32 actual = lookup.FormLookupData(lookup.GetModels(), new[] { new TestModel() }.AsQueryable(), lookup.GetModels().Take(1)).FilteredRows;
             Int32 expected = lookup.GetModels().Count();
 
             Assert.Equal(expected, actual);
@@ -465,7 +507,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_Columns()
         {
-            Object actual = lookup.FormLookupData(lookup.GetModels(), lookup.GetModels()).Columns;
+            Object actual = lookup.FormLookupData(lookup.GetModels(), new[] { new TestModel() }.AsQueryable(), lookup.GetModels()).Columns;
             Object expected = lookup.Columns;
 
             Assert.Same(expected, actual);
@@ -474,9 +516,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FormLookupData_Rows()
         {
-            IQueryable<TestModel> paged = lookup.GetModels().Skip(6).Take(3);
+            IQueryable<TestModel> selected = new TestModel[0].AsQueryable();
+            IQueryable<TestModel> notSelected = lookup.GetModels().Skip(6).Take(3);
 
-            IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), paged).Rows.GetEnumerator();
+            IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), selected, notSelected).Rows.GetEnumerator();
             IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>
             {
                 new Dictionary<String, String>

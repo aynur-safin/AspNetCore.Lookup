@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Lookup
 
         public String Url { get; set; }
         public String Title { get; set; }
+        public Boolean Multi { get; set; }
 
         public LookupFilter Filter { get; set; }
         public IList<LookupColumn> Columns { get; set; }
