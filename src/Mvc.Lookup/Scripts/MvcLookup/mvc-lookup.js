@@ -78,7 +78,11 @@ var MvcLookupDialog = (function () {
                     minHeight: 210,
                     minWidth: 455,
                     width: 'auto',
-                    modal: true
+                    modal: true,
+
+                    create: function () {
+                        $(this).parent().css('position', 'fixed');
+                    }
                 },
                 spinner: {
                     min: 1,
