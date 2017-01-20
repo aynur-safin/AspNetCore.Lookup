@@ -136,12 +136,10 @@ namespace NonFactors.Mvc.Lookup
 
         public virtual IQueryable<T> Sort(IQueryable<T> models)
         {
-            String column = Filter.Sort ?? Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault();
-
-            if (String.IsNullOrWhiteSpace(column))
+            if (String.IsNullOrWhiteSpace(Filter.Sort))
                 return models.OrderBy(model => 0);
 
-            return models.OrderBy(column + " " + Filter.Order);
+            return models.OrderBy(Filter.Sort + " " + Filter.Order);
         }
 
         public virtual IQueryable<T> Page(IQueryable<T> models)

@@ -430,17 +430,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void Sort_ByFirstColumn()
-        {
-            lookup.Filter.Sort = null;
-
-            IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Value);
-            IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
-
-            Assert.Equal(expected, actual);
-        }
-
         [Theory]
         [InlineData("")]
         [InlineData(" ")]
