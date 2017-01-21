@@ -44,12 +44,13 @@ var MvcLookupDialog = (function () {
     function MvcLookupDialog(lookup) {
         this.lookup = lookup;
         this.filter = lookup.filter;
-        this.instance = $('#MvcLookup');
+        this.title = lookup.element.attr('data-title');
+        this.instance = $('#' + lookup.element.attr('data-dialog'));
+
         this.pager = this.instance.find('ul');
         this.table = this.instance.find('table');
         this.tableHead = this.instance.find('thead');
         this.tableBody = this.instance.find('tbody');
-        this.title = lookup.element.attr('data-title');
         this.error = this.instance.find('.mvc-lookup-error');
         this.search = this.instance.find('.mvc-lookup-search');
         this.loader = this.instance.find('.mvc-lookup-loading');
@@ -531,6 +532,7 @@ var MvcLookup = (function () {
         },
         cleanUp: function () {
             this.element.removeAttr('data-filters');
+            this.element.removeAttr('data-dialog');
             this.element.removeAttr('data-search');
             this.element.removeAttr('data-multi');
             this.element.removeAttr('data-order');

@@ -38,6 +38,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             MvcLookup actual = Substitute.For<MvcLookup>();
 
+            Assert.Equal("MvcLookup", actual.Dialog);
             Assert.Empty(actual.AdditionalFilters);
             Assert.Equal(20, actual.Filter.Rows);
             Assert.Empty(actual.Columns);

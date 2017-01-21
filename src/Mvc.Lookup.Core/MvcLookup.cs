@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Lookup
 
         public String Url { get; set; }
         public String Title { get; set; }
+        public String Dialog { get; set; }
         public Boolean Multi { get; set; }
 
         public LookupFilter Filter { get; set; }
@@ -22,6 +23,7 @@ namespace NonFactors.Mvc.Lookup
             AdditionalFilters = new List<String>();
             Columns = new List<LookupColumn>();
             Filter = new LookupFilter();
+            Dialog = "MvcLookup";
             Filter.Rows = 20;
         }
 
