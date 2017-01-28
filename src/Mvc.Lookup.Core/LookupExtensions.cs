@@ -13,61 +13,61 @@ namespace NonFactors.Mvc.Lookup
 {
     public static class LookupExtensions
     {
-        public static IHtmlContent AutoComplete<TModel>(this IHtmlHelper<TModel> html,
+        public static TagBuilder AutoComplete<TModel>(this IHtmlHelper<TModel> html,
             String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
         {
-            HtmlContentBuilder autocomplete = new HtmlContentBuilder();
-
-            autocomplete.AppendHtml(FormHiddenInput(html, model, name, value));
-            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
-
-            return autocomplete;
-        }
-        public static IHtmlContent AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
-        {
-            return html.AutoCompleteFor(expression, GetLookupFrom(expression), htmlAttributes);
-        }
-        public static IHtmlContent AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
-        {
-            HtmlContentBuilder autocomplete = new HtmlContentBuilder();
-            String name = ExpressionHelper.GetExpressionText(expression);
-
-            autocomplete.AppendHtml(FormHiddenInputFor(html, model, expression));
-            autocomplete.AppendHtml(FormAutoComplete(html, model, name, htmlAttributes));
-
-            return autocomplete;
-        }
-
-        public static IHtmlContent Lookup<TModel>(this IHtmlHelper<TModel> html,
-            String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
-        {
-            TagBuilder lookup = new TagBuilder("div");
-
-            lookup.InnerHtml.AppendHtml(html.AutoComplete(name, model, value, htmlAttributes));
-            lookup.InnerHtml.AppendHtml(FormLookupBrowse(name));
-            lookup.AddCssClass("mvc-lookup-group");
+            TagBuilder lookup = CreateLookupGroup();
+            lookup.AddCssClass("mvc-lookup-browseless");
+            lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
 
             return lookup;
         }
-        public static IHtmlContent LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
+        public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
         {
-            return html.LookupFor(expression, GetLookupFrom(expression), htmlAttributes);
+            return html.AutoCompleteFor(expression, CreateModelFrom(expression), htmlAttributes);
         }
-        public static IHtmlContent LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
+        public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
-            TagBuilder inputGroup = new TagBuilder("div");
-            inputGroup.AddCssClass("mvc-lookup-group");
-            inputGroup.InnerHtml.AppendHtml(html.AutoCompleteFor(expression, model, htmlAttributes));
-            inputGroup.InnerHtml.AppendHtml(FormLookupBrowse(ExpressionHelper.GetExpressionText(expression)));
+            TagBuilder lookup = CreateLookupGroup();
+            lookup.AddCssClass("mvc-lookup-browseless");
+            String name = ExpressionHelper.GetExpressionText(expression);
+            lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
 
-            return inputGroup;
+            return lookup;
         }
 
-        private static MvcLookup GetLookupFrom<TModel, TProperty>(Expression<Func<TModel, TProperty>> expression)
+        public static TagBuilder Lookup<TModel>(this IHtmlHelper<TModel> html,
+            String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
+        {
+            TagBuilder lookup = CreateLookupGroup();
+            lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
+            lookup.InnerHtml.AppendHtml(CreateLookupBrowse(name));
+
+            return lookup;
+        }
+        public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
+            Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
+        {
+            return html.LookupFor(expression, CreateModelFrom(expression), htmlAttributes);
+        }
+        public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
+            Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
+        {
+            TagBuilder lookup = CreateLookupGroup();
+            String name = ExpressionHelper.GetExpressionText(expression);
+            lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
+            lookup.InnerHtml.AppendHtml(CreateLookupBrowse(name));
+
+            return lookup;
+        }
+
+        private static MvcLookup CreateModelFrom<TModel, TProperty>(Expression<Func<TModel, TProperty>> expression)
         {
             MemberExpression exp = expression.Body as MemberExpression;
             LookupAttribute lookup = exp.Member.GetCustomAttribute<LookupAttribute>();
@@ -77,47 +77,41 @@ namespace NonFactors.Mvc.Lookup
 
             return (MvcLookup)Activator.CreateInstance(lookup.Type);
         }
-        private static IHtmlContent FormAutoComplete(IHtmlHelper html, MvcLookup model, String hiddenInput, Object htmlAttributes)
-        {
-            IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
-            if (attributes.ContainsKey("class"))
-                attributes["class"] = $"{attributes["class"]} mvc-lookup-input".Trim();
-            else
-                attributes["class"] = "mvc-lookup-input";
-            attributes["data-filters"] = String.Join(",", model.AdditionalFilters);
-            attributes["data-multi"] = model.Multi.ToString().ToLower();
-            attributes["data-search"] = model.Filter.Search;
-            attributes["data-order"] = model.Filter.Order;
-            attributes["data-page"] = model.Filter.Page;
-            attributes["data-rows"] = model.Filter.Rows;
-            attributes["data-sort"] = model.Filter.Sort;
-            attributes["data-dialog"] = model.Dialog;
-            attributes["data-title"] = model.Title;
-            attributes["data-for"] = hiddenInput;
-            attributes["data-url"] = model.Url;
 
-            return html.TextBox(hiddenInput + MvcLookup.Prefix, null, attributes);
+        private static TagBuilder CreateLookupGroup()
+        {
+            TagBuilder lookup = new TagBuilder("div");
+            lookup.AddCssClass("mvc-lookup-group");
+
+            return lookup;
         }
-
-        private static IHtmlContent FormHiddenInputFor<TModel, TProperty>(IHtmlHelper<TModel> html, MvcLookup model, Expression<Func<TModel, TProperty>> expression)
+        private static IHtmlContent CreateLookupValues<TModel, TProperty>(IHtmlHelper<TModel> html, MvcLookup model, Expression<Func<TModel, TProperty>> expression)
         {
+            Object value = ExpressionMetadataProvider.FromLambdaExpression(expression, html.ViewData, html.MetadataProvider).Model;
+            String name = ExpressionHelper.GetExpressionText(expression);
+
             if (model.Multi)
-            {
-                Object value = ExpressionMetadataProvider.FromLambdaExpression(expression, html.ViewData, html.MetadataProvider).Model;
-                String name = ExpressionHelper.GetExpressionText(expression);
-
-                return FormHiddenInput(html, model, name, value);
-            }
+                return CreateLookupValues(html, model, name, value);
 
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes["class"] = "mvc-lookup-hidden-input";
+            attributes["class"] = "mvc-lookup-value";
 
-            return html.HiddenFor(expression, attributes);
+            TagBuilder container = new TagBuilder("div");
+            container.AddCssClass("mvc-lookup-values");
+            container.Attributes["data-for"] = name;
+
+            container.InnerHtml.AppendHtml(html.HiddenFor(expression, attributes));
+
+            return container;
         }
-        private static IHtmlContent FormHiddenInput(IHtmlHelper html, MvcLookup model, String name, Object value)
+        private static IHtmlContent CreateLookupValues(IHtmlHelper html, MvcLookup model, String name, Object value)
         {
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes["class"] = "mvc-lookup-hidden-input";
+            attributes["class"] = "mvc-lookup-value";
+
+            TagBuilder container = new TagBuilder("div");
+            container.AddCssClass("mvc-lookup-values");
+            container.Attributes["data-for"] = name;
 
             if (model.Multi)
             {
@@ -128,15 +122,43 @@ namespace NonFactors.Mvc.Lookup
                 foreach (Object val in values)
                     inputs.AppendHtml(html.Hidden(name, val, attributes));
 
-                return inputs;
+                container.InnerHtml.AppendHtml(inputs);
+            }
+            else
+            {
+                container.InnerHtml.AppendHtml(html.Hidden(name, value, attributes));
             }
 
-            return html.Hidden(name, value, attributes);
+            return container;
         }
 
-        private static IHtmlContent FormLookupBrowse(String name)
+        private static IHtmlContent CreateLookupControl(MvcLookup lookup, String name, Object htmlAttributes)
         {
-            TagBuilder browse = new TagBuilder("span");
+            IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
+            attributes["data-filters"] = String.Join(",", lookup.AdditionalFilters);
+            attributes["data-multi"] = lookup.Multi.ToString().ToLower();
+            attributes["data-search"] = lookup.Filter.Search;
+            attributes["data-order"] = lookup.Filter.Order;
+            attributes["data-page"] = lookup.Filter.Page;
+            attributes["data-rows"] = lookup.Filter.Rows;
+            attributes["data-sort"] = lookup.Filter.Sort;
+            attributes["data-dialog"] = lookup.Dialog;
+            attributes["data-title"] = lookup.Title;
+            attributes["data-url"] = lookup.Url;
+            attributes["data-for"] = name;
+
+            TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
+            TagBuilder control = new TagBuilder("div");
+            control.AddCssClass("mvc-lookup-control");
+            search.AddCssClass("mvc-lookup-input");
+            control.InnerHtml.AppendHtml(search);
+            control.MergeAttributes(attributes);
+
+            return control;
+        }
+        private static IHtmlContent CreateLookupBrowse(String name)
+        {
+            TagBuilder browse = new TagBuilder("div");
             browse.AddCssClass("mvc-lookup-browse");
             browse.Attributes["data-for"] = name;
 
