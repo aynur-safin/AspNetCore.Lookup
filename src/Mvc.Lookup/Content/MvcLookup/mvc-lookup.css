@@ -212,7 +212,7 @@
     width: 100%;
 }
 
-.mvc-lookup tr:hover {
+.mvc-lookup tbody tr:hover {
     background-color: #ECECEC;
 }
 
