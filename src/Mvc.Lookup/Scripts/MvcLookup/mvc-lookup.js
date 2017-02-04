@@ -53,8 +53,8 @@ var MvcLookupDialog = (function () {
         this.tableBody = this.instance.find('tbody');
         this.error = this.instance.find('.mvc-lookup-error');
         this.search = this.instance.find('.mvc-lookup-search');
-        this.loader = this.instance.find('.mvc-lookup-loading');
         this.rows = this.instance.find('.mvc-lookup-rows input');
+        this.loader = this.instance.find('.mvc-lookup-dialog-loader');
         this.selector = this.instance.find('.mvc-lookup-selector button');
 
         this.initOptions();
@@ -438,8 +438,17 @@ var MvcLookup = (function () {
                                         data: row
                                     };
                                 }));
+                            },
+                            error: function () {
+                                lookup.stopLoading();
                             }
                         });
+                    },
+                    search: function () {
+                        lookup.startLoading(300);
+                    },
+                    response: function () {
+                        lookup.stopLoading();
                     },
                     select: function (e, selection) {
                         lookup.selected.push(selection.item.data);
@@ -455,11 +464,16 @@ var MvcLookup = (function () {
         reload: function (triggerChanges) {
             var lookup = this;
             var ids = $.grep(lookup.values.map(function (i, e) { return encodeURIComponent(e.value); }).get(), Boolean);
+
             if (ids.length > 0) {
+                lookup.startLoading(300);
+
                 $.ajax({
                     url: lookup.url + lookup.filter.getQuery({ ids: '&ids=' + ids.join('&ids='), rows: ids.length }),
                     cache: false,
                     success: function (data) {
+                        lookup.stopLoading();
+
                         if (data.rows.length > 0) {
                             var selected = [];
                             for (var i = 0; i < data.rows.length; i++) {
@@ -469,6 +483,9 @@ var MvcLookup = (function () {
 
                             lookup.select(selected, triggerChanges);
                         }
+                    },
+                    error: function () {
+                        lookup.stopLoading();
                     }
                 });
             } else {
@@ -488,10 +505,10 @@ var MvcLookup = (function () {
             this.selected = data;
 
             if (this.multi) {
+                this.search.val('');
                 this.values.remove();
                 this.control.find('.mvc-lookup-item').remove();
-                this.control.append(this.createSelectedItems(data));
-                this.control.append(this.search.val(''));
+                this.createSelectedItems(data).insertBefore(this.search);
 
                 this.values = this.createValues(data);
                 this.valueContainer.append(this.values);
@@ -528,7 +545,7 @@ var MvcLookup = (function () {
                 items[i] = item;
             }
 
-            return items;
+            return $(items);
         },
         createValues: function (data) {
             var inputs = [];
@@ -544,6 +561,16 @@ var MvcLookup = (function () {
             }
 
             return $(inputs);
+        },
+
+        startLoading: function (delay) {
+            this.loading = setTimeout(function (lookup) {
+                lookup.search.addClass('mvc-lookup-loading');
+            }, delay, this);
+        },
+        stopLoading: function () {
+            clearTimeout(this.loading);
+            this.search.removeClass('mvc-lookup-loading');
         },
 
         bindDeselect: function (close, id) {

@@ -149,9 +149,13 @@ namespace NonFactors.Mvc.Lookup
 
             TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
             TagBuilder control = new TagBuilder("div");
+            TagBuilder loader = new TagBuilder("div");
+
+            loader.AddCssClass("mvc-lookup-control-loader");
             control.AddCssClass("mvc-lookup-control");
             search.AddCssClass("mvc-lookup-input");
             control.InnerHtml.AppendHtml(search);
+            control.InnerHtml.AppendHtml(loader);
             control.MergeAttributes(attributes);
 
             return control;

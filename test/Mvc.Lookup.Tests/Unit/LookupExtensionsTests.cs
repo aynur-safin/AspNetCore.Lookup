@@ -58,6 +58,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                         "<input class=\"mvc-lookup-input\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
 
@@ -90,6 +91,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
                         "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\">" +
                         "<input class=\"mvc-lookup-input\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
 
@@ -114,6 +116,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                         "<input class=\"mvc-lookup-input\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
 
@@ -138,6 +141,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                         "<input class=\"mvc-lookup-input\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
                     "</div>" +
@@ -172,6 +176,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
                         "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\">" +
                         "<input class=\"mvc-lookup-input\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
                     "</div>" +
@@ -197,7 +202,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
                         "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
-                            "<input class=\"mvc-lookup-input\" />" +
+                        "<input class=\"mvc-lookup-input\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
                     "</div>" +
