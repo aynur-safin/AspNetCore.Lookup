@@ -79,11 +79,7 @@ var MvcLookupDialog = (function () {
                     minHeight: 210,
                     minWidth: 455,
                     width: 'auto',
-                    modal: true,
-
-                    create: function () {
-                        $(this).parent().css('position', 'fixed');
-                    }
+                    modal: true
                 },
                 spinner: {
                     min: 1,
@@ -119,15 +115,17 @@ var MvcLookupDialog = (function () {
 
             setTimeout(function (instance) {
                 var dialog = instance.dialog('open').parent();
+                var visibleLeft = $(document).scrollLeft();
+                var visibleTop = $(document).scrollTop();
 
-                if (parseInt(dialog.css('left')) < 0) {
-                    dialog.css('left', 0);
+                if (parseInt(dialog.css('left')) < visibleLeft) {
+                    dialog.css('left', visibleLeft);
                 }
-                if (parseInt(dialog.css('top')) > 100) {
-                    dialog.css('top', '100px');
+                if (parseInt(dialog.css('top')) > visibleTop + 100) {
+                    dialog.css('top', visibleTop + 100);
                 }
-                else if (parseInt(dialog.css('top')) < 0) {
-                    dialog.css('top', 0);
+                else if (parseInt(dialog.css('top')) < visibleTop) {
+                    dialog.css('top', visibleTop);
                 }
             }, 100, this.instance);
         },
