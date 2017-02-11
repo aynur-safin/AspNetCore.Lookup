@@ -326,10 +326,10 @@ var MvcLookupDialog = (function () {
             } else {
                 $(content).on('click.mvclookup', function (e) {
                     var expectedPages = Math.ceil((dialog.totalRows - dialog.selected.length) / dialog.filter.rows);
-                    if (value <= expectedPages) {
-                        dialog.filter.page = value - 1;
-                    } else {
+                    if (value < expectedPages) {
                         dialog.filter.page = value;
+                    } else {
+                        dialog.filter.page = expectedPages - 1;
                     }
 
                     dialog.refresh();
