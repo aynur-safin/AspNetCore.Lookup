@@ -101,8 +101,8 @@ var MvcLookupDialog = (function () {
         },
 
         open: function () {
-            this.error.html(this.lang('error'));
             this.search.val(this.filter.search);
+            this.error.hide().html(this.lang('error'));
             this.selected = this.lookup.selected.slice();
             this.rows.val(this.limitRows(this.filter.rows));
             this.search.attr('placeholder', this.lang('search'));
@@ -134,7 +134,7 @@ var MvcLookupDialog = (function () {
 
         refresh: function () {
             var dialog = this;
-            this.error.fadeOut(300);
+            dialog.error.fadeOut(300);
             var loading = setTimeout(function (dialog) {
                 dialog.loader.fadeIn(300);
             }, 300, dialog);
