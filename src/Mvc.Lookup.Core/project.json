@@ -9,8 +9,8 @@
   "version": "2.0.0",
 
   "dependencies": {
-    "System.Linq.Dynamic.Core": "1.0.6.8",
-    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.0"
+    "System.Linq.Dynamic.Core": "1.0.6.10",
+    "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.1"
   },
 
   "buildOptions": {
