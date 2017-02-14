@@ -119,7 +119,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void GetColumnHeader_ReturnsDisplayShortName()
         {
@@ -288,9 +288,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByIds_NoIdProperty_Throws()
         {
-            TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
+            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => lookup.FilterByIds(null, null));
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByIds(null, null));
 
             String expected = $"'{typeof (NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
@@ -312,11 +312,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByIds_NumberKey()
         {
-            TestLookup<NumericModel> lookup = new TestLookup<NumericModel>();
-            for (Int32 i = 0; i < 20; i++) lookup.Models.Add(new NumericModel { Value = i });
+            TestLookup<NumericModel> testLookup = new TestLookup<NumericModel>();
+            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new NumericModel { Value = i });
 
-            IQueryable<NumericModel> actual = lookup.FilterByIds(lookup.GetModels(), new List<String> { "9.0", "10" });
-            IQueryable<NumericModel> expected = lookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
+            IQueryable<NumericModel> actual = testLookup.FilterByIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<NumericModel> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
 
             Assert.Equal(expected, actual);
         }
@@ -438,7 +438,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Sort = column;
-            
+
             IQueryable<TestModel> expected = lookup.GetModels();
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
 
@@ -554,10 +554,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AddId_FromFunction()
         {
-            TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
-            lookup.Id = (model) => "1";
+            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
+            testLookup.Id = (model) => "1";
 
-            lookup.AddId(row, new NoIdModel());
+            testLookup.AddId(row, new NoIdModel());
 
             KeyValuePair<String, String> actual = row.Single();
 
@@ -568,9 +568,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AddId_EmptyValues()
         {
-            TestLookup<NoIdModel> lookup = new TestLookup<NoIdModel>();
+            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
 
-            lookup.AddId(row, new NoIdModel());
+            testLookup.AddId(row, new NoIdModel());
 
             KeyValuePair<String, String> actual = row.Single();
 
@@ -612,7 +612,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Columns.Clear();
 
             lookup.AddAutocomplete(row, new TestModel());
-            
+
             KeyValuePair<String, String> actual = row.Single();
 
             Assert.Equal(MvcLookup.AcKey, actual.Key);
@@ -641,7 +641,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Columns.Add(new LookupColumn("Test", null));
 
             lookup.AddData(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
-            
+
             Assert.Equal(new String[] { null }, row.Values);
             Assert.Equal(new[] { "Test" }, row.Keys);
         }

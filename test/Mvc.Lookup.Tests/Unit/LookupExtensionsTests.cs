@@ -240,10 +240,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 UrlEncoder.Default,
                 new ExpressionTextCache());
 
-            TestModel model = new TestModel();
-            model.ParentId = "Model's parent ID";
             ViewContext context = new ViewContext();
             context.HttpContext = new DefaultHttpContext();
+            TestModel model = new TestModel { ParentId = "Model's parent ID" };
             context.ViewData = new ViewDataDictionary<TestModel>(context.ViewData, model);
 
             htmlHelper.Contextualize(context);
