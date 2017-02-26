@@ -373,6 +373,7 @@ var MvcLookupDialog = (function () {
             dialog.rows.off('keyup.mvclookup').on('keyup.mvclookup', function (e) {
                 if (e.which == 13) {
                     this.blur();
+                    this.focus();
                 }
             });
 
