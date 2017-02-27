@@ -34,11 +34,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void AttributedProperties_GetsOrderedProperties()
         {
-            List<PropertyInfo> actual = lookup.AttributedProperties.ToList();
-            List<PropertyInfo> expected = typeof(TestModel).GetProperties()
+            IEnumerable<PropertyInfo> actual = lookup.AttributedProperties;
+            IEnumerable<PropertyInfo> expected = typeof(TestModel).GetProperties()
                 .Where(property => property.GetCustomAttribute<LookupColumnAttribute>(false) != null)
-                .OrderBy(property => property.GetCustomAttribute<LookupColumnAttribute>(false).Position)
-                .ToList();
+                .OrderBy(property => property.GetCustomAttribute<LookupColumnAttribute>(false).Position);
 
             Assert.Equal(expected, actual);
         }

@@ -35,9 +35,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Filter.Sort = "First";
             lookup.Filter.Search = "Test";
             lookup.AdditionalFilters.Clear();
-            lookup.Title = "Dialog lookup title";
             lookup.AdditionalFilters.Add("Add1");
             lookup.AdditionalFilters.Add("Add2");
+            lookup.Title = "Dialog lookup title";
             lookup.Url = "http://localhost/Lookup";
             lookup.Filter.Order = LookupSortOrder.Desc;
         }

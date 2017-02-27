@@ -9,7 +9,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupFilter_CreatesEmpty()
         {
-            Assert.Empty(new LookupFilter().AdditionalFilters);
+            LookupFilter filter = new LookupFilter();
+
+            Assert.Empty(filter.AdditionalFilters);
+            Assert.Empty(filter.Selected);
+            Assert.Empty(filter.Ids);
         }
 
         #endregion

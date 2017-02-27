@@ -151,11 +151,9 @@ namespace NonFactors.Mvc.Lookup
 
         public virtual LookupData FormLookupData(IQueryable<T> filtered, IQueryable<T> selected, IQueryable<T> notSelected)
         {
-            LookupData data = new LookupData
-            {
-                FilteredRows = filtered.Count(),
-                Columns = Columns
-            };
+            LookupData data = new LookupData();
+            data.FilteredRows = filtered.Count();
+            data.Columns = Columns;
 
             foreach (T model in selected.Concat(notSelected))
             {

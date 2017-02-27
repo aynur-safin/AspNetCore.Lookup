@@ -11,21 +11,21 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Prefix_IsConstant()
         {
-            Assert.True(typeof(MvcLookup).GetTypeInfo().GetField("Prefix").IsLiteral);
+            Assert.True(typeof(MvcLookup).GetField("Prefix").IsLiteral);
             Assert.Equal("Lookup", MvcLookup.Prefix);
         }
 
         [Fact]
         public void IdKey_IsConstant()
         {
-            Assert.True(typeof(MvcLookup).GetTypeInfo().GetField("IdKey").IsLiteral);
+            Assert.True(typeof(MvcLookup).GetField("IdKey").IsLiteral);
             Assert.Equal("LookupIdKey", MvcLookup.IdKey);
         }
 
         [Fact]
         public void AcKey_IsConstant()
         {
-            Assert.True(typeof(MvcLookup).GetTypeInfo().GetField("AcKey").IsLiteral);
+            Assert.True(typeof(MvcLookup).GetField("AcKey").IsLiteral);
             Assert.Equal("LookupAcKey", MvcLookup.AcKey);
         }
 

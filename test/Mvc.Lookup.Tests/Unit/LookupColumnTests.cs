@@ -8,9 +8,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region LookupColumn(String key, String header)
 
         [Fact]
-        public void Add_NullKey_Throws()
+        public void LookupColumn_NullKey_Throws()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupColumn(null, null));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupColumn(null, "Test"));
 
             Assert.Equal("key", actual.ParamName);
         }
@@ -27,8 +27,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupColumn_Header()
         {
-            String actual = new LookupColumn("Test", "Test").Header;
-            String expected = "Test";
+            String actual = new LookupColumn("Key", "Title").Header;
+            String expected = "Title";
 
             Assert.Equal(expected, actual);
         }

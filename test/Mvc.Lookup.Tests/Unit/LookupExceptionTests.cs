@@ -7,7 +7,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region LookupException(String message)
 
         [Fact]
-        public void LookupException_SetsMessage()
+        public void LookupException_Message()
         {
             Assert.Equal("Test", new LookupException("Test").Message);
         }
