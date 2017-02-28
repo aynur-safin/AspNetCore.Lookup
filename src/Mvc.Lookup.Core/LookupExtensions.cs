@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace NonFactors.Mvc.Lookup
 {
@@ -22,11 +21,6 @@ namespace NonFactors.Mvc.Lookup
             lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
 
             return lookup;
-        }
-        public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
-        {
-            return html.AutoCompleteFor(expression, CreateModelFrom(expression), htmlAttributes);
         }
         public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
@@ -51,11 +45,6 @@ namespace NonFactors.Mvc.Lookup
             return lookup;
         }
         public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
-        {
-            return html.LookupFor(expression, CreateModelFrom(expression), htmlAttributes);
-        }
-        public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
             TagBuilder lookup = CreateLookupGroup();
@@ -65,17 +54,6 @@ namespace NonFactors.Mvc.Lookup
             lookup.InnerHtml.AppendHtml(CreateLookupBrowse(name));
 
             return lookup;
-        }
-
-        private static MvcLookup CreateModelFrom<TModel, TProperty>(Expression<Func<TModel, TProperty>> expression)
-        {
-            MemberExpression exp = expression.Body as MemberExpression;
-            LookupAttribute lookup = exp.Member.GetCustomAttribute<LookupAttribute>();
-
-            if (lookup == null)
-                throw new LookupException($"'{exp.Member.Name}' property does not have a '{typeof(LookupAttribute).Name}' specified.");
-
-            return (MvcLookup)Activator.CreateInstance(lookup.Type);
         }
 
         private static TagBuilder CreateLookupGroup()

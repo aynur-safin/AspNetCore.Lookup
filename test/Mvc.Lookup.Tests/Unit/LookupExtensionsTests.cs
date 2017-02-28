@@ -67,43 +67,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
-
-        [Fact]
-        public void AutoCompleteFor_NoModel_Throws()
-        {
-            Exception actual = Assert.Throws<LookupException>(() => html.AutoCompleteFor(model => model.Id));
-
-            Assert.Equal("'Id' property does not have a 'LookupAttribute' specified.", actual.Message);
-        }
-
-        [Fact]
-        public void AutoCompleteFor_Expression()
-        {
-            String actual = ToString(html.AutoCompleteFor(model => model.ParentId, new { @class = "classes", attribute = "attr" }));
-            String expected =
-                "<div class=\"mvc-lookup-browseless mvc-lookup-group\">" +
-                    "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
-                    "</div>" +
-                    "<div attribute=\"attr\" class=\"mvc-lookup-control\" data-dialog=\"TestDialog\" " +
-                        "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Asc\" " +
-                        "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
-                        "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
-                        "<div class=\"mvc-lookup-control-loader\"></div>" +
-                    "</div>" +
-                "</div>";
-
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion
-
         #region AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
-        public void AutoCompleteFor_FromModelExpression()
+        public void AutoCompleteFor_FromModel()
         {
             String actual = ToString(html.AutoCompleteFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
@@ -152,45 +119,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Object htmlAttributes = null)
-
-        [Fact]
-        public void LookupFor_NoModel_Throws()
-        {
-            Exception actual = Assert.Throws<LookupException>(() => html.LookupFor(model => model.Id));
-
-            Assert.Equal("'Id' property does not have a 'LookupAttribute' specified.", actual.Message);
-        }
-
-        [Fact]
-        public void LookupFor_Expression()
-        {
-            String actual = ToString(html.LookupFor(model => model.ParentId, new { @class = "classes", attribute = "attr" }));
-            String expected =
-                "<div class=\"mvc-lookup-group\">" +
-                    "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
-                    "</div>" +
-                    "<div attribute=\"attr\" class=\"mvc-lookup-control\" data-dialog=\"TestDialog\" " +
-                        "data-filters=\"Test1,Test2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Asc\" " +
-                        "data-page=\"3\" data-rows=\"7\" data-search=\"Term\" data-sort=\"Id\" " +
-                        "data-title=\"Test lookup title\" data-url=\"http://localhost/Test\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
-                        "<div class=\"mvc-lookup-control-loader\"></div>" +
-                    "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
-                    "</div>" +
-                "</div>";
-
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion
-
         #region LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
-        public void LookupFor_ExpressionWithModel()
+        public void LookupFor_ForModel()
         {
             String actual = ToString(html.LookupFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =

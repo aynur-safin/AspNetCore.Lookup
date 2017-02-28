@@ -15,7 +15,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
         [LookupColumn]
         public String Value { get; set; }
 
-        [Lookup(typeof(TestLookup<TestModel>))]
         public String ParentId { get; set; }
 
         [Display(Name = "Date")]
