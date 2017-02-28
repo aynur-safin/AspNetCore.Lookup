@@ -11,8 +11,8 @@
   "dependencies": {
     "Mvc.Lookup.Core": "2.0.0",
 
-    "NSubstitute": "2.0.1-rc",
-    "xunit": "2.2.0-rc2-build3523",
+    "NSubstitute": "2.0.2",
+    "xunit": "2.2.0",
     "Microsoft.NETCore.Platforms": "1.1.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Microsoft.DotNet.InternalAbstractions": "1.0.0"
