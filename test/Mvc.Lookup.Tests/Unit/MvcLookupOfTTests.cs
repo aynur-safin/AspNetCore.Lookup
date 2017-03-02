@@ -282,86 +282,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
-        #region FilterByIds(IQueryable<T> models)
-
-        [Fact]
-        public void FilterByIds_NoIdProperty_Throws()
-        {
-            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
-
-            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByIds(null, null));
-
-            String expected = $"'{typeof (NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FilterByIds_String()
-        {
-            List<String> ids = new List<String> { "9I", "10I" };
-
-            IQueryable<TestModel> actual = lookup.FilterByIds(lookup.GetModels(), ids);
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FilterByIds_NumberKey()
-        {
-            TestLookup<NumericModel> testLookup = new TestLookup<NumericModel>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new NumericModel { Value = i });
-
-            IQueryable<NumericModel> actual = testLookup.FilterByIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
-            IQueryable<NumericModel> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FilterByIds_NotSupportedIdType_Throws()
-        {
-            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterByIds(null, new String[0]));
-
-            String expected = $"'{typeof (GuidModel).Name}.Id' property type has to be a string or a number.";
-            String actual = exception.Message;
-
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion
-
-        #region FilterByAdditionalFilters(IQueryable<T> models)
-
-        [Fact]
-        public void FilterByAdditionalFilters_SkipsNullValues()
-        {
-            lookup.Filter.AdditionalFilters.Add("Id", null);
-
-            IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
-            IQueryable<TestModel> expected = lookup.GetModels();
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FilterByAdditionalFilters_Filters()
-        {
-            lookup.Filter.AdditionalFilters.Add("Id", "9I");
-            lookup.Filter.AdditionalFilters.Add("Count", new[] { 19, 30 });
-            lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 19));
-
-            IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model =>
-                model.Id == "9I" && model.Count == 19 && model.Date == new DateTime(2014, 12, 19));
-
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion
-
         #region FilterBySearch(IQueryable<T> models)
 
         [Theory]
@@ -410,6 +330,137 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region FilterByAdditionalFilters(IQueryable<T> models)
+
+        [Fact]
+        public void FilterByAdditionalFilters_SkipsNullValues()
+        {
+            lookup.Filter.AdditionalFilters.Add("Id", null);
+
+            IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
+            IQueryable<TestModel> expected = lookup.GetModels();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByAdditionalFilters_Filters()
+        {
+            lookup.Filter.AdditionalFilters.Add("Id", "9I");
+            lookup.Filter.AdditionalFilters.Add("Count", new[] { 19, 30 });
+            lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 19));
+
+            IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model =>
+                model.Id == "9I" && model.Count == 19 && model.Date == new DateTime(2014, 12, 19));
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region FilterByIds(IQueryable<T> models, IList<String> ids)
+
+        [Fact]
+        public void FilterByIds_NoIdProperty_Throws()
+        {
+            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
+
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByIds(null, null));
+
+            String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByIds_String()
+        {
+            List<String> ids = new List<String> { "9I", "10I" };
+
+            IQueryable<TestModel> actual = lookup.FilterByIds(lookup.GetModels(), ids);
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByIds_NumberKey()
+        {
+            TestLookup<NumericModel> testLookup = new TestLookup<NumericModel>();
+            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new NumericModel { Value = i });
+
+            IQueryable<NumericModel> actual = testLookup.FilterByIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<NumericModel> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByIds_NotSupportedIdType_Throws()
+        {
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterByIds(null, new String[0]));
+
+            String expected = $"'{typeof(GuidModel).Name}.Id' property type has to be a string or a number.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region FilterByNotIds(IQueryable<T> models, IList<String> ids)
+
+        [Fact]
+        public void FilterByNotIds_NoIdProperty_Throws()
+        {
+            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
+
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByNotIds(null, null));
+
+            String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByNotIds_String()
+        {
+            List<String> ids = new List<String> { "9I", "10I" };
+
+            IQueryable<TestModel> actual = lookup.FilterByNotIds(lookup.GetModels(), ids);
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => !ids.Contains(model.Id));
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByNotIds_NumberKey()
+        {
+            TestLookup<NumericModel> testLookup = new TestLookup<NumericModel>();
+            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new NumericModel { Value = i });
+
+            IQueryable<NumericModel> actual = testLookup.FilterByNotIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<NumericModel> expected = testLookup.GetModels().Where(model => !new[] { 9, 10 }.Contains(model.Value));
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByNotIds_NotSupportedIdType_Throws()
+        {
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterByNotIds(null, new String[0]));
+
+            String expected = $"'{typeof(GuidModel).Name}.Id' property type has to be a string or a number.";
+            String actual = exception.Message;
 
             Assert.Equal(expected, actual);
         }

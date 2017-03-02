@@ -94,7 +94,7 @@ namespace NonFactors.Mvc.Lookup
             if (model.Multi)
             {
                 IEnumerable<Object> values = (value as IEnumerable)?.Cast<Object>();
-                if (values == null) return HtmlString.Empty;
+                if (values == null) return container;
 
                 IHtmlContentBuilder inputs = new HtmlContentBuilder();
                 foreach (Object val in values)

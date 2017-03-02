@@ -21,9 +21,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
         [LookupColumn(3, Format = "{0:d}")]
         public DateTime Date { get; set; }
 
-        public String NullableString { get; set; }
-
-        public String RelationId { get; set; }
-        public virtual TestRelationModel Relation { get; set; }
+        public String[] Values { get; set; }
     }
 }
