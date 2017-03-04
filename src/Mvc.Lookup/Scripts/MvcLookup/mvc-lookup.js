@@ -403,6 +403,7 @@ var MvcLookup = (function () {
         this.initOptions();
         this.set(options);
 
+        this.methods = { reload: this.reload };
         this.reload(false);
         this.cleanUp();
         this.bind();
@@ -458,6 +459,7 @@ var MvcLookup = (function () {
 
         reload: function (triggerChanges) {
             var lookup = this;
+            triggerChanges = triggerChanges == null ? true : triggerChanges;
             var ids = $.grep(lookup.values.map(function (i, e) { return encodeURIComponent(e.value); }).get(), Boolean);
 
             if (ids.length > 0) {
@@ -657,11 +659,26 @@ var MvcLookup = (function () {
 }());
 
 $.fn.mvclookup = function (options) {
+    var args = arguments;
+
     return this.each(function () {
         if (!$.data(this, 'mvc-lookup')) {
-            $.data(this, 'mvc-lookup', new MvcLookup($(this), options));
-        } else if (options) {
-            $.data(this, 'mvc-lookup').set(options);
+            if (typeof options == 'string') {
+                var lookup = new MvcLookup($(this));
+                lookup.methods[options].apply(lookup, [].slice.apply(args, 1));
+            } else {
+                var lookup = new MvcLookup($(this), options);
+            }
+
+            $.data(this, 'mvc-lookup', lookup);
+        } else {
+            var lookup = $.data(this, 'mvc-lookup');
+
+            if (typeof options == 'string') {
+                lookup.methods[options].apply(lookup, [].slice.call(args, 1));
+            } else if (options) {
+                lookup.set(options);
+            }
         }
     });
 };
