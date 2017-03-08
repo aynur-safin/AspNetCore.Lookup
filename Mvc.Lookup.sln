@@ -1,22 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F7BEFA84-7DFD-4529-BBD6-AF8C7539834B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A4226CF-8B00-4D16-A89C-1A39CCF24D89}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Lookup", "src\Mvc.Lookup\Mvc.Lookup.xproj", "{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Lookup.Core", "src\Mvc.Lookup.Core\Mvc.Lookup.Core.xproj", "{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2502DA8F-A481-4EF7-84CC-9F7A3CEDB09E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mvc.Lookup.Tests", "test\Mvc.Lookup.Tests\Mvc.Lookup.Tests.xproj", "{3E245F3E-D204-43FB-9FD9-DD501EA8054D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.Lookup", "src\Mvc.Lookup\Mvc.Lookup.csproj", "{6B0FE95A-672E-453D-9F1C-A77EA7CFB48E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.Lookup.Core", "src\Mvc.Lookup.Core\Mvc.Lookup.Core.csproj", "{A4F395F4-96C6-4BFD-BE93-DFDA64979EA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc.Lookup.Tests", "test\Mvc.Lookup.Tests\Mvc.Lookup.Tests.csproj", "{3E245F3E-D204-43FB-9FD9-DD501EA8054D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
