@@ -11,10 +11,7 @@ namespace NonFactors.Mvc.Lookup
 
         public LookupColumn(String key, String header)
         {
-            if (key == null)
-                throw new ArgumentNullException(nameof(key));
-
-            Key = key;
+            Key = key ?? throw new ArgumentNullException(nameof(key));
             Header = header;
         }
     }

@@ -185,11 +185,8 @@ namespace NonFactors.Mvc.Lookup
         {
             List<Decimal> numbers = new List<Decimal>();
             foreach (String value in values)
-            {
-                Decimal number;
-                if (Decimal.TryParse(value, out number))
+                if (Decimal.TryParse(value, out Decimal number))
                     numbers.Add(number);
-            }
 
             return numbers;
         }
