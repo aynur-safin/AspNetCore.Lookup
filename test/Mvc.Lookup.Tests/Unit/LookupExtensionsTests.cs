@@ -49,7 +49,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.AutoComplete("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-browseless mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup-browseless mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "</div>" +
@@ -72,7 +72,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             String actual = ToString(html.AutoComplete("Test", lookup, new[] { "Value1", "Value2" }, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-browseless mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup-browseless mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value1\" />" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value2\" />" +
@@ -98,7 +98,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.AutoCompleteFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-browseless mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup-browseless mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
                         "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
@@ -122,7 +122,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             String actual = ToString(html.AutoCompleteFor(model => model.Values, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-browseless mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup-browseless mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value1&#x27;s\" />" +
                         "<input class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value2&#x27;s\" />" +
@@ -148,7 +148,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.Lookup("Test", lookup, 1, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
                     "</div>" +
@@ -173,7 +173,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             String actual = ToString(html.Lookup("Test", lookup, 1, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                     "</div>" +
                     "<div attribute=\"attr\" class=\"mvc-lookup-control\" data-dialog=\"Dialog\" " +
@@ -199,7 +199,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             String actual = ToString(html.LookupFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
                         "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
@@ -224,7 +224,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             String actual = ToString(html.LookupFor(model => model.Values, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
-                "<div class=\"mvc-lookup-group\">" +
+                "<div class=\"mvc-lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
                     "</div>" +
                     "<div attribute=\"attr\" class=\"mvc-lookup-control\" data-dialog=\"Dialog\" " +

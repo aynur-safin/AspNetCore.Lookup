@@ -15,7 +15,7 @@ namespace NonFactors.Mvc.Lookup
         public static TagBuilder AutoComplete<TModel>(this IHtmlHelper<TModel> html,
             String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
         {
-            TagBuilder lookup = CreateLookupGroup();
+            TagBuilder lookup = CreateLookup();
             lookup.AddCssClass("mvc-lookup-browseless");
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
             lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
@@ -25,7 +25,7 @@ namespace NonFactors.Mvc.Lookup
         public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
-            TagBuilder lookup = CreateLookupGroup();
+            TagBuilder lookup = CreateLookup();
             lookup.AddCssClass("mvc-lookup-browseless");
             String name = ExpressionHelper.GetExpressionText(expression);
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
@@ -37,7 +37,7 @@ namespace NonFactors.Mvc.Lookup
         public static TagBuilder Lookup<TModel>(this IHtmlHelper<TModel> html,
             String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
         {
-            TagBuilder lookup = CreateLookupGroup();
+            TagBuilder lookup = CreateLookup();
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
             lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
             lookup.InnerHtml.AppendHtml(CreateLookupBrowse(name));
@@ -47,7 +47,7 @@ namespace NonFactors.Mvc.Lookup
         public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
-            TagBuilder lookup = CreateLookupGroup();
+            TagBuilder lookup = CreateLookup();
             String name = ExpressionHelper.GetExpressionText(expression);
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
             lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name, htmlAttributes));
@@ -56,10 +56,10 @@ namespace NonFactors.Mvc.Lookup
             return lookup;
         }
 
-        private static TagBuilder CreateLookupGroup()
+        private static TagBuilder CreateLookup()
         {
             TagBuilder lookup = new TagBuilder("div");
-            lookup.AddCssClass("mvc-lookup-group");
+            lookup.AddCssClass("mvc-lookup");
 
             return lookup;
         }

@@ -8,7 +8,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-.mvc-lookup-group {
+.mvc-lookup {
     display: table;
     width: 100%;
 }
@@ -81,25 +81,25 @@
         content: '\1F50D';
     }
 
-.mvc-lookup-dialog .ui-dialog-title {
+.mvc-lookup-widget .ui-dialog-title {
     line-height: 1.4em;
     min-height: 1.4em;
 }
 
-.mvc-lookup,
 .mvc-lookup-dialog,
-.mvc-lookup-dialog:after,
-.mvc-lookup-dialog:before {
+.mvc-lookup-widget,
+.mvc-lookup-widget:after,
+.mvc-lookup-widget:before {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
 
-    .mvc-lookup-dialog .mvc-lookup {
+    .mvc-lookup-widget .mvc-lookup-dialog {
         padding: 1em;
     }
 
-.mvc-lookup {
+.mvc-lookup-dialog {
     font-size: 0.9em;
     min-width: 428px;
     display: none;
@@ -256,21 +256,21 @@
     }
 }
 
-.mvc-lookup table {
+.mvc-lookup-dialog table {
     border-collapse: collapse;
     border: none;
     width: 100%;
 }
 
-.mvc-lookup tbody tr:hover {
+.mvc-lookup-dialog tbody tr:hover {
     background-color: #ECECEC;
 }
 
-.mvc-lookup .selected {
+.mvc-lookup-dialog .selected {
     background-color: #F5F5F5;
 }
 
-.mvc-lookup tr {
+.mvc-lookup-dialog tr {
     cursor: pointer;
 }
 
@@ -284,37 +284,37 @@
     content: '\2191';
 }
 
-.mvc-lookup thead > tr > th,
-.mvc-lookup tbody > tr > td {
+.mvc-lookup-dialog thead > tr > th,
+.mvc-lookup-dialog tbody > tr > td {
     border: 1px solid #DDDDDD;
     line-height: 1.42857143;
     padding: 0.3em 0.6em;
 }
 
-.mvc-lookup .mvc-lookup-split td {
+.mvc-lookup-dialog .mvc-lookup-split td {
     background-color: #FFFFFF;
     cursor: default;
     border: none;
 }
 
-.mvc-lookup td:not(:first-child):last-child {
+.mvc-lookup-dialog td:not(:first-child):last-child {
     box-sizing: border-box;
     text-align: center;
     font-weight: bold;
     width: 2.5em;
 }
 
-    .mvc-lookup td:not(:first-child):last-child::after {
+    .mvc-lookup-dialog td:not(:first-child):last-child::after {
         content: '\25CF';
     }
 
-.mvc-lookup tr:hover td:not(:first-child):last-child::after,
-.mvc-lookup .selected td:not(:first-child):last-child::after {
+.mvc-lookup-dialog tr:hover td:not(:first-child):last-child::after,
+.mvc-lookup-dialog .selected td:not(:first-child):last-child::after {
     content: '\2714';
     color: #5CB85C;
 }
 
-.mvc-lookup .selected:hover td:not(:first-child):last-child::after {
+.mvc-lookup-dialog .selected:hover td:not(:first-child):last-child::after {
     content: '\2718';
     color: #D65A5A;
 }
@@ -323,22 +323,22 @@
     text-align: center;
 }
 
-.mvc-lookup ul {
+.mvc-lookup-dialog ul {
     padding-top: 0.8em;
     text-align: right;
     margin: 0;
 }
 
-    .mvc-lookup ul li {
+    .mvc-lookup-dialog ul li {
         display: inline;
         cursor: pointer;
     }
 
-        .mvc-lookup ul li + li span {
+        .mvc-lookup-dialog ul li + li span {
             border-left: 0;
         }
 
-    .mvc-lookup ul span {
+    .mvc-lookup-dialog ul span {
         border: 1px solid #DDDDDD;
         box-sizing: content-box;
         display: inline-block;
@@ -348,14 +348,14 @@
         color: #777777;
     }
 
-        .mvc-lookup ul span:focus,
-        .mvc-lookup ul span:hover {
+        .mvc-lookup-dialog ul span:focus,
+        .mvc-lookup-dialog ul span:hover {
             background-color: #EEEEEE;
             color: #777777;
         }
 
-.mvc-lookup .active span,
-.mvc-lookup .active span:hover {
+.mvc-lookup-dialog .active span,
+.mvc-lookup-dialog .active span:hover {
     background-color: rgba(77, 78, 80, 0.76);
     border-color: rgba(77, 78, 80, 0.76);
     color: #FFFFFF;

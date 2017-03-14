@@ -72,8 +72,8 @@ var MvcLookupDialog = (function () {
 
             this.options = {
                 dialog: {
-                    classes: { 'ui-dialog': 'mvc-lookup-dialog' },
-                    dialogClass: 'mvc-lookup-dialog',
+                    classes: { 'ui-dialog': 'mvc-lookup-widget' },
+                    dialogClass: 'mvc-lookup-widget',
                     title: dialog.title,
                     autoOpen: false,
                     minWidth: 455,

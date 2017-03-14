@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Lookup
             AdditionalFilters = new List<String>();
             Columns = new List<LookupColumn>();
             Filter = new LookupFilter();
-            Dialog = "MvcLookup";
+            Dialog = "MvcLookupDialog";
             Filter.Rows = 20;
         }
 
