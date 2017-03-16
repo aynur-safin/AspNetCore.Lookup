@@ -101,6 +101,7 @@ var MvcLookupDialog = (function () {
         },
 
         open: function () {
+            this.loader.hide();
             this.search.val(this.filter.search);
             this.error.hide().html(this.lang('error'));
             this.selected = this.lookup.selected.slice();
