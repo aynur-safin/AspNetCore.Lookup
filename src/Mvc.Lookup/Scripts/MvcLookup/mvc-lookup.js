@@ -8,13 +8,13 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 var MvcLookupFilter = (function () {
-    function MvcLookupFilter(control) {
-        this.page = control.attr('data-page');
-        this.rows = control.attr('data-rows');
-        this.sort = control.attr('data-sort');
-        this.order = control.attr('data-order');
-        this.search = control.attr('data-search');
-        this.additionalFilters = control.attr('data-filters').split(',').filter(Boolean);
+    function MvcLookupFilter(group) {
+        this.page = group.attr('data-page');
+        this.rows = group.attr('data-rows');
+        this.sort = group.attr('data-sort');
+        this.order = group.attr('data-order');
+        this.search = group.attr('data-search');
+        this.additionalFilters = group.attr('data-filters').split(',').filter(Boolean);
     }
 
     MvcLookupFilter.prototype = {
@@ -44,8 +44,8 @@ var MvcLookupDialog = (function () {
     function MvcLookupDialog(lookup) {
         this.lookup = lookup;
         this.filter = lookup.filter;
-        this.title = lookup.control.attr('data-title');
-        this.instance = $('#' + lookup.control.attr('data-dialog'));
+        this.title = lookup.group.attr('data-title');
+        this.instance = $('#' + lookup.group.attr('data-dialog'));
 
         this.pager = this.instance.find('ul');
         this.table = this.instance.find('table');
@@ -387,18 +387,19 @@ var MvcLookupDialog = (function () {
     return MvcLookupDialog;
 }());
 var MvcLookup = (function () {
-    function MvcLookup(control, options) {
-        this.multi = control.attr('data-multi') == 'true';
-        this.filter = new MvcLookupFilter(control);
-        this.for = control.attr('data-for');
-        this.url = control.attr('data-url');
+    function MvcLookup(group, options) {
+        this.multi = group.attr('data-multi') == 'true';
+        this.filter = new MvcLookupFilter(group);
+        this.for = group.attr('data-for');
+        this.url = group.attr('data-url');
         this.selected = [];
 
         this.browse = $('.mvc-lookup-browse[data-for="' + this.for + '"]');
         this.valueContainer = $('.mvc-lookup-values[data-for="' + this.for + '"]');
         this.values = this.valueContainer.find('.mvc-lookup-value');
-        this.search = control.find('.mvc-lookup-input');
-        this.control = control;
+        this.control = group.find('.mvc-lookup-control');
+        this.search = group.find('.mvc-lookup-input');
+        this.group = group;
 
         this.dialog = new MvcLookupDialog(this);
         this.initOptions();
@@ -606,16 +607,16 @@ var MvcLookup = (function () {
             }
         },
         cleanUp: function () {
-            this.control.removeAttr('data-filters');
-            this.control.removeAttr('data-dialog');
-            this.control.removeAttr('data-search');
-            this.control.removeAttr('data-multi');
-            this.control.removeAttr('data-order');
-            this.control.removeAttr('data-title');
-            this.control.removeAttr('data-page');
-            this.control.removeAttr('data-rows');
-            this.control.removeAttr('data-sort');
-            this.control.removeAttr('data-url');
+            this.group.removeAttr('data-filters');
+            this.group.removeAttr('data-dialog');
+            this.group.removeAttr('data-search');
+            this.group.removeAttr('data-multi');
+            this.group.removeAttr('data-order');
+            this.group.removeAttr('data-title');
+            this.group.removeAttr('data-page');
+            this.group.removeAttr('data-rows');
+            this.group.removeAttr('data-sort');
+            this.group.removeAttr('data-url');
         },
         bind: function () {
             var lookup = this;
@@ -663,17 +664,21 @@ $.fn.mvclookup = function (options) {
     var args = arguments;
 
     return this.each(function () {
-        if (!$.data(this, 'mvc-lookup')) {
+        var group = $(this).closest('.mvc-lookup');
+        if (!group.length)
+            return;
+
+        if (!$.data(group[0], 'mvc-lookup')) {
             if (typeof options == 'string') {
-                var lookup = new MvcLookup($(this));
+                var lookup = new MvcLookup(group);
                 lookup.methods[options].apply(lookup, [].slice.apply(args, 1));
             } else {
-                var lookup = new MvcLookup($(this), options);
+                var lookup = new MvcLookup(group, options);
             }
 
-            $.data(this, 'mvc-lookup', lookup);
+            $.data(group[0], 'mvc-lookup', lookup);
         } else {
-            var lookup = $.data(this, 'mvc-lookup');
+            var lookup = $.data(group[0], 'mvc-lookup');
 
             if (typeof options == 'string') {
                 lookup.methods[options].apply(lookup, [].slice.call(args, 1));
