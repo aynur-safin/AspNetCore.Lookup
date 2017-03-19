@@ -81,13 +81,13 @@ namespace NonFactors.Mvc.Lookup
 
             return group;
         }
-        private static IHtmlContent CreateLookupValues<TModel, TProperty>(IHtmlHelper<TModel> html, MvcLookup model, Expression<Func<TModel, TProperty>> expression)
+        private static IHtmlContent CreateLookupValues<TModel, TProperty>(IHtmlHelper<TModel> html, MvcLookup lookup, Expression<Func<TModel, TProperty>> expression)
         {
             Object value = ExpressionMetadataProvider.FromLambdaExpression(expression, html.ViewData, html.MetadataProvider).Model;
             String name = ExpressionHelper.GetExpressionText(expression);
 
-            if (model.Multi)
-                return CreateLookupValues(html, model, name, value);
+            if (lookup.Multi)
+                return CreateLookupValues(html, lookup, name, value);
 
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
             attributes["class"] = "mvc-lookup-value";

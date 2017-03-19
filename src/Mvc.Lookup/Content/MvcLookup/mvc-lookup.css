@@ -50,14 +50,14 @@
         background: #EEEEEE;
     }
 
-    .mvc-lookup-item .mvc-lookup-close {
-        margin-left: 6px;
-        cursor: pointer;
-    }
+.mvc-lookup-close {
+    margin-left: 6px;
+    cursor: pointer;
+}
 
-        .mvc-lookup-item .mvc-lookup-close:hover {
-            color: #000000;
-        }
+    .mvc-lookup-close:hover {
+        color: #000000;
+    }
 
 .mvc-lookup-browseless .mvc-lookup-control {
     border-radius: 4px;
@@ -283,14 +283,14 @@
     content: '\2191';
 }
 
-.mvc-lookup-dialog thead > tr > th,
-.mvc-lookup-dialog tbody > tr > td {
+.mvc-lookup-dialog th,
+.mvc-lookup-dialog td {
     border: 1px solid #DDDDDD;
     line-height: 1.42857143;
     padding: 0.3em 0.6em;
 }
 
-.mvc-lookup-dialog .mvc-lookup-split td {
+.mvc-lookup-split td {
     background-color: #FFFFFF;
     cursor: default;
     border: none;

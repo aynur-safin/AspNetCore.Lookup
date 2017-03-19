@@ -6,22 +6,4 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Content\MvcLookup\mvc-lookup.css" />
-    <None Remove="Scripts\MvcLookup\mvc-lookup.js" />
-    <None Remove="Views\Shared\MvcLookup\_Dialog.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Content\MvcLookup\mvc-lookup.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Scripts\MvcLookup\mvc-lookup.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Views\Shared\MvcLookup\_Dialog.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>
