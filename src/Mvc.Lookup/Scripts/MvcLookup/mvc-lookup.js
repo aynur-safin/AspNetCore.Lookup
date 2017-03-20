@@ -358,16 +358,16 @@ var MvcLookupDialog = (function () {
             dialog.instance.parent().resizable(dialog.options.resizable);
 
             dialog.search.off('keyup.mvclookup').on('keyup.mvclookup', function (e) {
-                if (e.keyCode < 112 || e.keyCode > 126) {
-                    var input = this;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(function () {
+                var input = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    if (dialog.filter.search != input.value || e.keyCode == 13) {
                         dialog.filter.search = input.value;
                         dialog.filter.page = 0;
 
                         dialog.refresh();
-                    }, 500);
-                }
+                    }
+                }, 500);
             });
 
             dialog.rows.spinner(dialog.options.spinner);
