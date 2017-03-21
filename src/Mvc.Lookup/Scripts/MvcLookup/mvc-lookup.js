@@ -649,7 +649,7 @@ var MvcLookup = (function () {
                         lookup.events.filterChange.apply(lookup, [e]);
                     }
 
-                    if (!e.isDefaultPrevented()) {
+                    if (!e.isDefaultPrevented() && lookup.selected.length > 0) {
                         lookup.select([], true);
                     }
                 });
