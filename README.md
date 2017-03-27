@@ -5,10 +5,7 @@ Data lookup controls for ASP.NET Core projects.
 ![Docs](https://img.shields.io/github/release/NonFactors/MVC6.Lookup.Web.svg?style=plastic&label=docs)
 ![License](https://img.shields.io/badge/license-MIT-green.svg?style=plastic)
 
-# Examples and API documentation
-Usage examples and API can be found at [Lookup] (http://mvc-lookup.azurewebsites.net/) website.
-
 # Contribution
-- Questions or anything conserning MVC.Lookup web/docs should be reported at [Web repository](https://github.com/NonFactors/MVC6.Lookup.Web).
+- Questions or anything conserning MVC.Lookup usage or documentation should be reported at [Web repository](https://github.com/NonFactors/MVC6.Lookup.Web).
 - Before you start writing a pull request you should discuss it using GitHub issues.
 - Bugs, improvements or features should be reported using GitHub issues.
