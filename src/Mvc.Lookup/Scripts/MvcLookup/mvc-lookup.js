@@ -25,6 +25,7 @@ var MvcLookupFilter = (function () {
                 '&order=' + encodeURIComponent(filter.order) +
                 '&rows=' + encodeURIComponent(filter.rows) +
                 '&page=' + encodeURIComponent(filter.page) +
+                (filter.checkIds ? filter.checkIds : '') +
                 (filter.ids ? filter.ids : '');
 
             for (var i = 0; i < this.additionalFilters.length; i++) {
@@ -645,7 +646,30 @@ var MvcLookup = (function () {
                     }
 
                     if (!e.isDefaultPrevented() && lookup.selected.length > 0) {
-                        lookup.select([], true);
+                        lookup.startLoading(300);
+                        var ids = $.grep(lookup.values.map(function (i, e) { return encodeURIComponent(e.value); }).get(), Boolean);
+
+                        $.ajax({
+                            url: lookup.url + lookup.filter.getQuery({ checkIds: '&checkIds=' + ids.join('&checkIds='), rows: ids.length }),
+                            cache: false,
+                            success: function (data) {
+                                lookup.stopLoading();
+
+                                var selected = [];
+                                for (var i = 0; i < data.rows.length; i++) {
+                                    var index = ids.indexOf(data.rows[i].LookupIdKey);
+                                    if (index >= 0) {
+                                        selected[index] = data.rows[i];
+                                    }
+                                }
+
+                                lookup.select(selected, true);
+                            },
+                            error: function () {
+                                lookup.select([], true);
+                                lookup.stopLoading();
+                            }
+                        });
                     }
                 });
             }

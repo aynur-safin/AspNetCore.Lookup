@@ -13,6 +13,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Empty(filter.AdditionalFilters);
             Assert.Empty(filter.Selected);
+            Assert.Empty(filter.CheckIds);
             Assert.Empty(filter.Ids);
         }
 

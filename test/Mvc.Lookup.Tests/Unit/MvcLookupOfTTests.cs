@@ -25,6 +25,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     Id = i + "I",
                     Count = i + 10,
                     Value = i + "V",
+                    ParentId = "1000",
                     Date = new DateTime(2014, 12, 10).AddDays(i)
                 });
         }
@@ -142,6 +143,33 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Filter.Search = "Term";
             lookup.Filter.Selected.Add("17I");
             lookup.Filter.AdditionalFilters.Add("Value", "5V");
+
+            LookupData actual = lookup.GetData();
+
+            Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
+            Assert.Equal("9V", actual.Rows[0][MvcLookup.AcKey]);
+            Assert.Equal("9I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("9V", actual.Rows[0]["Value"]);
+            Assert.Equal("19", actual.Rows[0]["Count"]);
+
+            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
+            Assert.Equal("15V", actual.Rows[1][MvcLookup.AcKey]);
+            Assert.Equal("15I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("15V", actual.Rows[1]["Value"]);
+            Assert.Equal("25", actual.Rows[1]["Count"]);
+
+            Assert.Equal(lookup.Columns, actual.Columns);
+            Assert.Equal(2, actual.FilteredRows);
+            Assert.Equal(2, actual.Rows.Count);
+        }
+
+        [Fact]
+        public void GetData_FiltersByCheckIds()
+        {
+            lookup.Filter.Sort = "Count";
+            lookup.Filter.CheckIds.Add("9I");
+            lookup.Filter.CheckIds.Add("15I");
+            lookup.Filter.AdditionalFilters.Add("ParentId", "1000");
 
             LookupData actual = lookup.GetData();
 
