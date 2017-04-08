@@ -37,7 +37,7 @@
 .mvc-lookup-item {
     transition: background linear 0.3s;
     border: 1px solid #DDDDDD;
-    background: #F3F3F3;
+    background: #F8F8F8;
     border-radius: 3px;
     padding: 1px 6px;
     color: #999999;
@@ -47,7 +47,7 @@
 
     .mvc-lookup-item:hover {
         border-color: #CCCCCC;
-        background: #EEEEEE;
+        background: #F0F0F0;
     }
 
 .mvc-lookup-close {
@@ -58,6 +58,15 @@
     .mvc-lookup-close:hover {
         color: #000000;
     }
+
+.mvc-lookup-readonly .mvc-lookup-control,
+.mvc-lookup-readonly .mvc-lookup-control input {
+    background: #EEEEEE;
+}
+
+.mvc-lookup-readonly .mvc-lookup-close {
+    display: none;
+}
 
 .mvc-lookup-browseless .mvc-lookup-control {
     border-radius: 4px;

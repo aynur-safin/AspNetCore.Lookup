@@ -64,6 +64,7 @@ namespace NonFactors.Mvc.Lookup
         {
             IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
             attributes["data-filters"] = String.Join(",", lookup.AdditionalFilters);
+            attributes["data-readonly"] = lookup.ReadOnly ? "true" : "false";
             attributes["data-multi"] = lookup.Multi ? "true" : "false";
             attributes["data-order"] = lookup.Filter.Order.ToString();
             attributes["data-page"] = lookup.Filter.Page.ToString();
@@ -78,6 +79,9 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder group = new TagBuilder("div");
             group.MergeAttributes(attributes);
             group.AddCssClass("mvc-lookup");
+
+            if (lookup.ReadOnly)
+                group.AddCssClass("mvc-lookup-readonly");
 
             return group;
         }
@@ -134,6 +138,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder control = new TagBuilder("div");
             TagBuilder loader = new TagBuilder("div");
 
+            if (lookup.ReadOnly) search.Attributes["readonly"] = "readonly";
             loader.AddCssClass("mvc-lookup-control-loader");
             control.AddCssClass("mvc-lookup-control");
             search.AddCssClass("mvc-lookup-input");

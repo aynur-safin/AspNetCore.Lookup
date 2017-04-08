@@ -98,7 +98,7 @@ var MvcLookupDialog = (function () {
                         $(this).css('height', 'auto');
                     }
                 }
-            }
+            };
         },
 
         open: function () {
@@ -384,6 +384,7 @@ var MvcLookupDialog = (function () {
 }());
 var MvcLookup = (function () {
     function MvcLookup(group, options) {
+        this.readonly = group.attr('data-readonly') == 'true';
         this.multi = group.attr('data-multi') == 'true';
         this.filter = new MvcLookupFilter(group);
         this.for = group.attr('data-for');
@@ -413,6 +414,7 @@ var MvcLookup = (function () {
             this.dialog.set(options);
             this.events = $.extend(this.events, options.events);
             this.search.autocomplete($.extend(this.options.autocomplete, options.autocomplete));
+            this.setReadonly(options.readonly == null ? this.readonly : options.readonly);
         },
         initOptions: function () {
             var lookup = this;
@@ -445,14 +447,27 @@ var MvcLookup = (function () {
                         lookup.stopLoading();
                     },
                     select: function (e, selection) {
-                        lookup.selected.push(selection.item.data);
-                        lookup.select(lookup.selected, true);
+                        lookup.select(lookup.selected.concat(selection.item.data), true);
+
                         e.preventDefault();
                     },
                     minLength: 1,
                     delay: 500
                 }
             };
+        },
+        setReadonly: function (readonly) {
+            this.readonly = readonly;
+
+            if (readonly) {
+                this.search.autocomplete('disable').attr('readonly', 'readonly');
+                this.group.addClass('mvc-lookup-readonly');
+            } else {
+                this.search.autocomplete('enable').removeAttr('readonly');
+                this.group.removeClass('mvc-lookup-readonly');
+            }
+
+            this.resizeLookupSearch();
         },
 
         reload: function (triggerChanges) {
@@ -470,13 +485,15 @@ var MvcLookup = (function () {
                         lookup.stopLoading();
 
                         if (data.rows.length > 0) {
-                            var selected = [];
-                            for (var i = 0; i < data.rows.length; i++) {
-                                var index = ids.indexOf(data.rows[i].LookupIdKey);
-                                selected[index] = data.rows[i];
+                            var rows = [];
+                            for (var i = 0; i < ids.length; i++) {
+                                var index = lookup.indexOf(data.rows, ids[i])
+                                if (index >= 0) {
+                                    rows.push(data.rows[index]);
+                                }
                             }
 
-                            lookup.select(selected, triggerChanges);
+                            lookup.select(rows, triggerChanges);
                         }
                     },
                     error: function () {
@@ -488,6 +505,10 @@ var MvcLookup = (function () {
             }
         },
         select: function (data, triggerChanges) {
+            if (this.readonly) {
+                return;
+            }
+
             if (this.events.select) {
                 var e = $.Event('select.mvclookup');
                 this.events.select.apply(this, [e, data, triggerChanges]);
@@ -572,9 +593,7 @@ var MvcLookup = (function () {
             var lookup = this;
 
             close.on('click.mvclookup', function () {
-                lookup.selected.splice(lookup.indexOf(lookup.selected, id), 1);
-
-                lookup.select(lookup.selected, true);
+                lookup.select(lookup.selected.filter(function (value) { return value.LookupIdKey != id; }), true);
             });
         },
         indexOf: function (selection, id) {
@@ -603,6 +622,7 @@ var MvcLookup = (function () {
             }
         },
         cleanUp: function () {
+            this.group.removeAttr('data-readonly');
             this.group.removeAttr('data-filters');
             this.group.removeAttr('data-dialog');
             this.group.removeAttr('data-search');
@@ -623,9 +643,7 @@ var MvcLookup = (function () {
 
             lookup.search.on('keydown.mvclookup', function (e) {
                 if (e.which == 8 && this.value.length == 0 && lookup.selected.length > 0) {
-                    lookup.selected.pop();
-
-                    lookup.select(lookup.selected, true);
+                    lookup.select(lookup.selected.slice(0, -1), true);
                 }
             });
             lookup.search.on('keyup.mvclookup', function (e) {
@@ -635,7 +653,9 @@ var MvcLookup = (function () {
             });
 
             lookup.browse.on('click.mvclookup', function () {
-                lookup.dialog.open();
+                if (!lookup.readonly) {
+                    lookup.dialog.open();
+                }
             });
 
             var filters = lookup.filter.additionalFilters;
@@ -655,15 +675,15 @@ var MvcLookup = (function () {
                             success: function (data) {
                                 lookup.stopLoading();
 
-                                var selected = [];
-                                for (var i = 0; i < data.rows.length; i++) {
-                                    var index = ids.indexOf(data.rows[i].LookupIdKey);
+                                var rows = [];
+                                for (var i = 0; i < ids.length; i++) {
+                                    var index = lookup.indexOf(data.rows, ids[i])
                                     if (index >= 0) {
-                                        selected[index] = data.rows[i];
+                                        rows.push(data.rows[index]);
                                     }
                                 }
 
-                                lookup.select(selected, true);
+                                lookup.select(rows, true);
                             },
                             error: function () {
                                 lookup.select([], true);

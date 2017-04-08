@@ -13,6 +13,7 @@ namespace NonFactors.Mvc.Lookup
         public String Title { get; set; }
         public String Dialog { get; set; }
         public Boolean Multi { get; set; }
+        public Boolean ReadOnly { get; set; }
 
         public LookupFilter Filter { get; set; }
         public IList<LookupColumn> Columns { get; set; }

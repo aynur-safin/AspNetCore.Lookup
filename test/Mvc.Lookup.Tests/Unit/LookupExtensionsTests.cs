@@ -45,13 +45,36 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
 
         [Fact]
+        public void AutoComplete_Readonly()
+        {
+            lookup.ReadOnly = true;
+
+            String actual = ToString(html.AutoComplete("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
+            String expected =
+                "<div attribute=\"attr\" class=\"mvc-lookup-browseless mvc-lookup-readonly mvc-lookup classes\" data-dialog=\"Dialog\" " +
+                        "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"false\" data-order=\"Desc\" " +
+                        "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
+                    "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
+                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
+                    "</div>" +
+                    "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
+                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
+                    "</div>" +
+                "</div>";
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void AutoComplete_FromLookup()
         {
             String actual = ToString(html.AutoComplete("Test", lookup, "Value", new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup-browseless mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"false\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
@@ -74,7 +97,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup-browseless mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"true\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value1\" />" +
@@ -94,13 +117,36 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
+        public void AutoCompleteFor_Readonly()
+        {
+            lookup.ReadOnly = true;
+
+            String actual = ToString(html.AutoCompleteFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
+            String expected =
+                "<div attribute=\"attr\" class=\"mvc-lookup-browseless mvc-lookup-readonly mvc-lookup classes\" data-dialog=\"Dialog\" " +
+                        "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
+                        "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
+                    "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
+                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                    "</div>" +
+                    "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
+                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
+                    "</div>" +
+                "</div>";
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void AutoCompleteFor_FromLookup()
         {
             String actual = ToString(html.AutoCompleteFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup-browseless mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
                         "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
@@ -124,7 +170,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup-browseless mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Values\" data-multi=\"true\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value1&#x27;s\" />" +
@@ -144,13 +190,38 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region Lookup<TModel>(this IHtmlHelper<TModel> html, String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
 
         [Fact]
+        public void Lookup_Readonly()
+        {
+            lookup.ReadOnly = true;
+
+            String actual = ToString(html.Lookup("Test", lookup, 1, new { @class = "classes", attribute = "attr" }));
+            String expected =
+                "<div attribute=\"attr\" class=\"mvc-lookup-readonly mvc-lookup classes\" data-dialog=\"Dialog\" " +
+                        "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"false\" data-order=\"Desc\" " +
+                        "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
+                    "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
+                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
+                    "</div>" +
+                    "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
+                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
+                    "</div>" +
+                    "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                    "</div>" +
+                "</div>";
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void Lookup_FromLookup()
         {
             String actual = ToString(html.Lookup("Test", lookup, 1, new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"false\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                         "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
@@ -175,7 +246,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Test\" data-multi=\"true\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                     "</div>" +
@@ -195,13 +266,38 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         #region LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
+        public void LookupFor_Readonly()
+        {
+            lookup.ReadOnly = true;
+
+            String actual = ToString(html.LookupFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
+            String expected =
+                "<div attribute=\"attr\" class=\"mvc-lookup-readonly mvc-lookup classes\" data-dialog=\"Dialog\" " +
+                        "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
+                        "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
+                    "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
+                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                    "</div>" +
+                    "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
+                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<div class=\"mvc-lookup-control-loader\"></div>" +
+                    "</div>" +
+                    "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
+                    "</div>" +
+                "</div>";
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void LookupFor_FromLookup()
         {
             String actual = ToString(html.LookupFor(model => model.ParentId, lookup, new { @class = "classes", attribute = "attr" }));
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"ParentId\" data-multi=\"false\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
                         "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
@@ -226,7 +322,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String expected =
                 "<div attribute=\"attr\" class=\"mvc-lookup classes\" data-dialog=\"Dialog\" " +
                         "data-filters=\"Add1,Add2\" data-for=\"Values\" data-multi=\"true\" data-order=\"Desc\" " +
-                        "data-page=\"2\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
+                        "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
                     "</div>" +
