@@ -378,7 +378,7 @@ var MvcLookupDialog = (function () {
                 }
             });
 
-            dialog.selector.off('click').on('click', function () {
+            dialog.selector.off('click.mvclookup').on('click.mvclookup', function () {
                 dialog.close();
             });
         }
