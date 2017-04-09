@@ -345,12 +345,15 @@ var MvcLookupDialog = (function () {
             var timeout;
             var dialog = this;
 
+            dialog.instance.dialog().dialog('destroy');
             dialog.instance.dialog(dialog.options.dialog);
             dialog.instance.dialog('option', 'close', function () {
                 if (dialog.lookup.multi) {
                     dialog.lookup.select(dialog.selected, true);
                 }
             });
+
+            dialog.instance.parent().resizable().resizable('destroy');
             dialog.instance.parent().resizable(dialog.options.resizable);
 
             dialog.search.off('keyup.mvclookup').on('keyup.mvclookup', function (e) {
@@ -366,6 +369,7 @@ var MvcLookupDialog = (function () {
                 }, 500);
             });
 
+            dialog.rows.spinner().spinner('destroy');
             dialog.rows.spinner(dialog.options.spinner);
             dialog.rows.off('keyup.mvclookup').on('keyup.mvclookup', function (e) {
                 if (e.which == 13) {
