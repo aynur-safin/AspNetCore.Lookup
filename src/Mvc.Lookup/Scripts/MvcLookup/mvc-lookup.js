@@ -488,17 +488,15 @@ var MvcLookup = (function () {
                     success: function (data) {
                         lookup.stopLoading();
 
-                        if (data.rows.length > 0) {
-                            var rows = [];
-                            for (var i = 0; i < ids.length; i++) {
-                                var index = lookup.indexOf(data.rows, ids[i])
-                                if (index >= 0) {
-                                    rows.push(data.rows[index]);
-                                }
+                        var rows = [];
+                        for (var i = 0; i < ids.length; i++) {
+                            var index = lookup.indexOf(data.rows, ids[i])
+                            if (index >= 0) {
+                                rows.push(data.rows[index]);
                             }
-
-                            lookup.select(rows, triggerChanges);
                         }
+
+                        lookup.select(rows, triggerChanges);
                     },
                     error: function () {
                         lookup.stopLoading();
