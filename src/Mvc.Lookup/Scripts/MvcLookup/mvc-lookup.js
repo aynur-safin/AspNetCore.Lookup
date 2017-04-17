@@ -198,6 +198,7 @@ var MvcLookupDialog = (function () {
                 for (var j = 0; j < columns.length; j++) {
                     if (!columns[j].hidden) {
                         var td = document.createElement('td');
+                        td.className = columns[j].cssClass || '';
                         td.innerText = rows[i][columns[j].key];
 
                         tr.appendChild(td);
@@ -289,6 +290,10 @@ var MvcLookupDialog = (function () {
             header.innerText = column.header;
             var filter = this.filter;
             var dialog = this;
+
+            if (column.cssClass) {
+                header.className = column.cssClass;
+            }
 
             if (filter.sort == column.key) {
                 header.className += ' mvc-lookup-' + filter.order.toLowerCase();

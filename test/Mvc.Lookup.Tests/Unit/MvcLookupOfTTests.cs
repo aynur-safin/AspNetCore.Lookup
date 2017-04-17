@@ -64,6 +64,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Assert.Equal(expected.Current.Key, actual.Current.Key);
                 Assert.Equal(expected.Current.Header, actual.Current.Header);
                 Assert.Equal(expected.Current.Hidden, actual.Current.Hidden);
+                Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
             }
         }
 
@@ -128,6 +129,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             String actual = lookup.GetColumnHeader(property);
 
             Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region GetColumnCssClass(PropertyInfo property)
+
+        [Fact]
+        public void GetColumnCssClass_ReturnsNull()
+        {
+            Assert.Null(lookup.GetColumnCssClass(null));
         }
 
         #endregion

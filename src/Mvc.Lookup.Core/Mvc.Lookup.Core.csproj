@@ -1,13 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
-    <TargetFrameworks>net46;netstandard1.6</TargetFrameworks>
+    <Version>2.0.0</Version>
+    <Company>NonFactors</Company>
+    <Product>Mvc.Lookup</Product>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TargetFrameworks>net46;netstandard1.6</TargetFrameworks>
+    <Description>Data lookup controls for ASP.NET Core projects</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.6.10" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.6.12" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="1.1.2" />
   </ItemGroup>
 

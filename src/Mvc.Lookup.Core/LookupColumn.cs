@@ -7,6 +7,7 @@ namespace NonFactors.Mvc.Lookup
         public String Key { get; }
         public String Header { get; set; }
         public Boolean Hidden { get; set; }
+        public String CssClass { get; set; }
 
         public LookupColumn(String key, String header)
         {

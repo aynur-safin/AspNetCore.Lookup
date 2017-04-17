@@ -31,7 +31,8 @@ namespace NonFactors.Mvc.Lookup
             foreach (PropertyInfo property in AttributedProperties)
                 Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
                 {
-                    Hidden = property.GetCustomAttribute<LookupColumnAttribute>(false).Hidden
+                    Hidden = property.GetCustomAttribute<LookupColumnAttribute>(false).Hidden,
+                    CssClass = GetColumnCssClass(property)
                 });
         }
         public virtual String GetColumnKey(PropertyInfo property)
@@ -44,6 +45,10 @@ namespace NonFactors.Mvc.Lookup
         public virtual String GetColumnHeader(PropertyInfo property)
         {
             return property?.GetCustomAttribute<DisplayAttribute>(false)?.GetShortName();
+        }
+        public virtual String GetColumnCssClass(PropertyInfo property)
+        {
+            return null;
         }
 
         public override LookupData GetData()
