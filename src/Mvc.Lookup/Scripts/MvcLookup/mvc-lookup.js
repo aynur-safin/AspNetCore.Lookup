@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.0.0
+ * Mvc.Lookup 2.0.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -271,6 +271,8 @@ var MvcLookupDialog = (function () {
                     lookup.select(dialog.selected, false);
 
                     dialog.close();
+
+                    lookup.search.focus();
                 }
             });
 
@@ -355,6 +357,7 @@ var MvcLookupDialog = (function () {
             dialog.instance.dialog('option', 'close', function () {
                 if (dialog.lookup.multi) {
                     dialog.lookup.select(dialog.selected, true);
+                    dialog.lookup.search.focus();
                 }
             });
 
@@ -545,7 +548,7 @@ var MvcLookup = (function () {
             }
 
             if (triggerChanges) {
-                this.search.change().focus();
+                this.search.change();
                 this.values.change();
             }
         },
@@ -601,6 +604,7 @@ var MvcLookup = (function () {
 
             close.on('click.mvclookup', function () {
                 lookup.select(lookup.selected.filter(function (value) { return value.LookupIdKey != id; }), true);
+                lookup.search.focus();
             });
         },
         indexOf: function (selection, id) {
