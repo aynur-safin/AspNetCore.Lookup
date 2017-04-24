@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.0.1
+ * Mvc.Lookup 2.0.2
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -268,7 +268,7 @@ var MvcLookupDialog = (function () {
                 if (lookup.multi) {
                     dialog.selector.text(dialog.lang('select').replace('{0}', dialog.selected.length));
                 } else {
-                    lookup.select(dialog.selected, false);
+                    lookup.select(dialog.selected, true);
 
                     dialog.close();
 
