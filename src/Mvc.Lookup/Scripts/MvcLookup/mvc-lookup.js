@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.0.2
+ * Mvc.Lookup 2.0.3
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -515,10 +515,6 @@ var MvcLookup = (function () {
             }
         },
         select: function (data, triggerChanges) {
-            if (this.readonly) {
-                return;
-            }
-
             if (this.events.select) {
                 var e = $.Event('select.mvclookup');
                 this.events.select.apply(this, [e, data, triggerChanges]);
