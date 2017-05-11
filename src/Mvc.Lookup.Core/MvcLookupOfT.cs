@@ -140,7 +140,10 @@ namespace NonFactors.Mvc.Lookup
         public virtual IQueryable<T> Sort(IQueryable<T> models)
         {
             if (String.IsNullOrWhiteSpace(Filter.Sort))
-                return models.OrderBy(model => 0);
+                if (typeof(IOrderedQueryable).IsAssignableFrom(models.Expression.Type))
+                    return models;
+                else
+                    return models.OrderBy(model => 0);
 
             return models.OrderBy(Filter.Sort + " " + Filter.Order);
         }

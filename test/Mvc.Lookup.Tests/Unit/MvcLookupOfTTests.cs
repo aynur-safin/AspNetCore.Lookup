@@ -523,6 +523,21 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void Sort_NoSortOrderedColumns(String column)
+        {
+            lookup.Columns.Clear();
+            lookup.Filter.Sort = column;
+
+            IQueryable<TestModel> expected = lookup.GetModels().OrderByDescending(model => model.Id);
+            IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels().OrderByDescending(model => model.Id));
+
+            Assert.Equal(expected, actual);
+        }
+
         #endregion
 
         #region Page(IQueryable<T> models)

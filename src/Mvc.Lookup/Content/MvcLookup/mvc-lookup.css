@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.0.3
+ * Mvc.Lookup 2.1.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
