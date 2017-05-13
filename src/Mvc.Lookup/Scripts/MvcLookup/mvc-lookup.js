@@ -459,7 +459,11 @@ var MvcLookup = (function () {
                         lookup.stopLoading();
                     },
                     select: function (e, selection) {
-                        lookup.select(lookup.selected.concat(selection.item.data), true);
+                        if (lookup.multi) {
+                            lookup.select(lookup.selected.concat(selection.item.data), true);
+                        } else {
+                            lookup.select([selection.item.data], true);
+                        }
 
                         e.preventDefault();
                     },
