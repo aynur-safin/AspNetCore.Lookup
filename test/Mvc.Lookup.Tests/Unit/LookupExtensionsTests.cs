@@ -208,6 +208,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                        "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
 
@@ -231,6 +232,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                        "<i class=\"mvc-lookup-icon\"></i>"+
                     "</div>" +
                 "</div>";
 
@@ -255,6 +257,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                        "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
 
@@ -284,6 +287,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
+                        "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
 
@@ -307,6 +311,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
+                        "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
 
@@ -331,6 +336,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Values\">" +
+                        "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
 

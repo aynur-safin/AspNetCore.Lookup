@@ -154,6 +154,11 @@ namespace NonFactors.Mvc.Lookup
             browse.AddCssClass("mvc-lookup-browse");
             browse.Attributes["data-for"] = name;
 
+            TagBuilder icon = new TagBuilder("i");
+            icon.AddCssClass("mvc-lookup-icon");
+
+            browse.InnerHtml.AppendHtml(icon);
+
             return browse;
         }
     }
