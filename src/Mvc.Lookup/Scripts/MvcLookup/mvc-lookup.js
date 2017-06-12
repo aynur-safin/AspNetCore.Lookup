@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.1.0
+ * Mvc.Lookup 2.1.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -729,7 +729,7 @@ $.fn.mvclookup = function (options) {
         if (!$.data(group[0], 'mvc-lookup')) {
             if (typeof options == 'string') {
                 var lookup = new MvcLookup(group);
-                lookup.methods[options].apply(lookup, [].slice.apply(args, 1));
+                lookup.methods[options].apply(lookup, [].slice.call(args, 1));
             } else {
                 var lookup = new MvcLookup(group, options);
             }
