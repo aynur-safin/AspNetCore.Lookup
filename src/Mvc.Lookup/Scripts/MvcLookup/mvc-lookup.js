@@ -497,20 +497,21 @@ var MvcLookup = (function () {
         reload: function (triggerChanges) {
             var lookup = this;
             triggerChanges = triggerChanges == null ? true : triggerChanges;
-            var ids = $.grep(lookup.values.map(function (i, e) { return encodeURIComponent(e.value); }).get(), Boolean);
+            var ids = $.grep(lookup.values, function (e) { return e.value; });
 
             if (ids.length > 0) {
                 lookup.startLoading(300);
+                var encodedIds = ids.map(function (e) { return encodeURIComponent(e.value); });
 
                 $.ajax({
-                    url: lookup.url + lookup.filter.getQuery({ ids: '&ids=' + ids.join('&ids='), rows: ids.length }),
+                    url: lookup.url + lookup.filter.getQuery({ ids: '&ids=' + encodedIds.join('&ids='), rows: ids.length }),
                     cache: false,
                     success: function (data) {
                         lookup.stopLoading();
 
                         var rows = [];
                         for (var i = 0; i < ids.length; i++) {
-                            var index = lookup.indexOf(data.rows, ids[i])
+                            var index = lookup.indexOf(data.rows, ids[i].value)
                             if (index >= 0) {
                                 rows.push(data.rows[index]);
                             }
@@ -686,17 +687,18 @@ var MvcLookup = (function () {
 
                     if (!e.isDefaultPrevented() && lookup.selected.length > 0) {
                         lookup.startLoading(300);
-                        var ids = $.grep(lookup.values.map(function (i, e) { return encodeURIComponent(e.value); }).get(), Boolean);
+                        var ids = $.grep(lookup.values, function (e) { return e.value; });
+                        var encodedIds = ids.map(function (e) { return encodeURIComponent(e.value); });
 
                         $.ajax({
-                            url: lookup.url + lookup.filter.getQuery({ checkIds: '&checkIds=' + ids.join('&checkIds='), rows: ids.length }),
+                            url: lookup.url + lookup.filter.getQuery({ checkIds: '&checkIds=' + encodedIds.join('&checkIds='), rows: ids.length }),
                             cache: false,
                             success: function (data) {
                                 lookup.stopLoading();
 
                                 var rows = [];
                                 for (var i = 0; i < ids.length; i++) {
-                                    var index = lookup.indexOf(data.rows, ids[i])
+                                    var index = lookup.indexOf(data.rows, ids[i].value)
                                     if (index >= 0) {
                                         rows.push(data.rows[index]);
                                     }
