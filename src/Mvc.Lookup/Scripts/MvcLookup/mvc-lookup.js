@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.2.0
+ * Mvc.Lookup 2.2.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -207,7 +207,7 @@ var MvcLookupDialog = (function () {
                     if (!columns[j].hidden) {
                         var td = document.createElement('td');
                         td.className = columns[j].cssClass || '';
-                        td.innerText = rows[i][columns[j].key];
+                        td.innerText = rows[i][columns[j].key] || '';
 
                         tr.appendChild(td);
                     }
@@ -297,7 +297,7 @@ var MvcLookupDialog = (function () {
         },
         createHeaderColumn: function (column) {
             var header = document.createElement('th');
-            header.innerText = column.header;
+            header.innerText = column.header || '';
             var filter = this.filter;
             var dialog = this;
 
@@ -576,7 +576,7 @@ var MvcLookup = (function () {
                 close.innerHTML = 'x';
 
                 var item = document.createElement('div');
-                item.innerText = data[i].LookupAcKey;
+                item.innerText = data[i].LookupAcKey || '';
                 item.className = 'mvc-lookup-item';
                 item.appendChild(close);
 
