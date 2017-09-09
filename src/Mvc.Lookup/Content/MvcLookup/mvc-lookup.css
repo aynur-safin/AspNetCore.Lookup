@@ -68,6 +68,10 @@
     display: none;
 }
 
+.mvc-lookup-readonly .mvc-lookup-browse {
+    cursor: not-allowed;
+}
+
 .mvc-lookup-browseless .mvc-lookup-control {
     border-radius: 4px;
 }
