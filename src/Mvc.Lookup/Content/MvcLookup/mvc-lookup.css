@@ -113,23 +113,27 @@
         left: 45%;
     }
 
-.mvc-lookup-widget .ui-dialog-title {
-    line-height: 1.4em;
-    min-height: 1.4em;
+.mvc-lookup-widget {
+    max-width: 98%;
 }
 
-.mvc-lookup-dialog,
-.mvc-lookup-widget,
-.mvc-lookup-widget:after,
-.mvc-lookup-widget:before {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-}
-
-    .mvc-lookup-widget .mvc-lookup-dialog {
-        padding: 1em;
+    .mvc-lookup-widget .ui-dialog-title {
+        line-height: 1.4em;
+        min-height: 1.4em;
     }
+
+    .mvc-lookup-dialog,
+    .mvc-lookup-widget,
+    .mvc-lookup-widget:after,
+    .mvc-lookup-widget:before {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+        .mvc-lookup-widget .mvc-lookup-dialog {
+            padding: 1em;
+        }
 
 .mvc-lookup-dialog {
     font-size: 0.9em;
@@ -275,6 +279,10 @@
     background-color: #FFF6F6;
     border-color: #EBCCD1;
     color: #A94442;
+}
+
+.mvc-lookup-table {
+    overflow-x: auto;
 }
 
 @keyframes mvc-lookup-spin {
