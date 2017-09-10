@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.2.1
+ * Mvc.Lookup 2.3.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -539,6 +539,13 @@ var MvcLookup = (function () {
 
                 if (e.isDefaultPrevented()) {
                     return;
+                }
+            }
+
+            if (triggerChanges && data.length == this.selected.length) {
+                triggerChanges = false;
+                for (var i = 0; i < data.length && !triggerChanges; i++) {
+                    triggerChanges = data[i].LookupIdKey != this.selected[i].LookupIdKey;
                 }
             }
 
