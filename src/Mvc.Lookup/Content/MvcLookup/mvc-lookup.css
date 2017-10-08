@@ -347,15 +347,9 @@
         content: '\25CF';
     }
 
-.mvc-lookup-dialog tr:hover td:not(:first-child):last-child::after,
 .mvc-lookup-dialog .selected td:not(:first-child):last-child::after {
     content: '\2714';
     color: #5CB85C;
-}
-
-.mvc-lookup-dialog .selected:hover td:not(:first-child):last-child::after {
-    content: '\2718';
-    color: #D65A5A;
 }
 
 .mvc-lookup-empty {
