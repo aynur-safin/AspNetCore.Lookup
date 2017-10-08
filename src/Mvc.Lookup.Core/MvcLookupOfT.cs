@@ -58,7 +58,7 @@ namespace NonFactors.Mvc.Lookup
             IQueryable<T> notSelected = Sort(FilterByRequest(models));
 
             if (Filter.Ids.Count == 0 && Filter.Selected.Count > 0)
-                selected = Sort(FilterByIds(models, Filter.Selected));
+                selected = Sort(FilterBySelected(models, Filter.Selected));
 
             return FormLookupData(notSelected, selected, Page(notSelected));
         }
@@ -135,6 +135,10 @@ namespace NonFactors.Mvc.Lookup
                 return models.Where($"!@0.Contains(decimal({key.Name}))", TryParseDecimals(ids));
 
             throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string or a number.");
+        }
+        public virtual IQueryable<T> FilterBySelected(IQueryable<T> models, IList<String> ids)
+        {
+            return FilterByIds(models, ids);
         }
 
         public virtual IQueryable<T> Sort(IQueryable<T> models)
