@@ -495,6 +495,57 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         #endregion
 
+        #region FilterByCheckIds(IQueryable<T> models, IList<String> ids)
+
+        [Fact]
+        public void FilterByCheckIds_NoIdProperty_Throws()
+        {
+            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
+
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByCheckIds(null, null));
+
+            String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByCheckIds_String()
+        {
+            List<String> ids = new List<String> { "9I", "10I" };
+
+            IQueryable<TestModel> actual = lookup.FilterByCheckIds(lookup.GetModels(), ids);
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByCheckIds_NumberKey()
+        {
+            TestLookup<NumericModel> testLookup = new TestLookup<NumericModel>();
+            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new NumericModel { Value = i });
+
+            IQueryable<NumericModel> actual = testLookup.FilterByCheckIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<NumericModel> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterByCheckIds_NotSupportedIdType_Throws()
+        {
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<GuidModel>().FilterByCheckIds(null, new String[0]));
+
+            String expected = $"'{typeof(GuidModel).Name}.Id' property type has to be a string or a number.";
+            String actual = exception.Message;
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
         #region FilterBySelected(IQueryable<T> models, IList<String> ids)
 
         [Fact]

@@ -69,11 +69,11 @@ namespace NonFactors.Mvc.Lookup
             if (Filter.Ids.Count > 0)
                 return FilterByIds(models, Filter.Ids);
 
-            if (Filter.CheckIds.Count > 0)
-                models = FilterByIds(models, Filter.CheckIds);
-
             if (Filter.Selected.Count > 0)
                 models = FilterByNotIds(models, Filter.Selected);
+
+            if (Filter.CheckIds.Count > 0)
+                models = FilterByCheckIds(models, Filter.CheckIds);
 
             if (Filter.AdditionalFilters.Count > 0)
                 models = FilterByAdditionalFilters(models);
@@ -135,6 +135,10 @@ namespace NonFactors.Mvc.Lookup
                 return models.Where($"!@0.Contains(decimal({key.Name}))", TryParseDecimals(ids));
 
             throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string or a number.");
+        }
+        public virtual IQueryable<T> FilterByCheckIds(IQueryable<T> models, IList<String> ids)
+        {
+            return FilterByIds(models, ids);
         }
         public virtual IQueryable<T> FilterBySelected(IQueryable<T> models, IList<String> ids)
         {
