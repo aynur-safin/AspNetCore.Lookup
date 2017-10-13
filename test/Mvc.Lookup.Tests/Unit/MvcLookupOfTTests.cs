@@ -51,10 +51,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void MvcLookup_AddsColumns()
         {
             List<LookupColumn> columns = new List<LookupColumn>();
-            columns.Add(new LookupColumn("Id", null) { Hidden = true });
-            columns.Add(new LookupColumn("Value", null) { Hidden = false });
-            columns.Add(new LookupColumn("Date", "Date") { Hidden = false });
-            columns.Add(new LookupColumn("Count", "Value") { Hidden = false });
+            columns.Add(new LookupColumn("Id", null) { Hidden = true, Filterable = true });
+            columns.Add(new LookupColumn("Value", null) { Hidden = false, Filterable = true });
+            columns.Add(new LookupColumn("Date", "Date") { Hidden = false, Filterable = true });
+            columns.Add(new LookupColumn("Count", "Value") { Hidden = false, Filterable = false });
 
             IEnumerator<LookupColumn> expected = columns.GetEnumerator();
             IEnumerator<LookupColumn> actual = lookup.Columns.GetEnumerator();
@@ -65,6 +65,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Assert.Equal(expected.Current.Header, actual.Current.Header);
                 Assert.Equal(expected.Current.Hidden, actual.Current.Hidden);
                 Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
+                Assert.Equal(expected.Current.Filterable, actual.Current.Filterable);
             }
         }
 
@@ -355,6 +356,19 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Columns.Clear();
             lookup.Filter.Search = "1";
             lookup.Columns.Add(new LookupColumn("Count", null));
+
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
+            IQueryable<TestModel> expected = lookup.GetModels();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterBySearch_DoesNotFilterNotFilterableColumns()
+        {
+            lookup.Columns.Clear();
+            lookup.Filter.Search = "1";
+            lookup.Columns.Add(new LookupColumn("Value", null) { Filterable = false });
 
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();

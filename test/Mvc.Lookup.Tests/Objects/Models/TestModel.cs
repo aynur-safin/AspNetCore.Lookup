@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
         [LookupColumn(-3, Hidden = true)]
         public String Id { get; set; }
 
-        [LookupColumn(8)]
+        [LookupColumn(8, Filterable = false)]
         [Display(Name = "Count's value", ShortName = "Value")]
         public Int32 Count { get; set; }
 
