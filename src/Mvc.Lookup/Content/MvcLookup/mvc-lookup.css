@@ -353,9 +353,18 @@
     color: #5CB85C;
 }
 
-.mvc-lookup-empty {
+.mvc-lookup-dialog .mvc-lookup-empty {
     text-align: center;
+    cursor: default;
 }
+
+    .mvc-lookup-dialog .mvc-lookup-empty:hover {
+        background-color: inherit;
+    }
+
+    .mvc-lookup-dialog .mvc-lookup-empty td::after {
+        content: '';
+    }
 
 .mvc-lookup-dialog ul {
     padding-top: 0.8em;
