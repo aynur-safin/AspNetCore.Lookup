@@ -27,8 +27,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupColumn_Header()
         {
-            String actual = new LookupColumn("Key", "Title").Header;
-            String expected = "Title";
+            String actual = new LookupColumn("Test", "Test").Header;
+            String expected = "Test";
 
             Assert.Equal(expected, actual);
         }
