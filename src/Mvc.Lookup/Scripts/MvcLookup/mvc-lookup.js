@@ -516,7 +516,7 @@ var MvcLookup = (function () {
 
                         var rows = [];
                         for (var i = 0; i < ids.length; i++) {
-                            var index = lookup.indexOf(data.rows, ids[i].value)
+                            var index = lookup.indexOf(data.rows, ids[i].value);
                             if (index >= 0) {
                                 rows.push(data.rows[index]);
                             }
@@ -708,7 +708,7 @@ var MvcLookup = (function () {
 
                                 var rows = [];
                                 for (var i = 0; i < ids.length; i++) {
-                                    var index = lookup.indexOf(data.rows, ids[i].value)
+                                    var index = lookup.indexOf(data.rows, ids[i].value);
                                     if (index >= 0) {
                                         rows.push(data.rows[index]);
                                     }
