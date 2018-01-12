@@ -446,7 +446,7 @@ var MvcLookup = (function () {
                             url: lookup.url + lookup.filter.getQuery({ search: request.term, rows: 20 }),
                             success: function (data) {
                                 response($.grep(data.rows, function (row) {
-                                    return lookup.indexOf(lookup.selected, row.LookupIdKey) < 0;
+                                    return !lookup.multi || lookup.indexOf(lookup.selected, row.LookupIdKey) < 0;
                                 }).map(function (row) {
                                     return {
                                         label: row.LookupAcKey,
