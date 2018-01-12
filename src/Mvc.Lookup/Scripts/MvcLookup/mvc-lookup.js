@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.3.1
+ * Mvc.Lookup 2.4.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -106,16 +106,17 @@ var MvcLookupDialog = (function () {
         open: function () {
             var dialog = this;
             dialog.loader.hide();
-            dialog.search.val(dialog.filter.search);
             dialog.error.hide().html(dialog.lang('error'));
             dialog.selected = dialog.lookup.selected.slice();
             dialog.rows.val(dialog.limitRows(dialog.filter.rows));
             dialog.search.attr('placeholder', dialog.lang('search'));
             dialog.selector.parent().css('display', dialog.lookup.multi ? '' : 'none');
+            dialog.filter.search = dialog.lookup.options.preserveSearch ? dialog.filter.search : '';
             dialog.selector.text(dialog.lang('select').replace('{0}', dialog.lookup.selected.length));
 
             dialog.bind();
             dialog.refresh();
+            dialog.search.val(dialog.filter.search);
 
             setTimeout(function () {
                 if (dialog.loading) {
@@ -431,15 +432,18 @@ var MvcLookup = (function () {
     MvcLookup.prototype = {
         set: function (options) {
             options = options || {};
-            this.dialog.set(options);
-            this.events = $.extend(this.events, options.events);
+
+            this.options.preserveSearch = options.preserveSearch == null ? this.options.preserveSearch : options.preserveSearch;
             this.search.autocomplete($.extend(this.options.autocomplete, options.autocomplete));
             this.setReadonly(options.readonly == null ? this.readonly : options.readonly);
+            this.events = $.extend(this.events, options.events);
+            this.dialog.set(options);
         },
         initOptions: function () {
             var lookup = this;
 
             this.options = {
+                preserveSearch: true,
                 autocomplete: {
                     source: function (request, response) {
                         $.ajax({
