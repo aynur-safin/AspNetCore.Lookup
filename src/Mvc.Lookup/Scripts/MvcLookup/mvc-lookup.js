@@ -687,6 +687,13 @@ var MvcLookup = (function () {
                     lookup.select([], true);
                 }
             });
+            lookup.search.on('blur.mvclookup', function () {
+                if (lookup.multi) {
+                    this.value = '';
+                } else {
+                    this.value = lookup.selected[0].LookupAcKey;
+                }
+            });
 
             lookup.browse.on('click.mvclookup', function () {
                 lookup.open();
