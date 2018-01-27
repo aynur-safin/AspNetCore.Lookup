@@ -25,8 +25,8 @@ var MvcLookupFilter = (function () {
                 '&order=' + encodeURIComponent(filter.order) +
                 '&rows=' + encodeURIComponent(filter.rows) +
                 '&page=' + encodeURIComponent(filter.page) +
-                (filter.checkIds ? filter.checkIds : '') +
-                (filter.ids ? filter.ids : '');
+                (filter.checkIds || '') +
+                (filter.ids || '');
 
             for (var i = 0; i < this.additionalFilters.length; i++) {
                 var filters = $('[name="' + this.additionalFilters[i] + '"]');
@@ -507,7 +507,7 @@ var MvcLookup = (function () {
         },
         reload: function (triggerChanges) {
             var lookup = this;
-            triggerChanges = triggerChanges == null ? true : triggerChanges;
+            triggerChanges = triggerChanges == null || triggerChanges;
             var ids = $.grep(lookup.values, function (e) { return e.value; });
 
             if (ids.length > 0) {
