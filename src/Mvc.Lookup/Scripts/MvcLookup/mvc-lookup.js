@@ -261,9 +261,11 @@ var MvcLookupDialog = (function () {
             $(row).on('click.mvclookup', function () {
                 var index = lookup.indexOf(dialog.selected, data.LookupIdKey);
                 if (index >= 0) {
-                    dialog.selected.splice(index, 1);
+                    if (lookup.multi) {
+                        dialog.selected.splice(index, 1);
 
-                    $(this).removeClass('selected');
+                        $(this).removeClass('selected');
+                    }
                 } else {
                     if (lookup.multi) {
                         dialog.selected.push(data);
