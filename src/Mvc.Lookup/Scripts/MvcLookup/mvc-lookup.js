@@ -746,27 +746,47 @@ var MvcLookup = (function () {
 $.fn.mvclookup = function (options) {
     var args = arguments;
 
-    return this.each(function () {
-        var group = $(this).closest('.mvc-lookup');
-        if (!group.length)
-            return;
+    if (options === 'instance') {
+        var instances = [];
 
-        if (!$.data(group[0], 'mvc-lookup')) {
-            if (typeof options == 'string') {
-                var lookup = new MvcLookup(group);
-                lookup.methods[options].apply(lookup, [].slice.call(args, 1));
-            } else {
-                var lookup = new MvcLookup(group, options);
+        for (var i = 0; i < this.length; i++) {
+            var lookup = $(this[i]).closest('.mvc-lookup');
+            if (!lookup.length)
+                continue;
+
+            var instance = lookup.data('mvc-lookup');
+
+            if (!instance) {
+                lookup.data('mvc-lookup', instance = new MvcLookup(lookup, options));
             }
 
-            $.data(group[0], 'mvc-lookup', lookup);
-        } else {
-            var lookup = $.data(group[0], 'mvc-lookup');
+            instances.push(instance);
+        }
 
+        return this.length <= 1 ? instances[0] : instances;
+    }
+
+    return this.each(function () {
+        var lookup = $(this).closest('.mvc-lookup');
+        if (!lookup.length)
+            return;
+
+        var instance = lookup.data('mvc-lookup');
+
+        if (!instance) {
             if (typeof options == 'string') {
-                lookup.methods[options].apply(lookup, [].slice.call(args, 1));
+                instance = new MvcLookup(lookup);
+                instance.methods[options].apply(instance, [].slice.call(args, 1));
+            } else {
+                instance = new MvcLookup(lookup, options);
+            }
+
+            lookup.data('mvc-lookup', instance);
+        } else {
+            if (typeof options == 'string') {
+                instance.methods[options].apply(instance, [].slice.call(args, 1));
             } else if (options) {
-                lookup.set(options);
+                instance.set(options);
             }
         }
     });
