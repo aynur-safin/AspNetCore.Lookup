@@ -690,10 +690,10 @@ var MvcLookup = (function () {
                 }
             });
             lookup.search.on('blur.mvclookup', function () {
-                if (lookup.multi) {
-                    this.value = '';
-                } else {
+                if (!lookup.multi && lookup.selected.length) {
                     this.value = lookup.selected[0].LookupAcKey;
+                } else {
+                    this.value = '';
                 }
             });
 
