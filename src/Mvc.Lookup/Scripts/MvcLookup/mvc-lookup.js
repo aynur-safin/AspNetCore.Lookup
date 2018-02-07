@@ -425,7 +425,12 @@ var MvcLookup = (function () {
         this.initOptions();
         this.set(options);
 
-        this.methods = { reload: this.reload, browse: this.open };
+        this.methods = {
+            selectSingle: this.selectSingle,
+            selectFirst: this.selectFirst,
+            reload: this.reload,
+            browse: this.open
+        };
         this.reload(false);
         this.cleanUp();
         this.bind();
@@ -504,6 +509,42 @@ var MvcLookup = (function () {
             if (!this.readonly) {
                 this.dialog.open();
             }
+        },
+        selectFirst: function () {
+            var lookup = this;
+
+            $.ajax({
+                url: lookup.url + lookup.filter.getQuery({ rows: 1 }),
+                cache: false,
+                success: function (data) {
+                    lookup.stopLoading();
+
+                    lookup.select(data.rows, true);
+                },
+                error: function () {
+                    lookup.stopLoading();
+                }
+            });
+        },
+        selectSingle: function () {
+            var lookup = this;
+
+            $.ajax({
+                url: lookup.url + lookup.filter.getQuery({ rows: 2 }),
+                cache: false,
+                success: function (data) {
+                    lookup.stopLoading();
+
+                    if (data.rows.length == 1) {
+                        lookup.select(data.rows, true);
+                    } else {
+                        lookup.select([], true);
+                    }
+                },
+                error: function () {
+                    lookup.stopLoading();
+                }
+            });
         },
         reload: function (triggerChanges) {
             var lookup = this;
