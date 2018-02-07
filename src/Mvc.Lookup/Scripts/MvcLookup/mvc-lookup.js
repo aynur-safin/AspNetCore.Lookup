@@ -617,6 +617,8 @@ var MvcLookup = (function () {
         },
 
         startLoading: function (delay) {
+            this.stopLoading();
+
             this.loading = setTimeout(function (lookup) {
                 lookup.search.addClass('mvc-lookup-loading');
             }, delay, this);
