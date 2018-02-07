@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 2.4.0
+ * Mvc.Lookup 2.5.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -677,6 +677,14 @@ var MvcLookup = (function () {
 
             $(window).on('resize.mvclookup', function () {
                 lookup.resizeLookupSearch();
+            });
+
+            lookup.group.on('focusin.mvclookup', function () {
+                $(this).addClass('mvc-lookup-focus');
+            });
+
+            lookup.group.on('focusout.mvclookup', function () {
+                $(this).removeClass('mvc-lookup-focus');
             });
 
             lookup.search.on('keydown.mvclookup', function (e) {
