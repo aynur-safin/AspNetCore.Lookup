@@ -26,6 +26,7 @@
 }
 
     .mvc-lookup-control input {
+        outline: none;
         font: inherit;
         padding: 2px;
         border: none;
