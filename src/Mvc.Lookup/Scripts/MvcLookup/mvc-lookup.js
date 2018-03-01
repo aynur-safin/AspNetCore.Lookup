@@ -326,8 +326,9 @@ var MvcLookupDialog = (function () {
             return header;
         },
         renderPage: function (text, value) {
-            var content = document.createElement('span');
+            var content = document.createElement('a');
             var page = document.createElement('li');
+            content.setAttribute('href', '#');
             page.appendChild(content);
             content.innerHTML = text;
             var dialog = this;
@@ -335,7 +336,9 @@ var MvcLookupDialog = (function () {
             if (dialog.filter.page == value) {
                 page.className = 'active';
             } else {
-                $(content).on('click.mvclookup', function () {
+                $(content).on('click.mvclookup', function (e) {
+                    e.preventDefault();
+
                     var expectedPages = Math.ceil((dialog.totalRows - dialog.selected.length) / dialog.filter.rows);
                     if (value < expectedPages) {
                         dialog.filter.page = value;
