@@ -649,8 +649,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Columns.Clear();
             lookup.Filter.Sort = column;
 
+            IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels().OrderByDescending(model => model.Id).Where(model => true));
             IQueryable<TestModel> expected = lookup.GetModels().OrderByDescending(model => model.Id);
-            IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels().OrderByDescending(model => model.Id));
 
             Assert.Equal(expected, actual);
         }
