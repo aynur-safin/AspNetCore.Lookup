@@ -417,12 +417,12 @@ var MvcLookup = (function () {
         this.url = group.attr('data-url');
         this.selected = [];
 
-        this.browse = $('.mvc-lookup-browse[data-for="' + this.for + '"]');
-        this.valueContainer = $('.mvc-lookup-values[data-for="' + this.for + '"]');
-        this.values = this.valueContainer.find('.mvc-lookup-value');
-        this.control = group.find('.mvc-lookup-control');
-        this.search = group.find('.mvc-lookup-input');
         this.group = group;
+        this.search = group.find('.mvc-lookup-input');
+        this.browse = group.find('.mvc-lookup-browse');
+        this.control = group.find('.mvc-lookup-control');
+        this.valueContainer = group.find('.mvc-lookup-values');
+        this.values = this.valueContainer.find('.mvc-lookup-value');
 
         this.dialog = new MvcLookupDialog(this);
         this.initOptions();
