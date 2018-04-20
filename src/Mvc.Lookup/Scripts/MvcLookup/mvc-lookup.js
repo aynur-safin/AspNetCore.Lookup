@@ -513,8 +513,9 @@ var MvcLookup = (function () {
                 this.dialog.open();
             }
         },
-        selectFirst: function () {
+        selectFirst: function (triggerChanges) {
             var lookup = this;
+            triggerChanges = triggerChanges == null || triggerChanges;
 
             $.ajax({
                 url: lookup.url + lookup.filter.getQuery({ rows: 1 }),
@@ -522,15 +523,16 @@ var MvcLookup = (function () {
                 success: function (data) {
                     lookup.stopLoading();
 
-                    lookup.select(data.rows, true);
+                    lookup.select(data.rows, triggerChanges);
                 },
                 error: function () {
                     lookup.stopLoading();
                 }
             });
         },
-        selectSingle: function () {
+        selectSingle: function (triggerChanges) {
             var lookup = this;
+            triggerChanges = triggerChanges == null || triggerChanges;
 
             $.ajax({
                 url: lookup.url + lookup.filter.getQuery({ rows: 2 }),
@@ -539,9 +541,9 @@ var MvcLookup = (function () {
                     lookup.stopLoading();
 
                     if (data.rows.length == 1) {
-                        lookup.select(data.rows, true);
+                        lookup.select(data.rows, triggerChanges);
                     } else {
-                        lookup.select([], true);
+                        lookup.select([], triggerChanges);
                     }
                 },
                 error: function () {
