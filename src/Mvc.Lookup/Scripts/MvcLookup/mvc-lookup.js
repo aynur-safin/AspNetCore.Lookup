@@ -259,6 +259,10 @@ var MvcLookupDialog = (function () {
             }
 
             $(row).on('click.mvclookup', function () {
+                if (!window.getSelection().isCollapsed) {
+                    return;
+                }
+
                 var index = lookup.indexOf(dialog.selected, data.LookupIdKey);
                 if (index >= 0) {
                     if (lookup.multi) {
