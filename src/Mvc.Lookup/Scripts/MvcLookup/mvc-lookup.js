@@ -381,10 +381,13 @@ var MvcLookupDialog = (function () {
             var dialog = MvcLookupDialog.prototype.current;
 
             this.value = dialog.limitRows(this.value);
-            dialog.lookup.filter.rows = this.value;
-            dialog.lookup.filter.page = 0;
 
-            dialog.refresh();
+            if (dialog.lookup.filter.rows != this.value) {
+                dialog.lookup.filter.rows = this.value;
+                dialog.lookup.filter.page = 0;
+
+                dialog.refresh();
+            }
         },
         searchChanged: function (e) {
             var input = this;
