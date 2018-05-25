@@ -95,6 +95,7 @@ namespace NonFactors.Mvc.Lookup
 
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
             attributes["class"] = "mvc-lookup-value";
+            attributes["autocomplete"] = "off";
 
             TagBuilder container = new TagBuilder("div");
             container.AddCssClass("mvc-lookup-values");
@@ -108,6 +109,7 @@ namespace NonFactors.Mvc.Lookup
         {
             IDictionary<String, Object> attributes = new Dictionary<String, Object>();
             attributes["class"] = "mvc-lookup-value";
+            attributes["autocomplete"] = "off";
 
             TagBuilder container = new TagBuilder("div");
             container.AddCssClass("mvc-lookup-values");
@@ -140,6 +142,7 @@ namespace NonFactors.Mvc.Lookup
 
             if (lookup.ReadOnly) search.Attributes["readonly"] = "readonly";
             loader.AddCssClass("mvc-lookup-control-loader");
+            search.Attributes["autocomplete"] = "off";
             control.AddCssClass("mvc-lookup-control");
             search.AddCssClass("mvc-lookup-input");
             control.Attributes["data-for"] = name;

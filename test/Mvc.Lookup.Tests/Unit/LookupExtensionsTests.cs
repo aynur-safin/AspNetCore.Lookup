@@ -56,10 +56,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
@@ -77,10 +77,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
@@ -100,11 +100,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value1\" />" +
-                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value2\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value1\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value2\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
@@ -128,10 +128,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
@@ -149,10 +149,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
@@ -173,11 +173,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value1&#x27;s\" />" +
-                        "<input class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value2&#x27;s\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value1&#x27;s\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value2&#x27;s\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Values\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                 "</div>";
@@ -201,10 +201,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
@@ -225,10 +225,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
@@ -253,7 +253,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
@@ -280,10 +280,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"true\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
@@ -304,10 +304,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "data-page=\"2\" data-readonly=\"false\" data-rows=\"11\" data-search=\"Test\" data-sort=\"First\" " +
                         "data-title=\"Dialog lookup title\" data-url=\"http://localhost/Lookup\">" +
                     "<div class=\"mvc-lookup-values\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
@@ -332,7 +332,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Values\">" +
-                        "<input class=\"mvc-lookup-input\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
                     "<div class=\"mvc-lookup-browse\" data-for=\"Values\">" +
