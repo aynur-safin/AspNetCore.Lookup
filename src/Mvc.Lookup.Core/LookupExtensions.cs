@@ -43,7 +43,7 @@ namespace NonFactors.Mvc.Lookup
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
             lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name));
-            lookup.InnerHtml.AppendHtml(CreateLookupBrowse(name));
+            lookup.InnerHtml.AppendHtml(CreateLookupBrowser(name));
 
             return lookup;
         }
@@ -55,7 +55,7 @@ namespace NonFactors.Mvc.Lookup
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
             lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name));
-            lookup.InnerHtml.AppendHtml(CreateLookupBrowse(name));
+            lookup.InnerHtml.AppendHtml(CreateLookupBrowser(name));
 
             return lookup;
         }
@@ -151,18 +151,18 @@ namespace NonFactors.Mvc.Lookup
 
             return control;
         }
-        private static IHtmlContent CreateLookupBrowse(String name)
+        private static IHtmlContent CreateLookupBrowser(String name)
         {
-            TagBuilder browse = new TagBuilder("div");
-            browse.AddCssClass("mvc-lookup-browse");
-            browse.Attributes["data-for"] = name;
+            TagBuilder browser = new TagBuilder("div");
+            browser.AddCssClass("mvc-lookup-browser");
+            browser.Attributes["data-for"] = name;
 
             TagBuilder icon = new TagBuilder("i");
             icon.AddCssClass("mvc-lookup-icon");
 
-            browse.InnerHtml.AppendHtml(icon);
+            browser.InnerHtml.AppendHtml(icon);
 
-            return browse;
+            return browser;
         }
     }
 }

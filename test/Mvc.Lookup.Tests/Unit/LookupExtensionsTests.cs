@@ -207,7 +207,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                    "<div class=\"mvc-lookup-browser\" data-for=\"Test\">" +
                         "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
@@ -231,7 +231,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                    "<div class=\"mvc-lookup-browser\" data-for=\"Test\">" +
                         "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
@@ -256,7 +256,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"Test\">" +
+                    "<div class=\"mvc-lookup-browser\" data-for=\"Test\">" +
                         "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
@@ -286,7 +286,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
+                    "<div class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
                         "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
@@ -310,7 +310,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"ParentId\">" +
+                    "<div class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
                         "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
@@ -335,7 +335,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browse\" data-for=\"Values\">" +
+                    "<div class=\"mvc-lookup-browser\" data-for=\"Values\">" +
                         "<i class=\"mvc-lookup-icon\"></i>" +
                     "</div>" +
                 "</div>";
