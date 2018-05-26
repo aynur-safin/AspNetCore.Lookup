@@ -67,13 +67,13 @@ var MvcLookupDialog = (function () {
         this.table = this.instance.querySelector('table');
         this.tableHead = this.instance.querySelector('thead');
         this.tableBody = this.instance.querySelector('tbody');
+        this.rows = this.instance.querySelector('.mvc-lookup-rows');
         this.error = this.instance.querySelector('.mvc-lookup-error');
         this.header = this.instance.querySelector('.mvc-lookup-title');
         this.search = this.instance.querySelector('.mvc-lookup-search');
-        this.rows = this.instance.querySelector('.mvc-lookup-rows input');
+        this.selector = this.instance.querySelector('.mvc-lookup-selector');
         this.closeButton = this.instance.querySelector('.mvc-lookup-close');
         this.loader = this.instance.querySelector('.mvc-lookup-dialog-loader');
-        this.selector = this.instance.querySelector('.mvc-lookup-selector button');
     }
 
     MvcLookupDialog.prototype = {
@@ -96,8 +96,8 @@ var MvcLookupDialog = (function () {
             dialog.selected = dialog.lookup.selected.slice();
             dialog.rows.value = dialog.limitRows(filter.rows);
             dialog.search.setAttribute('placeholder', dialog.lang['search']);
+            dialog.selector.style.display = dialog.lookup.multi ? '' : 'none';
             filter.search = dialog.options.preserveSearch ? filter.search : '';
-            dialog.selector.parentNode.style.display = dialog.lookup.multi ? '' : 'none';
             dialog.selector.innerText = dialog.lang['select'].replace('{0}', dialog.lookup.selected.length);
 
             dialog.bind();
