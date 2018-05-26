@@ -110,7 +110,8 @@ var MvcLookupDialog = (function () {
                     dialog.loader.style.display = '';
                 }
 
-                if (document.body.scrollHeight != document.body.scrollHeight) {
+                var rect = document.body.getBoundingClientRect();
+                if (rect.left + rect.right < window.innerWidth) {
                     var paddingRight = parseFloat(getComputedStyle(document.body).paddingRight);
                     document.body.style.paddingRight = (paddingRight + 17) + 'px';
                 }
@@ -121,6 +122,7 @@ var MvcLookupDialog = (function () {
         close: function () {
             document.body.classList.remove('mvc-lookup-open');
             var dialog = MvcLookupDialog.prototype.current;
+            document.body.style.paddingRight = '';
 
             if (dialog.lookup.multi) {
                 dialog.lookup.select(dialog.selected, true);
