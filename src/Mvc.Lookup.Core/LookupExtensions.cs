@@ -153,11 +153,12 @@ namespace NonFactors.Mvc.Lookup
         }
         private static IHtmlContent CreateLookupBrowser(String name)
         {
-            TagBuilder browser = new TagBuilder("div");
+            TagBuilder browser = new TagBuilder("a");
             browser.AddCssClass("mvc-lookup-browser");
             browser.Attributes["data-for"] = name;
+            browser.Attributes["href"] = "#";
 
-            TagBuilder icon = new TagBuilder("i");
+            TagBuilder icon = new TagBuilder("span");
             icon.AddCssClass("mvc-lookup-icon");
 
             browser.InnerHtml.AppendHtml(icon);

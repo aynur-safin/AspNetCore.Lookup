@@ -867,12 +867,12 @@ var MvcLookup = (function () {
                 lookup.resizeSearch();
             });
 
-            lookup.group.addEventListener('focusin', function () {
-                this.classList.add('mvc-lookup-focus');
+            lookup.search.addEventListener('focusin', function () {
+                lookup.group.classList.add('mvc-lookup-focus');
             });
 
-            lookup.group.addEventListener('focusout', function () {
-                this.classList.remove('mvc-lookup-focus');
+            lookup.search.addEventListener('focusout', function () {
+                lookup.group.classList.remove('mvc-lookup-focus');
             });
 
             lookup.search.addEventListener('keydown', function (e) {
@@ -921,7 +921,9 @@ var MvcLookup = (function () {
             });
 
             if (lookup.browser) {
-                lookup.browser.addEventListener('click', function () {
+                lookup.browser.addEventListener('click', function (e) {
+                    e.preventDefault();
+
                     lookup.browse();
                 });
             }

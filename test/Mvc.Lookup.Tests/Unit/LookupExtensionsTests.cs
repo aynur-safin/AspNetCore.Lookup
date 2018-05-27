@@ -207,9 +207,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browser\" data-for=\"Test\">" +
-                        "<i class=\"mvc-lookup-icon\"></i>" +
-                    "</div>" +
+                    "<a class=\"mvc-lookup-browser\" data-for=\"Test\" href=\"#\">" +
+                        "<span class=\"mvc-lookup-icon\"></span>" +
+                    "</a>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -231,9 +231,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browser\" data-for=\"Test\">" +
-                        "<i class=\"mvc-lookup-icon\"></i>" +
-                    "</div>" +
+                    "<a class=\"mvc-lookup-browser\" data-for=\"Test\" href=\"#\">" +
+                        "<span class=\"mvc-lookup-icon\"></span>" +
+                    "</a>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -256,9 +256,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browser\" data-for=\"Test\">" +
-                        "<i class=\"mvc-lookup-icon\"></i>" +
-                    "</div>" +
+                    "<a class=\"mvc-lookup-browser\" data-for=\"Test\" href=\"#\">" +
+                        "<span class=\"mvc-lookup-icon\"></span>" +
+                    "</a>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -286,9 +286,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
-                        "<i class=\"mvc-lookup-icon\"></i>" +
-                    "</div>" +
+                    "<a class=\"mvc-lookup-browser\" data-for=\"ParentId\" href=\"#\">" +
+                        "<span class=\"mvc-lookup-icon\"></span>" +
+                    "</a>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -310,9 +310,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
-                        "<i class=\"mvc-lookup-icon\"></i>" +
-                    "</div>" +
+                    "<a class=\"mvc-lookup-browser\" data-for=\"ParentId\" href=\"#\">" +
+                        "<span class=\"mvc-lookup-icon\"></span>" +
+                    "</a>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
@@ -335,9 +335,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                     "</div>" +
-                    "<div class=\"mvc-lookup-browser\" data-for=\"Values\">" +
-                        "<i class=\"mvc-lookup-icon\"></i>" +
-                    "</div>" +
+                    "<a class=\"mvc-lookup-browser\" data-for=\"Values\" href=\"#\">" +
+                        "<span class=\"mvc-lookup-icon\"></span>" +
+                    "</a>" +
                 "</div>";
 
             Assert.Equal(expected, actual);
