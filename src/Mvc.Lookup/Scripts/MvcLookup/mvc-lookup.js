@@ -60,8 +60,8 @@ var MvcLookupDialog = (function () {
     function MvcLookupDialog(lookup) {
         this.lookup = lookup;
         this.title = lookup.group.dataset.title;
-        this.options = { preserveSearch: true, rows: { min: 1, max: 99 } };
         this.instance = document.getElementById(lookup.group.dataset.dialog);
+        this.options = { preserveSearch: true, rows: { min: 1, max: 99 }, openDelay: 100 };
 
         this.pager = this.instance.querySelector('ul');
         this.table = this.instance.querySelector('table');
@@ -117,7 +117,7 @@ var MvcLookupDialog = (function () {
                 }
 
                 document.body.classList.add('mvc-lookup-open');
-            }, 100);
+            }, dialog.options.openDelay);
         },
         close: function () {
             document.body.classList.remove('mvc-lookup-open');
@@ -139,7 +139,7 @@ var MvcLookupDialog = (function () {
             dialog.loader.style.display = '';
             var loading = setTimeout(function () {
                 dialog.loader.style.opacity = 1;
-            }, 300);
+            }, dialog.lookup.options.loadingDelay);
 
             dialog.lookup.load({ selected: dialog.selected }, function (data) {
                 dialog.loading = false;
@@ -160,7 +160,7 @@ var MvcLookupDialog = (function () {
             dialog.loader.style.opacity = 0;
             setTimeout(function () {
                 dialog.loader.style.display = 'none';
-            }, 300);
+            }, dialog.lookup.options.loadingDelay);
 
             if (data) {
                 dialog.error.style.display = 'none';
@@ -403,7 +403,7 @@ var MvcLookupDialog = (function () {
 
                     dialog.refresh();
                 }
-            }, 500);
+            }, dialog.lookup.options.searchDelay);
         }
     };
 
@@ -412,7 +412,7 @@ var MvcLookupDialog = (function () {
 var MvcLookupAutocomplete = (function () {
     function MvcLookupAutocomplete(lookup) {
         this.instance = document.querySelector('.mvc-lookup-autocomplete');
-        this.options = { minLength: 1, delay: 500 };
+        this.options = { minLength: 1, rows: 20 };
         this.activeItem = null;
         this.lookup = lookup;
         this.items = [];
@@ -429,7 +429,7 @@ var MvcLookupAutocomplete = (function () {
                     return;
                 }
 
-                lookup.load({ search: term, rows: 20 }, function (data) {
+                lookup.load({ search: term, rows: autocomplete.options.rows }, function (data) {
                     autocomplete.clear();
 
                     data = data.rows.filter(function (row) {
@@ -452,7 +452,7 @@ var MvcLookupAutocomplete = (function () {
                         autocomplete.hide();
                     }
                 });
-            }, autocomplete.options.delay);
+            }, autocomplete.lookup.options.searchDelay);
         },
         previous: function () {
             if (!this.instance.style.display) {
@@ -555,6 +555,7 @@ var MvcLookup = (function () {
         this.multi = group.dataset.multi == 'true';
         this.group.dataset.id = this.instances.length;
         this.readonly = group.dataset.readonly == 'true';
+        this.options = { searchDelay: 500, loadingDelay: 300 };
 
         this.search = group.querySelector('.mvc-lookup-input');
         this.browser = group.querySelector('.mvc-lookup-browser');
@@ -595,7 +596,11 @@ var MvcLookup = (function () {
             for (var i = 0; i < arguments.length; i++) {
                 for (var key in arguments[i]) {
                     if (arguments[i].hasOwnProperty(key)) {
-                        options[key] = arguments[i][key];
+                        if (toString.call(options[key]) == '[object Object]') {
+                            options[key] = this.extend(options[key], arguments[i][key]);
+                        } else {
+                            options[key] = arguments[i][key];
+                        }
                     }
                 }
             }
@@ -626,7 +631,7 @@ var MvcLookup = (function () {
 
         load: function (search, success, error) {
             var lookup = this;
-            lookup.startLoading(300);
+            lookup.startLoading();
 
             var request = new XMLHttpRequest();
             request.open('GET', lookup.filter.formUrl(search), true);
@@ -794,12 +799,12 @@ var MvcLookup = (function () {
             return inputs;
         },
 
-        startLoading: function (delay) {
+        startLoading: function () {
             this.stopLoading();
 
             this.loading = setTimeout(function (lookup) {
                 lookup.search.classList.add('mvc-lookup-loading');
-            }, delay, this);
+            }, this.options.loadingDelay, this);
         },
         stopLoading: function () {
             clearTimeout(this.loading);
