@@ -63,6 +63,7 @@ var MvcLookupDialog = (function () {
         this.instance = document.getElementById(lookup.group.dataset.dialog);
         this.options = { preserveSearch: true, rows: { min: 1, max: 99 }, openDelay: 100 };
 
+        this.overlay = new MvcLookupOverlay(this);
         this.table = this.instance.querySelector('table');
         this.tableHead = this.instance.querySelector('thead');
         this.tableBody = this.instance.querySelector('tbody');
@@ -110,19 +111,12 @@ var MvcLookupDialog = (function () {
                     dialog.loader.style.display = '';
                 }
 
-                var rect = document.body.getBoundingClientRect();
-                if (rect.left + rect.right < window.innerWidth) {
-                    var paddingRight = parseFloat(getComputedStyle(document.body).paddingRight);
-                    document.body.style.paddingRight = (paddingRight + 17) + 'px';
-                }
-
-                document.body.classList.add('mvc-lookup-open');
+                dialog.overlay.show();
             }, dialog.options.openDelay);
         },
         close: function () {
-            document.body.classList.remove('mvc-lookup-open');
             var dialog = MvcLookupDialog.prototype.current;
-            document.body.style.paddingRight = '';
+            dialog.overlay.hide();
 
             if (dialog.lookup.multi) {
                 dialog.lookup.select(dialog.selected, true);
@@ -409,9 +403,63 @@ var MvcLookupDialog = (function () {
 
     return MvcLookupDialog;
 }());
+var MvcLookupOverlay = (function () {
+    function MvcLookupOverlay(dialog) {
+        this.instance = this.getClosestOverlay(dialog.instance);
+        this.dialog = dialog;
+
+        this.bind();
+    }
+
+    MvcLookupOverlay.prototype = {
+        getClosestOverlay: function (element) {
+            var overlay = element;
+            while (overlay.parentNode && !overlay.classList.contains('mvc-lookup-overlay')) {
+                overlay = overlay.parentNode;
+            }
+
+            if (overlay == document) {
+                throw new Error('Lookup dialog has to be inside a mvc-lookup-overlay.');
+            }
+
+            return overlay;
+        },
+
+        show: function () {
+            var body = document.body.getBoundingClientRect();
+            if (body.left + body.right < window.innerWidth) {
+                var paddingRight = parseFloat(getComputedStyle(document.body).paddingRight);
+                document.body.style.paddingRight = (paddingRight + 17) + 'px';
+            }
+
+            document.body.classList.add('mvc-lookup-open');
+            this.instance.style.display = 'block';
+        },
+        hide: function () {
+            document.body.classList.remove('mvc-lookup-open');
+            document.body.style.paddingRight = '';
+            this.instance.style.display = '';
+        },
+
+        bind: function () {
+            this.instance.removeEventListener('click', this.onClick);
+            this.instance.addEventListener('click', this.onClick);
+        },
+        onClick: function (e) {
+            var targetClasses = (e.target || e.srcElement).classList;
+
+            if (targetClasses.contains('mvc-lookup-overlay') || targetClasses.contains('mvc-lookup-wrapper')) {
+                MvcLookupDialog.prototype.current.close();
+            }
+        }
+    };
+
+    return MvcLookupOverlay;
+}());
 var MvcLookupAutocomplete = (function () {
     function MvcLookupAutocomplete(lookup) {
-        this.instance = document.querySelector('.mvc-lookup-autocomplete');
+        this.instance = document.createElement('ul');
+        this.instance.className = 'mvc-lookup-autocomplete';
         this.options = { minLength: 1, rows: 20 };
         this.activeItem = null;
         this.lookup = lookup;
@@ -499,11 +547,14 @@ var MvcLookupAutocomplete = (function () {
             this.instance.style.left = (search.left + window.pageXOffset) + 'px';
             this.instance.style.top = (search.top + search.height + window.pageYOffset) + 'px';
 
-            this.instance.style.display = 'block';
+            document.body.appendChild(this.instance);
         },
         hide: function () {
             this.clear();
-            this.instance.style.display = '';
+
+            if (this.instance.parentNode) {
+                document.body.removeChild(this.instance);
+            }
         },
 
         bind: function (item, data) {
@@ -962,13 +1013,3 @@ var MvcLookup = (function () {
 
     return MvcLookup;
 }());
-
-window.addEventListener('load', function () {
-    document.querySelector('body > .mvc-lookup-overlay').addEventListener('click', function (e) {
-        var target = e.target || e.srcElement;
-
-        if (target.classList.contains('mvc-lookup-overlay')) {
-            MvcLookupDialog.prototype.current.close();
-        }
-    });
-});
