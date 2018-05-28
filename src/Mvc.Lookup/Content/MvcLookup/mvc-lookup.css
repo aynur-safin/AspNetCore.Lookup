@@ -15,27 +15,12 @@
 
 .mvc-lookup-control {
     box-shadow: rgba(0, 0, 0, 0.0745098) 0 1px 1px inset;
-    border-bottom-left-radius: 4px;
-    border-top-left-radius: 4px;
+    border-radius: 4px 0 0 4px;
     padding: 2px 2.4em 2px 2px;
     background-color: #ffffff;
     border: 1px solid #cccccc;
-    box-sizing: border-box;
     position: relative;
     flex: 1;
-}
-
-.mvc-lookup-input {
-    outline: none;
-    font: inherit;
-    padding: 2px;
-    border: none;
-    margin: 2px;
-    width: 100%;
-}
-
-.mvc-lookup-input::-ms-clear {
-    display: none;
 }
 
 .mvc-lookup-item {
@@ -63,8 +48,22 @@
     color: #000000;
 }
 
-.mvc-lookup-readonly .mvc-lookup-control,
-.mvc-lookup-readonly .mvc-lookup-control input {
+.mvc-lookup-input {
+    box-sizing: border-box;
+    background: none;
+    outline: none;
+    font: inherit;
+    padding: 2px;
+    border: none;
+    margin: 2px;
+    width: 100%;
+}
+
+.mvc-lookup-input::-ms-clear {
+    display: none;
+}
+
+.mvc-lookup-readonly .mvc-lookup-control {
     background: #eeeeee;
 }
 
@@ -81,8 +80,7 @@
 }
 
 .mvc-lookup-browser {
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
+    border-radius: 0 4px 4px 0;
     border: 1px solid #cccccc;
     background-color: #eeeeee;
     align-items: center;
@@ -112,28 +110,6 @@
     width: 3px;
     top: 0.6em;
     left: 45%;
-}
-
-.mvc-lookup-autocomplete {
-    border: 1px solid #d3d3d3;
-    background: #ffffff;
-    margin-bottom: 1rem;
-    position: absolute;
-    font-size: 1.1em;
-    list-style: none;
-    cursor: pointer;
-    display: none;
-    z-index: 100;
-    padding: 0;
-}
-
-.mvc-lookup-autocomplete li {
-    padding: 3px 1em 3px 0.4em;
-}
-
-.mvc-lookup-autocomplete li.active {
-    border: 1px solid #aaaaaa;
-    margin: -1px;
 }
 
 .mvc-lookup-open {
@@ -191,13 +167,10 @@
     transition: all 0.3s;
     font-weight: bold;
     background: none;
-    font-size: 1.7em;
+    font-size: 1.3em;
+    cursor: pointer;
     line-height: 1;
     border: none;
-}
-
-.mvc-lookup-close:focus {
-    outline: none;
 }
 
 .mvc-lookup-close:hover {
@@ -218,9 +191,9 @@
     border-bottom-left-radius: 4px;
     border-top-left-radius: 4px;
     border: 1px solid #dddddd;
-    line-height: 1.42857143;
-    box-sizing: border-box;
     padding: 6px 12px;
+    line-height: 1.5;
+    width: 100%;
     flex: 1;
 }
 
@@ -233,8 +206,6 @@
     border-top-right-radius: 4px;
     background-color: #eeeeee;
     border: 1px solid #dddddd;
-    line-height: 1.42857143;
-    box-sizing: border-box;
     text-align: center;
     border-left: none;
     padding: 6px 0;
@@ -252,6 +223,7 @@
     border-radius: 4px;
     margin-left: 10px;
     padding: 5px 8px;
+    cursor: pointer;
     min-width: 7em;
     color: #ffffff;
 }
@@ -325,52 +297,42 @@
     overflow-x: auto;
 }
 
-@keyframes mvc-lookup-spin {
-    0% {
-        transform: rotate(0);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.mvc-lookup-dialog table {
+.mvc-lookup-table table {
     border-collapse: collapse;
     border: none;
     width: 100%;
 }
 
-.mvc-lookup-dialog tbody tr:hover {
-    background-color: #ececec;
-}
-
-.mvc-lookup-dialog .selected {
-    background-color: #f5f5f5;
-}
-
-.mvc-lookup-dialog tr {
+.mvc-lookup-table tr {
     cursor: pointer;
 }
 
-.mvc-lookup-asc::after {
-    padding-left: 3px;
-    content: '\2193';
+.mvc-lookup-table tbody tr:hover {
+    background-color: #ececec;
 }
 
-.mvc-lookup-desc::after {
-    padding-left: 3px;
-    content: '\2191';
+.mvc-lookup-table .selected {
+    background-color: #f5f5f5;
 }
 
-.mvc-lookup-dialog th,
-.mvc-lookup-dialog td {
+.mvc-lookup-table th,
+.mvc-lookup-table td {
     border: 1px solid #dddddd;
     line-height: 1.42857143;
     padding: 0.3em 0.6em;
 }
 
-.mvc-lookup-split td {
+.mvc-lookup-table .mvc-lookup-asc::after {
+    padding-left: 3px;
+    content: '\2193';
+}
+
+.mvc-lookup-table .mvc-lookup-desc::after {
+    padding-left: 3px;
+    content: '\2191';
+}
+
+.mvc-lookup-table .mvc-lookup-split td {
     background-color: #ffffff;
     color: transparent;
     font-size: 0.4em;
@@ -378,55 +340,54 @@
     border: none;
 }
 
-.mvc-lookup-dialog td:last-child {
+.mvc-lookup-table td:last-child {
     box-sizing: border-box;
     text-align: center;
     font-weight: bold;
     width: 2.5em;
 }
 
-.mvc-lookup-dialog td:last-child::after {
+.mvc-lookup-table td:last-child::after {
     content: '\25CF';
 }
 
-.mvc-lookup-dialog .selected td:last-child::after {
+.mvc-lookup-table .selected td:last-child::after {
     content: '\2714';
     color: #5cb85c;
 }
 
-.mvc-lookup-dialog .mvc-lookup-empty {
+.mvc-lookup-table .mvc-lookup-empty {
     text-align: center;
     cursor: default;
 }
 
-.mvc-lookup-dialog .mvc-lookup-empty:hover {
+.mvc-lookup-table .mvc-lookup-empty:hover {
     background-color: inherit;
 }
 
-.mvc-lookup-dialog .mvc-lookup-empty td {
+.mvc-lookup-table .mvc-lookup-empty td {
     font-weight: normal;
 }
 
-.mvc-lookup-dialog .mvc-lookup-empty td::after {
+.mvc-lookup-table .mvc-lookup-empty td::after {
     content: '';
 }
 
-.mvc-lookup-dialog ul {
+.mvc-lookup-pager {
     margin: 0.8em 0 0 0;
     text-align: right;
     padding: 0;
 }
 
-.mvc-lookup-dialog ul li {
+.mvc-lookup-pager li {
     display: inline;
-    cursor: pointer;
 }
 
-.mvc-lookup-dialog ul li + li a {
+.mvc-lookup-pager li + li a {
     margin-left: 3px;
 }
 
-.mvc-lookup-dialog ul a {
+.mvc-lookup-pager a {
     border: 1px solid #dddddd;
     box-sizing: content-box;
     text-decoration: none;
@@ -437,16 +398,48 @@
     color: #777777;
 }
 
-.mvc-lookup-dialog ul a:focus,
-.mvc-lookup-dialog ul a:hover {
+.mvc-lookup-pager a:focus,
+.mvc-lookup-pager a:hover {
     background-color: #eeeeee;
     color: #777777;
 }
 
-.mvc-lookup-dialog .active a,
-.mvc-lookup-dialog .active a:focus,
-.mvc-lookup-dialog .active a:hover {
+.mvc-lookup-pager .active a,
+.mvc-lookup-pager .active a:focus,
+.mvc-lookup-pager .active a:hover {
     background-color: rgba(48, 74, 125, 0.76);
     border-color: rgba(30, 54, 101, 0.82);
     color: #ffffff;
+}
+
+.mvc-lookup-autocomplete {
+    border: 1px solid #d3d3d3;
+    background: #ffffff;
+    margin-bottom: 1rem;
+    position: absolute;
+    font-size: 1.1em;
+    list-style: none;
+    cursor: pointer;
+    display: none;
+    z-index: 100;
+    padding: 0;
+}
+
+.mvc-lookup-autocomplete li {
+    padding: 3px 1em 3px 0.4em;
+}
+
+.mvc-lookup-autocomplete li.active {
+    border: 1px solid #aaaaaa;
+    margin: -1px;
+}
+
+@keyframes mvc-lookup-spin {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

@@ -63,12 +63,12 @@ var MvcLookupDialog = (function () {
         this.instance = document.getElementById(lookup.group.dataset.dialog);
         this.options = { preserveSearch: true, rows: { min: 1, max: 99 }, openDelay: 100 };
 
-        this.pager = this.instance.querySelector('ul');
         this.table = this.instance.querySelector('table');
         this.tableHead = this.instance.querySelector('thead');
         this.tableBody = this.instance.querySelector('tbody');
         this.rows = this.instance.querySelector('.mvc-lookup-rows');
         this.error = this.instance.querySelector('.mvc-lookup-error');
+        this.pager = this.instance.querySelector('.mvc-lookup-pager');
         this.header = this.instance.querySelector('.mvc-lookup-title');
         this.search = this.instance.querySelector('.mvc-lookup-search');
         this.selector = this.instance.querySelector('.mvc-lookup-selector');
@@ -596,7 +596,7 @@ var MvcLookup = (function () {
             for (var i = 0; i < arguments.length; i++) {
                 for (var key in arguments[i]) {
                     if (arguments[i].hasOwnProperty(key)) {
-                        if (toString.call(options[key]) == '[object Object]') {
+                        if (Object.prototype.toString.call(options[key]) == '[object Object]') {
                             options[key] = this.extend(options[key], arguments[i][key]);
                         } else {
                             options[key] = arguments[i][key];
