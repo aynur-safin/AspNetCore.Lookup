@@ -496,7 +496,7 @@ var MvcLookupAutocomplete = (function () {
             }, autocomplete.lookup.options.searchDelay);
         },
         previous: function () {
-            if (!this.instance.style.display) {
+            if (!this.instance.parentNode) {
                 this.search(this.lookup.search.value);
 
                 return;
@@ -513,7 +513,7 @@ var MvcLookupAutocomplete = (function () {
             }
         },
         next: function () {
-            if (!this.instance.style.display) {
+            if (!this.instance.parentNode) {
                 this.search(this.lookup.search.value);
 
                 return;
@@ -947,8 +947,6 @@ var MvcLookup = (function () {
                 if (e.which != 9 && this.value.length == 0 && !lookup.multi && lookup.selected.length > 0) {
                     lookup.autocomplete.hide();
                     lookup.select([], true);
-                } else if (e.which != 13 && e.which != 38 && e.which != 40) {
-                    lookup.autocomplete.search(this.value);
                 }
             });
             lookup.search.addEventListener('input', function (e) {
