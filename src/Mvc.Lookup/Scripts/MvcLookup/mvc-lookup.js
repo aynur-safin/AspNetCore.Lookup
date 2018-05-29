@@ -253,33 +253,26 @@ var MvcLookupDialog = (function () {
             }
         },
         renderPage: function (text, value) {
-            var content = document.createElement('a');
-            var page = document.createElement('li');
-            content.setAttribute('href', '#');
+            var page = document.createElement('button');
             var filter = this.lookup.filter;
-            page.appendChild(content);
-            content.innerHTML = text;
+            page.innerHTML = text;
             var dialog = this;
 
             if (filter.page == value) {
                 page.className = 'active';
             }
 
-            content.addEventListener('click', function (e) {
-                e.preventDefault();
+            page.addEventListener('click', function () {
+                if (filter.page != value) {
+                    var expectedPages = Math.ceil((dialog.totalRows - dialog.selected.length) / filter.rows);
+                    if (value < expectedPages) {
+                        filter.page = value;
+                    } else {
+                        filter.page = expectedPages - 1;
+                    }
 
-                if (filter.page == value) {
-                    return;
+                    dialog.refresh();
                 }
-
-                var expectedPages = Math.ceil((dialog.totalRows - dialog.selected.length) / filter.rows);
-                if (value < expectedPages) {
-                    filter.page = value;
-                } else {
-                    filter.page = expectedPages - 1;
-                }
-
-                dialog.refresh();
             });
 
             dialog.pager.appendChild(page);
@@ -819,9 +812,9 @@ var MvcLookup = (function () {
             var items = [];
 
             for (var i = 0; i < data.length; i++) {
-                var close = document.createElement('span');
+                var close = document.createElement('button');
                 close.className = 'mvc-lookup-deselect';
-                close.innerHTML = 'x';
+                close.innerText = '×';
 
                 var item = document.createElement('div');
                 item.innerText = data[i].LookupAcKey || '';
