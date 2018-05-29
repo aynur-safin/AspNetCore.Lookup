@@ -664,10 +664,18 @@ var MvcLookup = (function () {
                 this.search.setAttribute('tabindex', -1);
                 this.search.setAttribute('readonly', 'readonly');
                 this.group.classList.add('mvc-lookup-readonly');
+
+                if (this.browser) {
+                    this.browser.setAttribute('tabindex', -1);
+                }
             } else {
                 this.search.removeAttribute('readonly');
                 this.search.removeAttribute('tabindex');
                 this.group.classList.remove('mvc-lookup-readonly');
+
+                if (this.browser) {
+                    this.browser.removeAttribute('tabindex');
+                }
             }
 
             this.resizeSearch();
