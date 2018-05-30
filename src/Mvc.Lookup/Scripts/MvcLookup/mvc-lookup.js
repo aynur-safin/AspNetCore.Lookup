@@ -551,9 +551,7 @@ var MvcLookupAutocomplete = (function () {
                 e.preventDefault();
             });
 
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-
+            item.addEventListener('click', function () {
                 if (lookup.multi) {
                     lookup.select(lookup.selected.concat(data), true);
                 } else {
@@ -912,48 +910,13 @@ var MvcLookup = (function () {
                 lookup.resizeSearch();
             });
 
-            lookup.search.addEventListener('focusin', function () {
+            lookup.search.addEventListener('focus', function () {
                 lookup.group.classList.add('mvc-lookup-focus');
             });
 
-            lookup.search.addEventListener('focusout', function () {
-                lookup.group.classList.remove('mvc-lookup-focus');
-            });
-
-            lookup.search.addEventListener('keydown', function (e) {
-                if (e.which == 8 && !this.value.length && lookup.selected.length) {
-                    lookup.select(lookup.selected.slice(0, -1), true);
-                } else if (e.which == 38) {
-                    lookup.autocomplete.previous();
-
-                    e.preventDefault();
-                } else if (e.which == 40) {
-                    lookup.autocomplete.next();
-
-                    e.preventDefault();
-                } else if (e.which == 13 && lookup.autocomplete.activeItem) {
-                    if (typeof (Event) === 'function') {
-                        var click = new Event('click');
-                    } else {
-                        var click = document.createEvent('Event');
-                        click.initEvent('click', true, true);
-                    }
-
-                    lookup.autocomplete.activeItem.dispatchEvent(click);
-
-                    e.preventDefault();
-                }
-            });
-            lookup.search.addEventListener('keyup', function (e) {
-                if (e.which != 9 && !this.value.length && !lookup.multi && lookup.selected.length) {
-                    lookup.autocomplete.hide();
-                    lookup.select([], true);
-                }
-            });
-            lookup.search.addEventListener('input', function (e) {
-                lookup.autocomplete.search(this.value);
-            });
             lookup.search.addEventListener('blur', function () {
+                lookup.group.classList.remove('mvc-lookup-focus');
+
                 if (!lookup.multi && lookup.selected.length) {
                     this.value = lookup.selected[0].LookupAcKey;
                 } else {
@@ -963,10 +926,39 @@ var MvcLookup = (function () {
                 lookup.autocomplete.hide();
             });
 
-            if (lookup.browser) {
-                lookup.browser.addEventListener('click', function (e) {
+            lookup.search.addEventListener('keydown', function (e) {
+                if (e.which == 8 && !this.value.length && lookup.selected.length) {
+                    lookup.select(lookup.selected.slice(0, -1), true);
+                } else if (e.which == 38) {
                     e.preventDefault();
 
+                    lookup.autocomplete.previous();
+                } else if (e.which == 40) {
+                    e.preventDefault();
+
+                    lookup.autocomplete.next();
+                } else if (e.which == 13 && lookup.autocomplete.activeItem) {
+                    if (typeof (Event) === 'function') {
+                        var click = new Event('click');
+                    } else {
+                        var click = document.createEvent('Event');
+                        click.initEvent('click', true, true);
+                    }
+
+                    lookup.autocomplete.activeItem.dispatchEvent(click);
+                }
+            });
+            lookup.search.addEventListener('input', function () {
+                if (!this.value.length && !lookup.multi && lookup.selected.length) {
+                    lookup.autocomplete.hide();
+                    lookup.select([], true);
+                }
+
+                lookup.autocomplete.search(this.value);
+            });
+
+            if (lookup.browser) {
+                lookup.browser.addEventListener('click', function () {
                     lookup.browse();
                 });
             }
