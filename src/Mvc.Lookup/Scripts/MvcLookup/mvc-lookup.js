@@ -22,8 +22,9 @@ var MvcLookupFilter = (function () {
 
     MvcLookupFilter.prototype = {
         formUrl: function (search) {
+            var urlQuery = this.lookup.url.split('?')[1];
             var filter = this.lookup.extend({ ids: [], checkIds: [], selected: [] }, this, search);
-            var query = '?search=' + encodeURIComponent(filter.search);
+            var query = '?' + (urlQuery ? urlQuery + '&' : '') + 'search=' + encodeURIComponent(filter.search);
 
             for (var i = 0; i < this.additionalFilters.length; i++) {
                 var filters = document.querySelectorAll('[name="' + this.additionalFilters[i] + '"]');
