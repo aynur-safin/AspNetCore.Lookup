@@ -61,6 +61,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                 "</div>";
 
@@ -82,6 +83,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                 "</div>";
 
@@ -106,6 +108,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                 "</div>";
 
@@ -133,6 +136,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                 "</div>";
 
@@ -154,6 +158,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                 "</div>";
 
@@ -179,6 +184,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Values\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                 "</div>";
 
@@ -206,6 +212,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                     "<button class=\"mvc-lookup-browser\" data-for=\"Test\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
@@ -230,6 +237,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                     "<button class=\"mvc-lookup-browser\" data-for=\"Test\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
@@ -255,6 +263,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                     "<button class=\"mvc-lookup-browser\" data-for=\"Test\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
@@ -285,6 +294,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" readonly=\"readonly\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                     "<button class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
@@ -309,6 +319,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                     "<button class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
@@ -334,6 +345,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-control\" data-for=\"Values\">" +
                         "<input autocomplete=\"off\" class=\"mvc-lookup-input\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
+                        "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
                     "<button class=\"mvc-lookup-browser\" data-for=\"Values\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +

@@ -69,23 +69,16 @@ var MvcLookupDialog = (function () {
         this.tableHead = this.instance.querySelector('thead');
         this.tableBody = this.instance.querySelector('tbody');
         this.rows = this.instance.querySelector('.mvc-lookup-rows');
-        this.error = this.instance.querySelector('.mvc-lookup-error');
         this.pager = this.instance.querySelector('.mvc-lookup-pager');
         this.header = this.instance.querySelector('.mvc-lookup-title');
         this.search = this.instance.querySelector('.mvc-lookup-search');
         this.selector = this.instance.querySelector('.mvc-lookup-selector');
         this.closeButton = this.instance.querySelector('.mvc-lookup-close');
+        this.error = this.instance.querySelector('.mvc-lookup-dialog-error');
         this.loader = this.instance.querySelector('.mvc-lookup-dialog-loader');
     }
 
     MvcLookupDialog.prototype = {
-        lang: {
-            search: 'Search...',
-            select: 'Select ({0})',
-            noData: 'No data found',
-            error: 'Error while retrieving records'
-        },
-
         open: function () {
             var dialog = this;
             var filter = dialog.lookup.filter;
@@ -94,13 +87,13 @@ var MvcLookupDialog = (function () {
             dialog.error.style.display = 'none';
             dialog.loader.style.display = 'none';
             dialog.header.innerText = dialog.title;
-            dialog.error.innerHTML = dialog.lang['error'];
             dialog.selected = dialog.lookup.selected.slice();
             dialog.rows.value = dialog.limitRows(filter.rows);
-            dialog.search.setAttribute('placeholder', dialog.lang['search']);
+            dialog.error.innerHTML = dialog.lookup.lang['error'];
             dialog.selector.style.display = dialog.lookup.multi ? '' : 'none';
             filter.search = dialog.options.preserveSearch ? filter.search : '';
-            dialog.selector.innerText = dialog.lang['select'].replace('{0}', dialog.lookup.selected.length);
+            dialog.search.setAttribute('placeholder', dialog.lookup.lang['search']);
+            dialog.selector.innerText = dialog.lookup.lang['select'].replace('{0}', dialog.lookup.selected.length);
 
             dialog.bind();
             dialog.refresh();
@@ -117,6 +110,8 @@ var MvcLookupDialog = (function () {
         },
         close: function () {
             var dialog = MvcLookupDialog.prototype.current;
+            dialog.lookup.group.classList.remove('mvc-lookup-error');
+
             dialog.overlay.hide();
 
             if (dialog.lookup.multi) {
@@ -185,7 +180,7 @@ var MvcLookupDialog = (function () {
                 var row = document.createElement('tr');
 
                 empty.setAttribute('colspan', columns.length + 1);
-                empty.innerHTML = this.lang['noData'];
+                empty.innerHTML = this.lookup.lang['noData'];
                 row.className = 'mvc-lookup-empty';
 
                 this.tableBody.appendChild(row);
@@ -329,7 +324,7 @@ var MvcLookupDialog = (function () {
                 }
 
                 if (lookup.multi) {
-                    dialog.selector.innerText = dialog.lang['select'].replace('{0}', dialog.selected.length);
+                    dialog.selector.innerText = dialog.lookup.lang['select'].replace('{0}', dialog.selected.length);
                 } else {
                     lookup.select(dialog.selected, true);
 
@@ -595,6 +590,7 @@ var MvcLookup = (function () {
         this.search = group.querySelector('.mvc-lookup-input');
         this.browser = group.querySelector('.mvc-lookup-browser');
         this.control = group.querySelector('.mvc-lookup-control');
+        this.error = group.querySelector('.mvc-lookup-control-error');
         this.valueContainer = group.querySelector('.mvc-lookup-values');
         this.values = this.valueContainer.querySelectorAll('.mvc-lookup-value');
 
@@ -611,6 +607,12 @@ var MvcLookup = (function () {
 
     MvcLookup.prototype = {
         instances: [],
+        lang: {
+            search: 'Search...',
+            select: 'Select ({0})',
+            noData: 'No data found',
+            error: 'Error while retrieving records'
+        },
 
         closestGroup: function (element) {
             var lookup = element;
@@ -675,6 +677,7 @@ var MvcLookup = (function () {
         load: function (search, success, error) {
             var lookup = this;
             lookup.startLoading();
+            lookup.group.classList.remove('mvc-lookup-error');
 
             var request = new XMLHttpRequest();
             request.open('GET', lookup.filter.formUrl(search), true);
@@ -690,6 +693,8 @@ var MvcLookup = (function () {
             };
 
             request.onerror = function () {
+                lookup.error.setAttribute('title', lookup.lang.error);
+                lookup.group.classList.add('mvc-lookup-error');
                 lookup.stopLoading();
 
                 if (error) {
@@ -846,12 +851,12 @@ var MvcLookup = (function () {
             this.stopLoading();
 
             this.loading = setTimeout(function (lookup) {
-                lookup.search.classList.add('mvc-lookup-loading');
+                lookup.group.classList.add('mvc-lookup-loading');
             }, this.options.loadingDelay, this);
         },
         stopLoading: function () {
             clearTimeout(this.loading);
-            this.search.classList.remove('mvc-lookup-loading');
+            this.group.classList.remove('mvc-lookup-loading');
         },
 
         bindDeselect: function (close, id) {

@@ -139,15 +139,20 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
             TagBuilder control = new TagBuilder("div");
             TagBuilder loader = new TagBuilder("div");
+            TagBuilder error = new TagBuilder("div");
 
             if (lookup.ReadOnly) search.Attributes["readonly"] = "readonly";
             loader.AddCssClass("mvc-lookup-control-loader");
+            error.AddCssClass("mvc-lookup-control-error");
             search.Attributes["autocomplete"] = "off";
             control.AddCssClass("mvc-lookup-control");
             search.AddCssClass("mvc-lookup-input");
             control.Attributes["data-for"] = name;
+            error.InnerHtml.Append("!");
+
             control.InnerHtml.AppendHtml(search);
             control.InnerHtml.AppendHtml(loader);
+            control.InnerHtml.AppendHtml(error);
 
             return control;
         }
