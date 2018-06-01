@@ -580,7 +580,7 @@ var MvcLookup = (function () {
     function MvcLookup(element, options) {
         var group = this.closestGroup(element);
         if (group.dataset.id) {
-            return this.instances[parseInt(group.dataset.id)];
+            return this.instances[parseInt(group.dataset.id)].set(options || {});
         }
 
         this.items = [];
@@ -656,6 +656,8 @@ var MvcLookup = (function () {
             this.setReadonly(options.readonly == null ? this.readonly : options.readonly);
             this.dialog.options = this.extend(this.dialog.options, options.dialog);
             this.events = this.extend(this.events, options.events);
+
+            return this;
         },
         setReadonly: function (readonly) {
             this.readonly = readonly;
