@@ -215,7 +215,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
-                    "<button class=\"mvc-lookup-browser\" data-for=\"Test\">" +
+                    "<button class=\"mvc-lookup-browser\" data-for=\"Test\" type=\"button\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
                     "</button>" +
                 "</div>";
@@ -240,7 +240,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
-                    "<button class=\"mvc-lookup-browser\" data-for=\"Test\">" +
+                    "<button class=\"mvc-lookup-browser\" data-for=\"Test\" type=\"button\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
                     "</button>" +
                 "</div>";
@@ -266,7 +266,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
-                    "<button class=\"mvc-lookup-browser\" data-for=\"Test\">" +
+                    "<button class=\"mvc-lookup-browser\" data-for=\"Test\" type=\"button\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
                     "</button>" +
                 "</div>";
@@ -297,7 +297,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
-                    "<button class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
+                    "<button class=\"mvc-lookup-browser\" data-for=\"ParentId\" type=\"button\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
                     "</button>" +
                 "</div>";
@@ -322,7 +322,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
-                    "<button class=\"mvc-lookup-browser\" data-for=\"ParentId\">" +
+                    "<button class=\"mvc-lookup-browser\" data-for=\"ParentId\" type=\"button\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
                     "</button>" +
                 "</div>";
@@ -348,7 +348,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
-                    "<button class=\"mvc-lookup-browser\" data-for=\"Values\">" +
+                    "<button class=\"mvc-lookup-browser\" data-for=\"Values\" type=\"button\">" +
                         "<span class=\"mvc-lookup-icon\"></span>" +
                     "</button>" +
                 "</div>";

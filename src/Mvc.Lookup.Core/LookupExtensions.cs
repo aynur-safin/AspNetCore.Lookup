@@ -169,6 +169,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder browser = new TagBuilder("button");
             browser.AddCssClass("mvc-lookup-browser");
             browser.Attributes["data-for"] = name;
+            browser.Attributes["type"] = "button";
 
             TagBuilder icon = new TagBuilder("span");
             icon.AddCssClass("mvc-lookup-icon");

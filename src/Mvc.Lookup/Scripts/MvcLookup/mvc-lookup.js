@@ -251,6 +251,7 @@ var MvcLookupDialog = (function () {
         renderPage: function (text, value) {
             var page = document.createElement('button');
             var filter = this.lookup.filter;
+            page.type = 'button';
             var dialog = this;
 
             if (filter.page == value) {
@@ -824,6 +825,7 @@ var MvcLookup = (function () {
                 var button = document.createElement('button');
                 button.className = 'mvc-lookup-deselect';
                 button.innerText = '×';
+                button.type = 'button';
 
                 var item = document.createElement('div');
                 item.innerText = data[i].LookupAcKey || '';
