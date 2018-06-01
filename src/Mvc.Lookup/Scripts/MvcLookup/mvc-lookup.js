@@ -713,6 +713,7 @@ var MvcLookup = (function () {
         reload: function (triggerChanges) {
             var rows = [];
             var lookup = this;
+            var originalValue = lookup.search.value;
             var ids = [].filter.call(lookup.values, function (element) { return element.value; });
 
             if (ids.length) {
@@ -728,6 +729,10 @@ var MvcLookup = (function () {
                 });
             } else {
                 lookup.select(rows, triggerChanges);
+
+                if (!lookup.multi && lookup.search.getAttribute('name')) {
+                    lookup.search.value = originalValue;
+                }
             }
         },
         select: function (data, triggerChanges) {
@@ -922,10 +927,17 @@ var MvcLookup = (function () {
             lookup.search.addEventListener('blur', function () {
                 lookup.group.classList.remove('mvc-lookup-focus');
 
+                var originalValue = this.value;
                 if (!lookup.multi && lookup.selected.length) {
-                    this.value = lookup.selected[0].LookupAcKey;
+                    if (lookup.selected[0].LookupAcKey != this.value) {
+                        lookup.select([], true);
+                    }
                 } else {
                     this.value = '';
+                }
+
+                if (!lookup.multi && lookup.search.getAttribute('name')) {
+                    this.value = originalValue;
                 }
 
                 lookup.autocomplete.hide();

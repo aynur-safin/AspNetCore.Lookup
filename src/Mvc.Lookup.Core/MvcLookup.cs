@@ -10,6 +10,7 @@ namespace NonFactors.Mvc.Lookup
         public const String AcKey = "LookupAcKey";
 
         public String Url { get; set; }
+        public String Name { get; set; }
         public String Title { get; set; }
         public String Dialog { get; set; }
         public Boolean Multi { get; set; }

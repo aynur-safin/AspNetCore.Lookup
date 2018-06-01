@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Lookup
             lookup.AddCssClass("mvc-lookup-browseless");
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
-            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(html, model, name));
 
             return lookup;
         }
@@ -31,7 +31,7 @@ namespace NonFactors.Mvc.Lookup
             lookup.AddCssClass("mvc-lookup-browseless");
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
-            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(html, model, name));
 
             return lookup;
         }
@@ -42,7 +42,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, name, value));
-            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(html, model, name));
             lookup.InnerHtml.AppendHtml(CreateLookupBrowser(name));
 
             return lookup;
@@ -54,7 +54,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
-            lookup.InnerHtml.AppendHtml(CreateLookupControl(model, name));
+            lookup.InnerHtml.AppendHtml(CreateLookupControl(html, model, name));
             lookup.InnerHtml.AppendHtml(CreateLookupBrowser(name));
 
             return lookup;
@@ -134,23 +134,31 @@ namespace NonFactors.Mvc.Lookup
             return container;
         }
 
-        private static IHtmlContent CreateLookupControl(MvcLookup lookup, String name)
+        private static IHtmlContent CreateLookupControl(IHtmlHelper html, MvcLookup lookup, String name)
         {
             TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
+            Dictionary<String, Object> attributes = new Dictionary<String, Object>();
             TagBuilder control = new TagBuilder("div");
             TagBuilder loader = new TagBuilder("div");
             TagBuilder error = new TagBuilder("div");
 
-            if (lookup.ReadOnly) search.Attributes["readonly"] = "readonly";
+            if (lookup.Name != null) attributes["id"] = ExpressionHelper.GetExpressionText(lookup.Name);
+            if (lookup.Name != null) attributes["name"] = lookup.Name;
+            if (lookup.ReadOnly) attributes["readonly"] = "readonly";
+            attributes["class"] = "mvc-lookup-input";
+            attributes["autocomplete"] = "off";
+
             loader.AddCssClass("mvc-lookup-control-loader");
             error.AddCssClass("mvc-lookup-control-error");
-            search.Attributes["autocomplete"] = "off";
             control.AddCssClass("mvc-lookup-control");
-            search.AddCssClass("mvc-lookup-input");
             control.Attributes["data-for"] = name;
+            search.MergeAttributes(attributes);
             error.InnerHtml.Append("!");
 
-            control.InnerHtml.AppendHtml(search);
+            if (lookup.Name != null)
+                control.InnerHtml.AppendHtml(html.TextBox(lookup.Name, null, attributes));
+            else
+                control.InnerHtml.AppendHtml(search);
             control.InnerHtml.AppendHtml(loader);
             control.InnerHtml.AppendHtml(error);
 
