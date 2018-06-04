@@ -34,6 +34,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Dialog = "Dialog";
             lookup.Name = "LookupName";
             lookup.Filter.Sort = "First";
+            lookup.Placeholder = "Search";
             lookup.Filter.Search = "Test";
             lookup.AdditionalFilters.Clear();
             lookup.AdditionalFilters.Add("Add1");
@@ -60,7 +61,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -82,7 +83,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -107,7 +108,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"Value2\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -135,7 +136,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -157,7 +158,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -183,7 +184,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Values\" name=\"Values\" type=\"hidden\" value=\"Value2&#x27;s\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Values\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -211,7 +212,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -236,7 +237,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"Test\" name=\"Test\" type=\"hidden\" value=\"1\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -262,7 +263,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-values\" data-for=\"Test\">" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Test\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -293,7 +294,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" readonly=\"readonly\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -318,7 +319,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                         "<input autocomplete=\"off\" class=\"mvc-lookup-value\" id=\"ParentId\" name=\"ParentId\" type=\"hidden\" value=\"Model&#x27;s parent ID\" />" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"ParentId\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +
@@ -344,7 +345,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     "<div class=\"mvc-lookup-values\" data-for=\"Values\">" +
                     "</div>" +
                     "<div class=\"mvc-lookup-control\" data-for=\"Values\">" +
-                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" type=\"text\" value=\"\" />" +
+                        "<input autocomplete=\"off\" class=\"mvc-lookup-input\" id=\"LookupName\" name=\"LookupName\" placeholder=\"Search\" type=\"text\" value=\"\" />" +
                         "<div class=\"mvc-lookup-control-loader\"></div>" +
                         "<div class=\"mvc-lookup-control-error\">!</div>" +
                     "</div>" +

@@ -143,6 +143,7 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder error = new TagBuilder("div");
 
             if (lookup.Name != null) attributes["id"] = ExpressionHelper.GetExpressionText(lookup.Name);
+            if (lookup.Placeholder != null) attributes["placeholder"] = lookup.Placeholder;
             if (lookup.Name != null) attributes["name"] = lookup.Name;
             if (lookup.ReadOnly) attributes["readonly"] = "readonly";
             attributes["class"] = "mvc-lookup-input";
