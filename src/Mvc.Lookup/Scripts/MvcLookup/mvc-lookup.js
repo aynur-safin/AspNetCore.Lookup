@@ -780,14 +780,14 @@ var MvcLookup = (function () {
         selectFirst: function (triggerChanges) {
             var lookup = this;
 
-            lookup.startLoading({ rows: 1 }, function (data) {
+            lookup.startLoading({ search: '', rows: 1, page: 0 }, function (data) {
                 lookup.select(data.rows, triggerChanges);
             });
         },
         selectSingle: function (triggerChanges) {
             var lookup = this;
 
-            lookup.startLoading({ rows: 2 }, function (data) {
+            lookup.startLoading({ search: '', rows: 2, page: 0 }, function (data) {
                 if (data.rows.length == 1) {
                     lookup.select(data.rows, triggerChanges);
                 } else {
