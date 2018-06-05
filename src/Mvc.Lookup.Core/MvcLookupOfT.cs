@@ -162,15 +162,18 @@ namespace NonFactors.Mvc.Lookup
 
         public virtual IQueryable<T> Page(IQueryable<T> models)
         {
-            return models
-                .Skip(Filter.Page * Filter.Rows)
-                .Take(Math.Min(Filter.Rows, 99));
+            Filter.TotalRows = models.Count();
+            Filter.Page = Math.Max(0, Filter.Page);
+            Filter.Rows = Math.Min(Math.Max(1, Filter.Rows), 99);
+            Filter.Page = Math.Min(Filter.Page, (Int32)Math.Ceiling(Filter.TotalRows / (Double)Filter.Rows) - 1);
+
+            return models.Skip(Filter.Page * Filter.Rows).Take(Filter.Rows);
         }
 
         public virtual LookupData FormLookupData(IQueryable<T> filtered, IQueryable<T> selected, IQueryable<T> notSelected)
         {
             LookupData data = new LookupData();
-            data.FilteredRows = filtered.Count();
+            data.FilteredRows = Filter.TotalRows;
             data.Columns = Columns;
 
             foreach (T model in selected.Concat(notSelected))

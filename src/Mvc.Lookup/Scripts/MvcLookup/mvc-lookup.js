@@ -227,8 +227,10 @@ var MvcLookupDialog = (function () {
         renderFooter: function (filteredRows) {
             var dialog = this;
             var filter = dialog.lookup.filter;
-            var totalPages = Math.ceil(filteredRows / filter.rows);
+
             dialog.totalRows = filteredRows + dialog.selected.length;
+            var totalPages = Math.ceil(filteredRows / filter.rows);
+            filter.page = dialog.limitPage(filter.page);
 
             if (totalPages) {
                 var startingPage = Math.floor(filter.page / 4) * 4;
@@ -247,6 +249,7 @@ var MvcLookupDialog = (function () {
                     dialog.renderPage('&raquo;', totalPages - 1);
                 }
             } else {
+                filter.page = 0;
                 dialog.renderPage(1, 0);
             }
         },
@@ -263,8 +266,7 @@ var MvcLookupDialog = (function () {
             page.innerHTML = text;
             page.addEventListener('click', function () {
                 if (filter.page != value) {
-                    var expectedPages = Math.ceil((dialog.totalRows - dialog.selected.length) / filter.rows) - 1;
-                    filter.page = Math.min(value, expectedPages);
+                    filter.page = dialog.limitPage(value);
 
                     dialog.refresh();
                 }
@@ -340,6 +342,11 @@ var MvcLookupDialog = (function () {
             return row;
         },
 
+        limitPage: function (value) {
+            value = Math.max(0, value);
+
+            return Math.min(value, Math.ceil((this.totalRows - this.selected.length) / this.lookup.filter.rows) - 1);
+        },
         limitRows: function (value) {
             var options = this.options.rows;
 
@@ -465,7 +472,7 @@ var MvcLookupAutocomplete = (function () {
                     return;
                 }
 
-                lookup.startLoading({ search: term, rows: autocomplete.options.rows }, function (data) {
+                lookup.startLoading({ search: term, rows: autocomplete.options.rows, page: 0 }, function (data) {
                     autocomplete.clear();
 
                     data = data.rows.filter(function (row) {
@@ -696,7 +703,7 @@ var MvcLookup = (function () {
             var ids = [].filter.call(lookup.values, function (element) { return element.value; });
 
             if (ids.length) {
-                lookup.startLoading({ ids: ids, rows: ids.length }, function (data) {
+                lookup.startLoading({ ids: ids, rows: ids.length, page: 0 }, function (data) {
                     for (var i = 0; i < ids.length; i++) {
                         var index = lookup.indexOf(data.rows, ids[i].value);
                         if (index >= 0) {
@@ -998,6 +1005,7 @@ var MvcLookup = (function () {
                 for (var j = 0; j < inputs.length; j++) {
                     inputs[j].addEventListener('change', function (e) {
                         lookup.stopLoading();
+                        lookup.filter.page = 0;
 
                         if (lookup.events.filterChange) {
                             lookup.events.filterChange.apply(lookup, [e]);
