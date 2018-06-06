@@ -726,14 +726,8 @@ var MvcLookup = (function () {
             var lookup = this;
             triggerChanges = triggerChanges == null || triggerChanges;
 
-            if (lookup.events.select) {
-                var e = new CustomEvent('select', { cancelable: true });
-
-                lookup.events.select.apply(lookup, [e, data, triggerChanges]);
-
-                if (e.defaultPrevented) {
-                    return;
-                }
+            if (lookup.events.select && lookup.events.select.apply(lookup, [data, triggerChanges]) === false) {
+                return;
             }
 
             if (triggerChanges && data.length == lookup.selected.length) {
@@ -1007,11 +1001,11 @@ var MvcLookup = (function () {
                         lookup.stopLoading();
                         lookup.filter.page = 0;
 
-                        if (lookup.events.filterChange) {
-                            lookup.events.filterChange.apply(lookup, [e]);
+                        if (lookup.events.filterChange && lookup.events.filterChange.apply(lookup) === false) {
+                            return;
                         }
 
-                        if (!e.defaultPrevented && lookup.selected.length) {
+                        if (lookup.selected.length) {
                             var rows = [];
                             var ids = [].filter.call(lookup.values, function (element) { return element.value; });
 
