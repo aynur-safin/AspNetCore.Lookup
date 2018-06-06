@@ -450,12 +450,12 @@ var MvcLookupOverlay = (function () {
 }());
 var MvcLookupAutocomplete = (function () {
     function MvcLookupAutocomplete(lookup) {
+        this.items = [];
+        this.lookup = lookup;
+        this.activeItem = null;
         this.instance = document.createElement('ul');
         this.instance.className = 'mvc-lookup-autocomplete';
-        this.options = { minLength: 1, rows: 20 };
-        this.activeItem = null;
-        this.lookup = lookup;
-        this.items = [];
+        this.options = { minLength: 1, rows: 20, sort: lookup.filter.sort, order: lookup.filter.order };
     }
 
     MvcLookupAutocomplete.prototype = {
@@ -472,7 +472,14 @@ var MvcLookupAutocomplete = (function () {
                     return;
                 }
 
-                lookup.startLoading({ search: term, rows: autocomplete.options.rows, page: 0 }, function (data) {
+                lookup.startLoading({
+                    search: term,
+                    rows: autocomplete.options.rows,
+                    page: 0,
+                    sort: autocomplete.options.sort,
+                    order: autocomplete.options.order
+                },
+                function (data) {
                     autocomplete.clear();
 
                     data = data.rows.filter(function (row) {
@@ -609,12 +616,12 @@ var MvcLookup = (function () {
         this.valueContainer = group.querySelector('.mvc-lookup-values');
         this.values = this.valueContainer.querySelectorAll('.mvc-lookup-value');
 
-        this.autocomplete = new MvcLookupAutocomplete(this);
+        this.instances.push(this);
         this.filter = new MvcLookupFilter(this);
         this.dialog = new MvcLookupDialog(this);
-        this.instances.push(this);
-        this.set(options || {});
+        this.autocomplete = new MvcLookupAutocomplete(this);
 
+        this.set(options || {});
         this.reload(false);
         this.cleanUp();
         this.bind();
