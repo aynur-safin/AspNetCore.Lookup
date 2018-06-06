@@ -341,6 +341,10 @@
     background: rgba(0, 0, 0, 0.03);
 }
 
+.mvc-lookup-table th {
+    text-align: center;
+}
+
 .mvc-lookup-table th,
 .mvc-lookup-table td {
     border: 1px solid #dee2e6;
