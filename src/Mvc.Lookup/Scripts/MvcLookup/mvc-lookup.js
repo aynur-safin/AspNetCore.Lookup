@@ -91,9 +91,9 @@ var MvcLookupDialog = (function () {
             dialog.selected = dialog.lookup.selected.slice();
             dialog.rows.value = dialog.limitRows(filter.rows);
             dialog.error.innerHTML = dialog.lookup.lang['error'];
+            dialog.search.placeholder = dialog.lookup.lang['search'];
             dialog.selector.style.display = dialog.lookup.multi ? '' : 'none';
             filter.search = dialog.options.preserveSearch ? filter.search : '';
-            dialog.search.setAttribute('placeholder', dialog.lookup.lang['search']);
             dialog.selector.innerText = dialog.lookup.lang['select'].replace('{0}', dialog.lookup.selected.length);
 
             dialog.bind();
@@ -181,8 +181,8 @@ var MvcLookupDialog = (function () {
                 var empty = document.createElement('td');
                 var row = document.createElement('tr');
 
-                empty.setAttribute('colspan', columns.length + 1);
                 empty.innerHTML = this.lookup.lang['noData'];
+                empty.colspan = columns.length + 1;
                 row.className = 'mvc-lookup-empty';
 
                 this.tableBody.appendChild(row);
@@ -212,8 +212,8 @@ var MvcLookupDialog = (function () {
                     var separator = document.createElement('tr');
                     var empty = document.createElement('td');
 
-                    empty.setAttribute('colspan', columns.length + 1);
                     separator.className = 'mvc-lookup-split';
+                    empty.colspan = columns.length + 1;
 
                     this.tableBody.appendChild(separator);
                     separator.appendChild(empty);
@@ -671,12 +671,12 @@ var MvcLookup = (function () {
             this.readonly = readonly;
 
             if (readonly) {
-                this.search.setAttribute('tabindex', -1);
-                this.search.setAttribute('readonly', 'readonly');
+                this.search.tabIndex = -1;
+                this.search.readOnly = true;
                 this.group.classList.add('mvc-lookup-readonly');
 
                 if (this.browser) {
-                    this.browser.setAttribute('tabindex', -1);
+                    this.browser.tabIndex = -1;
                 }
             } else {
                 this.search.removeAttribute('readonly');
@@ -717,7 +717,7 @@ var MvcLookup = (function () {
                 lookup.stopLoading();
                 lookup.select(rows, triggerChanges);
 
-                if (!lookup.multi && lookup.search.getAttribute('name')) {
+                if (!lookup.multi && lookup.search.name) {
                     lookup.search.value = originalValue;
                 }
             }
@@ -830,9 +830,9 @@ var MvcLookup = (function () {
             for (var i = 0; i < data.length; i++) {
                 var input = document.createElement('input');
                 input.className = 'mvc-lookup-value';
-                input.setAttribute('type', 'hidden');
-                input.setAttribute('name', this.for);
                 input.value = data[i].LookupIdKey;
+                input.type = 'hidden';
+                input.name = this.for;
 
                 inputs.push(input);
             }
@@ -844,7 +844,7 @@ var MvcLookup = (function () {
             var lookup = this;
 
             lookup.stopLoading();
-            lookup.loading = setTimeout(function () {//todoz
+            lookup.loading = setTimeout(function () {
                 lookup.group.classList.add('mvc-lookup-loading');
             }, lookup.options.loadingDelay);
             lookup.group.classList.remove('mvc-lookup-error');
@@ -863,8 +863,8 @@ var MvcLookup = (function () {
             };
 
             lookup.request.onerror = function () {
-                lookup.error.setAttribute('title', lookup.lang.error);
                 lookup.group.classList.add('mvc-lookup-error');
+                lookup.error.title = lookup.lang.error;
                 lookup.stopLoading();
 
                 if (error) {
@@ -957,7 +957,7 @@ var MvcLookup = (function () {
                     this.value = '';
                 }
 
-                if (!lookup.multi && lookup.search.getAttribute('name')) {
+                if (!lookup.multi && lookup.search.name) {
                     this.value = originalValue;
                 }
             });
