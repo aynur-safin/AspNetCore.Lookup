@@ -62,21 +62,21 @@ var MvcLookupDialog = (function () {
     function MvcLookupDialog(lookup) {
         this.lookup = lookup;
         this.title = lookup.group.dataset.title;
-        this.instance = document.getElementById(lookup.group.dataset.dialog);
+        this.element = document.getElementById(lookup.group.dataset.dialog);
         this.options = { preserveSearch: true, rows: { min: 1, max: 99 }, openDelay: 100 };
 
         this.overlay = new MvcLookupOverlay(this);
-        this.table = this.instance.querySelector('table');
-        this.tableHead = this.instance.querySelector('thead');
-        this.tableBody = this.instance.querySelector('tbody');
-        this.rows = this.instance.querySelector('.mvc-lookup-rows');
-        this.pager = this.instance.querySelector('.mvc-lookup-pager');
-        this.header = this.instance.querySelector('.mvc-lookup-title');
-        this.search = this.instance.querySelector('.mvc-lookup-search');
-        this.selector = this.instance.querySelector('.mvc-lookup-selector');
-        this.closeButton = this.instance.querySelector('.mvc-lookup-close');
-        this.error = this.instance.querySelector('.mvc-lookup-dialog-error');
-        this.loader = this.instance.querySelector('.mvc-lookup-dialog-loader');
+        this.table = this.element.querySelector('table');
+        this.tableHead = this.element.querySelector('thead');
+        this.tableBody = this.element.querySelector('tbody');
+        this.rows = this.element.querySelector('.mvc-lookup-rows');
+        this.pager = this.element.querySelector('.mvc-lookup-pager');
+        this.header = this.element.querySelector('.mvc-lookup-title');
+        this.search = this.element.querySelector('.mvc-lookup-search');
+        this.selector = this.element.querySelector('.mvc-lookup-selector');
+        this.closeButton = this.element.querySelector('.mvc-lookup-close');
+        this.error = this.element.querySelector('.mvc-lookup-dialog-error');
+        this.loader = this.element.querySelector('.mvc-lookup-dialog-loader');
     }
 
     MvcLookupDialog.prototype = {
@@ -397,7 +397,7 @@ var MvcLookupDialog = (function () {
 }());
 var MvcLookupOverlay = (function () {
     function MvcLookupOverlay(dialog) {
-        this.instance = this.getClosestOverlay(dialog.instance);
+        this.element = this.getClosestOverlay(dialog.element);
         this.dialog = dialog;
 
         this.bind();
@@ -425,17 +425,17 @@ var MvcLookupOverlay = (function () {
             }
 
             document.body.classList.add('mvc-lookup-open');
-            this.instance.style.display = 'block';
+            this.element.style.display = 'block';
         },
         hide: function () {
             document.body.classList.remove('mvc-lookup-open');
             document.body.style.paddingRight = '';
-            this.instance.style.display = '';
+            this.element.style.display = '';
         },
 
         bind: function () {
-            this.instance.removeEventListener('click', this.onClick);
-            this.instance.addEventListener('click', this.onClick);
+            this.element.removeEventListener('click', this.onClick);
+            this.element.addEventListener('click', this.onClick);
         },
         onClick: function (e) {
             var targetClasses = (e.target || e.srcElement).classList;
@@ -453,8 +453,8 @@ var MvcLookupAutocomplete = (function () {
         this.items = [];
         this.lookup = lookup;
         this.activeItem = null;
-        this.instance = document.createElement('ul');
-        this.instance.className = 'mvc-lookup-autocomplete';
+        this.element = document.createElement('ul');
+        this.element.className = 'mvc-lookup-autocomplete';
         this.options = { minLength: 1, rows: 20, sort: lookup.filter.sort, order: lookup.filter.order };
     }
 
@@ -491,7 +491,7 @@ var MvcLookupAutocomplete = (function () {
                         item.dataset.id = data[i].LookupIdKey;
                         item.innerText = data[i].LookupAcKey;
 
-                        autocomplete.instance.appendChild(item);
+                        autocomplete.element.appendChild(item);
                         autocomplete.bind(item, [data[i]]);
                         autocomplete.items.push(item);
                     }
@@ -505,7 +505,7 @@ var MvcLookupAutocomplete = (function () {
             }, autocomplete.lookup.options.searchDelay);
         },
         previous: function () {
-            if (!this.instance.parentNode) {
+            if (!this.element.parentNode) {
                 this.search(this.lookup.search.value);
 
                 return;
@@ -522,7 +522,7 @@ var MvcLookupAutocomplete = (function () {
             }
         },
         next: function () {
-            if (!this.instance.parentNode) {
+            if (!this.element.parentNode) {
                 this.search(this.lookup.search.value);
 
                 return;
@@ -541,21 +541,21 @@ var MvcLookupAutocomplete = (function () {
         clear: function () {
             this.items = [];
             this.activeItem = null;
-            this.instance.innerHTML = '';
+            this.element.innerHTML = '';
         },
         show: function () {
             var search = this.lookup.search.getBoundingClientRect();
 
-            this.instance.style.left = (search.left + window.pageXOffset) + 'px';
-            this.instance.style.top = (search.top + search.height + window.pageYOffset) + 'px';
+            this.element.style.left = (search.left + window.pageXOffset) + 'px';
+            this.element.style.top = (search.top + search.height + window.pageYOffset) + 'px';
 
-            document.body.appendChild(this.instance);
+            document.body.appendChild(this.element);
         },
         hide: function () {
             this.clear();
 
-            if (this.instance.parentNode) {
-                document.body.removeChild(this.instance);
+            if (this.element.parentNode) {
+                document.body.removeChild(this.element);
             }
         },
 
