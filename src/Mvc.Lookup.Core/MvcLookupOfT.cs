@@ -10,8 +10,8 @@ namespace NonFactors.Mvc.Lookup
 {
     public abstract class MvcLookup<T> : MvcLookup where T : class
     {
-        public Func<T, String> Id { get; set; }
-        public Func<T, String> Autocomplete { get; set; }
+        public Func<T, String> GetId { get; set; }
+        public Func<T, String> GetLabel { get; set; }
         public virtual IEnumerable<PropertyInfo> AttributedProperties
         {
             get
@@ -25,8 +25,8 @@ namespace NonFactors.Mvc.Lookup
 
         protected MvcLookup()
         {
-            Id = (model) => GetValue(model, "Id");
-            Autocomplete = (model) => GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? "");
+            GetId = (model) => GetValue(model, "Id");
+            GetLabel = (model) => GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? "");
 
             foreach (PropertyInfo property in AttributedProperties)
             {
@@ -177,29 +177,23 @@ namespace NonFactors.Mvc.Lookup
             data.Columns = Columns;
 
             foreach (T model in selected.Concat(notSelected))
-            {
-                Dictionary<String, String> row = new Dictionary<String, String>();
-                AddId(row, model);
-                AddAutocomplete(row, model);
-                AddData(row, model);
-
-                data.Rows.Add(row);
-            }
+                data.Rows.Add(FormData(model));
 
             return data;
         }
-        public virtual void AddId(Dictionary<String, String> row, T model)
+
+        public virtual Dictionary<String, String> FormData(T model)
         {
-            row[IdKey] = Id(model);
-        }
-        public virtual void AddAutocomplete(Dictionary<String, String> row, T model)
-        {
-            row[AcKey] = Autocomplete(model);
-        }
-        public virtual void AddData(Dictionary<String, String> row, T model)
-        {
+            Dictionary<String, String> data = new Dictionary<String, String>
+            {
+                ["Id"] = GetId(model),
+                ["Label"] = GetLabel(model)
+            };
+
             foreach (LookupColumn column in Columns)
-                row[column.Key] = GetValue(model, column.Key);
+                data[column.Key] = GetValue(model, column.Key);
+
+            return data;
         }
 
         private List<Decimal> TryParseDecimals(IList<String> values)

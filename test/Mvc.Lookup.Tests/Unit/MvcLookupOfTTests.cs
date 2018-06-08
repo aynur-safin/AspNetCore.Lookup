@@ -10,12 +10,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class MvcLookupOfTTests
     {
-        private Dictionary<String, String> row;
         private TestLookup<TestModel> lookup;
 
         public MvcLookupOfTTests()
         {
-            row = new Dictionary<String, String>();
             lookup = new TestLookup<TestModel>();
             lookup.Filter.Page = 0;
 
@@ -29,6 +27,46 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     Date = new DateTime(2014, 12, 10).AddDays(i)
                 });
         }
+
+        #region GetId
+
+        [Fact]
+        public void GetId_NoProperty()
+        {
+            Assert.Null(new TestLookup<NoIdModel>().GetId(new NoIdModel()));
+        }
+
+        [Fact]
+        public void GetId_Value()
+        {
+            String actual = lookup.GetId(new TestModel { Id = "Test" });
+            String expected = "Test";
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region GetLabel
+
+        [Fact]
+        public void GetLabel_NoColumns()
+        {
+            lookup.Columns.Clear();
+
+            Assert.Null(lookup.GetLabel(new TestModel()));
+        }
+
+        [Fact]
+        public void GetLabel_Value()
+        {
+            String actual = lookup.GetLabel(new TestModel { Value = "Test" });
+            String expected = "Test";
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
 
         #region AttributedProperties
 
@@ -51,7 +89,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void MvcLookup_AddsColumns()
         {
             List<LookupColumn> columns = new List<LookupColumn>();
-            columns.Add(new LookupColumn("Id", null) { Hidden = true, Filterable = true });
             columns.Add(new LookupColumn("Value", null) { Hidden = false, Filterable = true });
             columns.Add(new LookupColumn("Date", "Date") { Hidden = false, Filterable = true });
             columns.Add(new LookupColumn("Count", "Value") { Hidden = false, Filterable = false });
@@ -159,16 +196,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("9V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("9I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("9V", actual.Rows[0]["Label"]);
             Assert.Equal("9V", actual.Rows[0]["Value"]);
             Assert.Equal("19", actual.Rows[0]["Count"]);
+            Assert.Equal("9I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("15I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("15V", actual.Rows[1]["Label"]);
             Assert.Equal("15V", actual.Rows[1]["Value"]);
             Assert.Equal("25", actual.Rows[1]["Count"]);
+            Assert.Equal("15I", actual.Rows[1]["Id"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.FilteredRows);
@@ -186,16 +223,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("9V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("9I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("9V", actual.Rows[0]["Label"]);
             Assert.Equal("9V", actual.Rows[0]["Value"]);
             Assert.Equal("19", actual.Rows[0]["Count"]);
+            Assert.Equal("9I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("15I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("15V", actual.Rows[1]["Label"]);
             Assert.Equal("15V", actual.Rows[1]["Value"]);
             Assert.Equal("25", actual.Rows[1]["Count"]);
+            Assert.Equal("15I", actual.Rows[1]["Id"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.FilteredRows);
@@ -215,22 +252,22 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("15V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("15I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("15V", actual.Rows[0]["Label"]);
             Assert.Equal("15V", actual.Rows[0]["Value"]);
             Assert.Equal("25", actual.Rows[0]["Count"]);
+            Assert.Equal("15I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2015, 4, 14).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("125V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("125I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("125V", actual.Rows[1]["Label"]);
             Assert.Equal("125V", actual.Rows[1]["Value"]);
             Assert.Equal("135", actual.Rows[1]["Count"]);
+            Assert.Equal("125I", actual.Rows[1]["Id"]);
 
             Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[2]["Date"]);
-            Assert.Equal("133V", actual.Rows[2][MvcLookup.AcKey]);
-            Assert.Equal("133I", actual.Rows[2][MvcLookup.IdKey]);
+            Assert.Equal("133V", actual.Rows[2]["Label"]);
             Assert.Equal("133V", actual.Rows[2]["Value"]);
             Assert.Equal("143", actual.Rows[2]["Count"]);
+            Assert.Equal("133I", actual.Rows[2]["Id"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(1, actual.FilteredRows);
@@ -248,10 +285,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 16).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("6V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("6I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("6V", actual.Rows[0]["Label"]);
             Assert.Equal("6V", actual.Rows[0]["Value"]);
             Assert.Equal("16", actual.Rows[0]["Count"]);
+            Assert.Equal("6I", actual.Rows[0]["Id"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(1, actual.FilteredRows);
@@ -269,16 +306,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2015, 1, 12).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("33V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("33I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("33V", actual.Rows[0]["Label"]);
             Assert.Equal("33V", actual.Rows[0]["Value"]);
             Assert.Equal("43", actual.Rows[0]["Count"]);
+            Assert.Equal("33I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("133V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("133I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("133V", actual.Rows[1]["Label"]);
             Assert.Equal("133V", actual.Rows[1]["Value"]);
             Assert.Equal("143", actual.Rows[1]["Count"]);
+            Assert.Equal("133I", actual.Rows[1]["Id"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.FilteredRows);
@@ -297,16 +334,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2015, 2, 3).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("55V", actual.Rows[0][MvcLookup.AcKey]);
-            Assert.Equal("55I", actual.Rows[0][MvcLookup.IdKey]);
+            Assert.Equal("55V", actual.Rows[0]["Label"]);
             Assert.Equal("55V", actual.Rows[0]["Value"]);
             Assert.Equal("65", actual.Rows[0]["Count"]);
+            Assert.Equal("55I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2015, 5, 14).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("155V", actual.Rows[1][MvcLookup.AcKey]);
-            Assert.Equal("155I", actual.Rows[1][MvcLookup.IdKey]);
+            Assert.Equal("155V", actual.Rows[1]["Label"]);
             Assert.Equal("155V", actual.Rows[1]["Value"]);
             Assert.Equal("165", actual.Rows[1]["Count"]);
+            Assert.Equal("155I", actual.Rows[1]["Id"]);
         }
 
         #endregion
@@ -744,146 +781,57 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             {
                 new Dictionary<String, String>
                 {
-                    [MvcLookup.IdKey] = "6I",
-                    [MvcLookup.AcKey] = "6V",
                     ["Id"] = "6I",
-                    ["Value"] = "6V",
+                    ["Label"] = "6V",
                     ["Date"] = new DateTime(2014, 12, 16).ToString("d"),
-                    ["Count"] = "16"
+                    ["Count"] = "16",
+                    ["Value"] = "6V"
                 },
                 new Dictionary<String, String>
                 {
-                    [MvcLookup.IdKey] = "7I",
-                    [MvcLookup.AcKey] = "7V",
                     ["Id"] = "7I",
-                    ["Value"] = "7V",
+                    ["Label"] = "7V",
                     ["Date"] = new DateTime(2014, 12, 17).ToString("d"),
-                    ["Count"] = "17"
+                    ["Count"] = "17",
+                    ["Value"] = "7V"
                 },
                 new Dictionary<String, String>
                 {
-                    [MvcLookup.IdKey] = "8I",
-                    [MvcLookup.AcKey] = "8V",
                     ["Id"] = "8I",
-                    ["Value"] = "8V",
+                    ["Label"] = "8V",
                     ["Date"] = new DateTime(2014, 12, 18).ToString("d"),
-                    ["Count"] = "18"
+                    ["Count"] = "18",
+                    ["Value"] = "8V"
                 }
             }.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
-            {
-                Assert.Equal(expected.Current.Values, actual.Current.Values);
-                Assert.Equal(expected.Current.Keys, actual.Current.Keys);
-            }
+                Assert.Equal(expected.Current, actual.Current);
         }
 
         #endregion
 
-        #region AddId(Dictionary<String, String> row, T model)
+        #region FormData(T model)
 
         [Fact]
-        public void AddId_FromFunction()
-        {
-            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
-            testLookup.Id = (model) => "1";
-
-            testLookup.AddId(row, new NoIdModel());
-
-            KeyValuePair<String, String> actual = row.Single();
-
-            Assert.Equal(MvcLookup.IdKey, actual.Key);
-            Assert.Equal("1", actual.Value);
-        }
-
-        [Fact]
-        public void AddId_EmptyValues()
-        {
-            TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
-
-            testLookup.AddId(row, new NoIdModel());
-
-            KeyValuePair<String, String> actual = row.Single();
-
-            Assert.Equal(MvcLookup.IdKey, actual.Key);
-            Assert.Null(actual.Value);
-        }
-
-        [Fact]
-        public void AddId_Values()
-        {
-            lookup.AddId(row, new TestModel { Id = "Test" });
-
-            KeyValuePair<String, String> actual = row.Single();
-
-            Assert.Equal(MvcLookup.IdKey, actual.Key);
-            Assert.Equal("Test", actual.Value);
-        }
-
-        #endregion
-
-        #region AddAutocomplete(Dictionary<String, String> row, T model)
-
-        [Fact]
-        public void AddAutocomplete_FromFunction()
-        {
-            lookup.Autocomplete = (model) => "Auto";
-
-            lookup.AddAutocomplete(row, new TestModel { Value = "Test" });
-
-            KeyValuePair<String, String> actual = row.Single();
-
-            Assert.Equal(MvcLookup.AcKey, actual.Key);
-            Assert.Equal("Auto", actual.Value);
-        }
-
-        [Fact]
-        public void AddAutocomplete_EmptyValues()
-        {
-            lookup.Columns.Clear();
-
-            lookup.AddAutocomplete(row, new TestModel());
-
-            KeyValuePair<String, String> actual = row.Single();
-
-            Assert.Equal(MvcLookup.AcKey, actual.Key);
-            Assert.Null(actual.Value);
-        }
-
-        [Fact]
-        public void AddAutocomplete_Values()
-        {
-            lookup.AddAutocomplete(row, new TestModel { Value = "Test" });
-
-            KeyValuePair<String, String> actual = row.Single();
-
-            Assert.Equal(MvcLookup.AcKey, actual.Key);
-            Assert.Equal("Test", actual.Value);
-        }
-
-        #endregion
-
-        #region AddData(Dictionary<String, String> row, T model)
-
-        [Fact]
-        public void AddData_EmptyValues()
+        public void FormData_EmptyValues()
         {
             lookup.Columns.Clear();
             lookup.Columns.Add(new LookupColumn("Test", null));
 
-            lookup.AddData(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new String[] { null }, row.Values);
-            Assert.Equal(new[] { "Test" }, row.Keys);
+            Assert.Equal(new[] { "Id", "Label", "Test" }, row.Keys);
+            Assert.Equal(new[] { "1", null,null }, row.Values);
         }
 
         [Fact]
-        public void AddData_Values()
+        public void FormData_Values()
         {
-            lookup.AddData(row, new TestModel { Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { null, "Test", DateTime.Now.Date.ToString("d"), "4" }, row.Values);
-            Assert.Equal(lookup.Columns.Select(column => column.Key), row.Keys);
+            Assert.Equal(new[] { "1", "Test", "Test", DateTime.Now.Date.ToString("d"), "4" }, row.Values);
+            Assert.Equal(new[] { "Id", "Label", "Value", "Date", "Count" }, row.Keys);
         }
 
         #endregion

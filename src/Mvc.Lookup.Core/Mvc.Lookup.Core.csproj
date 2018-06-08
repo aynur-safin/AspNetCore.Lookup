@@ -2,8 +2,10 @@
 
   <PropertyGroup>
     <Version>3.0.0</Version>
+    <DebugType>Full</DebugType>
     <Company>NonFactors</Company>
     <Product>Mvc.Lookup</Product>
+    <GenerateFullPaths>true</GenerateFullPaths>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <TargetFrameworks>net46;netstandard1.6</TargetFrameworks>
     <Description>Data lookup controls for ASP.NET Core projects</Description>

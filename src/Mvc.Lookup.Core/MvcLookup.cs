@@ -5,10 +5,6 @@ namespace NonFactors.Mvc.Lookup
 {
     public abstract class MvcLookup
     {
-        public const String Prefix = "Lookup";
-        public const String IdKey = "LookupIdKey";
-        public const String AcKey = "LookupAcKey";
-
         public String Url { get; set; }
         public String Name { get; set; }
         public String Title { get; set; }
