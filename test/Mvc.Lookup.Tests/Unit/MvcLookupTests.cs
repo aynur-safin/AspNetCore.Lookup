@@ -15,7 +15,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal("MvcLookupDialog", actual.Dialog);
             Assert.Empty(actual.AdditionalFilters);
-            Assert.Equal(20, actual.Filter.Rows);
+            Assert.NotNull(actual.Filter);
             Assert.Empty(actual.Columns);
         }
 

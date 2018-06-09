@@ -23,7 +23,6 @@ namespace NonFactors.Mvc.Lookup
             Columns = new List<LookupColumn>();
             Filter = new LookupFilter();
             Dialog = "MvcLookupDialog";
-            Filter.Rows = 20;
         }
 
         public abstract LookupData GetData();
