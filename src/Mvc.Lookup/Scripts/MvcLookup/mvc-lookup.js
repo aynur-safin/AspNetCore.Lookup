@@ -846,6 +846,7 @@ var MvcLookup = (function () {
 
             lookup.stopLoading();
             lookup.loading = setTimeout(function () {
+                lookup.autocomplete.hide();
                 lookup.group.classList.add('mvc-lookup-loading');
             }, lookup.options.loadingDelay);
             lookup.group.classList.remove('mvc-lookup-error');
@@ -866,6 +867,7 @@ var MvcLookup = (function () {
             lookup.request.onerror = function () {
                 lookup.group.classList.add('mvc-lookup-error');
                 lookup.error.title = lookup.lang.error;
+                lookup.autocomplete.hide();
                 lookup.stopLoading();
 
                 if (error) {
