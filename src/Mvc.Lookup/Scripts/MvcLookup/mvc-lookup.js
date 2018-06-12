@@ -9,15 +9,15 @@
  */
 var MvcLookupFilter = (function () {
     function MvcLookupFilter(lookup) {
-        var group = lookup.group;
+        var data = lookup.group.dataset;
 
         this.lookup = lookup;
-        this.sort = group.dataset.sort;
-        this.order = group.dataset.order;
-        this.search = group.dataset.search;
-        this.page = parseInt(group.dataset.page);
-        this.rows = parseInt(group.dataset.rows);
-        this.additional = group.dataset.filters.split(',').filter(Boolean);
+        this.sort = data.sort;
+        this.order = data.order;
+        this.search = data.search;
+        this.page = parseInt(data.page);
+        this.rows = parseInt(data.rows);
+        this.additional = data.filters.split(',').filter(Boolean);
     }
 
     MvcLookupFilter.prototype = {
@@ -154,6 +154,7 @@ var MvcLookupDialog = (function () {
             dialog.tableBody.innerHTML = '';
             dialog.tableHead.innerHTML = '';
             dialog.loader.style.opacity = 0;
+
             setTimeout(function () {
                 dialog.loader.style.display = 'none';
             }, dialog.lookup.options.loadingDelay);
@@ -907,19 +908,19 @@ var MvcLookup = (function () {
             return -1;
         },
         cleanUp: function () {
-            var group = this.group;
+            var data = this.group.dataset;
 
-            delete group.dataset.url;
-            delete group.dataset.sort;
-            delete group.dataset.rows;
-            delete group.dataset.page;
-            delete group.dataset.title;
-            delete group.dataset.multi;
-            delete group.dataset.order;
-            delete group.dataset.search;
-            delete group.dataset.dialog;
-            delete group.dataset.filters;
-            delete group.dataset.readonly;
+            delete data.readonly;
+            delete data.filters;
+            delete data.dialog;
+            delete data.search;
+            delete data.multi;
+            delete data.order;
+            delete data.title;
+            delete data.page;
+            delete data.rows;
+            delete data.sort;
+            delete data.url;
         },
         resize: function () {
             var lookup = this;
