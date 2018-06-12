@@ -187,7 +187,7 @@ var MvcLookupDialog = (function () {
                 var row = document.createElement('tr');
 
                 empty.innerHTML = this.lookup.lang.noData;
-                empty.colspan = columns.length + 1;
+                empty.colSpan = columns.length + 1;
                 row.className = 'mvc-lookup-empty';
 
                 this.tableBody.appendChild(row);
@@ -218,7 +218,7 @@ var MvcLookupDialog = (function () {
                     var empty = document.createElement('td');
 
                     separator.className = 'mvc-lookup-split';
-                    empty.colspan = columns.length + 1;
+                    empty.colSpan = columns.length + 1;
 
                     this.tableBody.appendChild(separator);
                     separator.appendChild(empty);
