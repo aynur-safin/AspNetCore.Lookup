@@ -1017,7 +1017,7 @@ var MvcLookup = (function () {
                         lookup.stopLoading();
                         lookup.filter.page = 0;
 
-                        if (lookup.events.filterChange && lookup.events.filterChange.call(lookup) === false) {
+                        if (lookup.events.filterChange && lookup.events.filterChange.call(lookup, this) === false) {
                             return;
                         }
 
