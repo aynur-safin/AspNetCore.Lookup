@@ -857,6 +857,7 @@ var MvcLookup = (function () {
 
             lookup.request = new XMLHttpRequest();
             lookup.request.open('GET', lookup.filter.formUrl(search), true);
+            lookup.request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             lookup.request.onload = function () {
                 if (200 <= lookup.request.status && lookup.request.status < 400) {
