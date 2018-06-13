@@ -740,10 +740,25 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             IQueryable<TestModel> expected = lookup.GetModels().Skip(expectedPage * expectedRows).Take(expectedRows);
             IQueryable<TestModel> actual = lookup.Page(lookup.GetModels());
 
-            Assert.Equal(lookup.Filter.Rows, expectedRows);
-            Assert.Equal(lookup.Filter.Page, expectedPage);
+            Assert.Equal(expectedPage, lookup.Filter.Page);
+            Assert.Equal(expectedRows, lookup.Filter.Rows);
             Assert.Equal(200, lookup.Filter.TotalRows);
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Page_NoRows()
+        {
+            lookup.Filter.Page = 3;
+            lookup.Filter.Rows = 2;
+            lookup.Filter.TotalRows = 1;
+
+            IQueryable<TestModel> actual = lookup.Page(new TestModel[0].AsQueryable());
+
+            Assert.Equal(0, lookup.Filter.TotalRows);
+            Assert.Equal(0, lookup.Filter.Page);
+            Assert.Equal(2, lookup.Filter.Rows);
+            Assert.Empty(actual);
         }
 
         #endregion
