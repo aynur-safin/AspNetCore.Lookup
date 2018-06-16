@@ -702,6 +702,10 @@ var MvcLookup = (function () {
 
         browse: function () {
             if (!this.readonly) {
+                if (this.browser) {
+                    this.browser.blur();
+                }
+
                 this.dialog.open();
             }
         },
