@@ -197,9 +197,14 @@
 
 .mvc-lookup-dialog {
     font-size: 0.875rem;
-    min-width: 325px;
+    min-width: 400px;
     max-width: 100%;
     z-index: 1100;
+}
+@media (max-width: 575px) {
+    .mvc-lookup-dialog {
+        min-width: 325px;
+    }
 }
 
 .mvc-lookup-header {
