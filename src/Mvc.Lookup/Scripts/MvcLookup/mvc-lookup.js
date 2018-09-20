@@ -399,6 +399,11 @@ var MvcLookupOverlay = (function () {
     MvcLookupOverlay.prototype = {
         findOverlay: function (element) {
             var overlay = element;
+
+            if (!overlay) {
+                throw new Error('Lookup dialog element was not found.');
+            }
+
             while (overlay && !overlay.classList.contains('mvc-lookup-overlay')) {
                 overlay = overlay.parentElement;
             }
@@ -632,6 +637,11 @@ var MvcLookup = (function () {
 
         findLookup: function (element) {
             var lookup = element;
+
+            if (!lookup) {
+                throw new Error('Lookup element was not specified.');
+            }
+
             while (lookup && !lookup.classList.contains('mvc-lookup')) {
                 lookup = lookup.parentElement;
             }
