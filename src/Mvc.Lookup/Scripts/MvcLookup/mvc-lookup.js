@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 3.1.0
+ * Mvc.Lookup 3.1.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -990,6 +990,8 @@ var MvcLookup = (function () {
 
                     lookup.autocomplete.next();
                 } else if (e.which == 13 && lookup.autocomplete.activeItem) {
+                    e.preventDefault();
+
                     var click = new Event('click');
                     if (typeof Event !== 'function') {
                         click = document.createEvent('Event');
