@@ -122,7 +122,16 @@ namespace NonFactors.Mvc.Lookup
 
                 IHtmlContentBuilder inputs = new HtmlContentBuilder();
                 foreach (Object val in values)
-                    inputs.AppendHtml(html.Hidden(name, val, attributes));
+                {
+                    TagBuilder input = new TagBuilder("input");
+                    input.Attributes["value"] = html.FormatValue(val, null);
+                    input.TagRenderMode = TagRenderMode.SelfClosing;
+                    input.Attributes["type"] = "hidden";
+                    input.MergeAttributes(attributes);
+                    input.Attributes["name"] = name;
+
+                    inputs.AppendHtml(input);
+                }
 
                 container.InnerHtml.AppendHtml(inputs);
             }
