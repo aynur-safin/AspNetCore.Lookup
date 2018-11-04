@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 3.1.1
+ * Mvc.Lookup 3.2.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -12,12 +12,12 @@ var MvcLookupFilter = (function () {
         var data = lookup.group.dataset;
 
         this.lookup = lookup;
-        this.sort = data.sort;
-        this.order = data.order;
-        this.search = data.search;
-        this.page = parseInt(data.page);
-        this.rows = parseInt(data.rows);
-        this.additional = data.filters.split(',').filter(Boolean);
+        this.sort = data.sort || '';
+        this.order = data.order || '';
+        this.search = data.search || '';
+        this.page = parseInt(data.page) || 0;
+        this.rows = parseInt(data.rows) || 20;
+        this.additional = (data.filters || '').split(',').filter(Boolean);
     }
 
     MvcLookupFilter.prototype = {
@@ -62,11 +62,11 @@ var MvcLookupFilter = (function () {
 var MvcLookupDialog = (function () {
     function MvcLookupDialog(lookup) {
         var dialog = this;
-        var element = document.getElementById(lookup.group.dataset.dialog);
+        var element = document.getElementById(lookup.group.dataset.dialog || 'MvcLookupDialog');
 
         dialog.lookup = lookup;
         dialog.element = element;
-        dialog.title = lookup.group.dataset.title;
+        dialog.title = lookup.group.dataset.title || '';
         dialog.options = { preserveSearch: true, rows: { min: 1, max: 99 }, openDelay: 100 };
 
         dialog.overlay = new MvcLookupOverlay(this);
@@ -601,9 +601,9 @@ var MvcLookup = (function () {
         lookup.selected = [];
         lookup.for = group.dataset.for;
         lookup.url = group.dataset.url;
-        lookup.multi = group.dataset.multi == 'true';
+        lookup.multi = group.dataset.multi == 'True';
         lookup.group.dataset.id = lookup.instances.length;
-        lookup.readonly = group.dataset.readonly == 'true';
+        lookup.readonly = group.dataset.readonly == 'True';
         lookup.options = { searchDelay: 500, loadingDelay: 300 };
 
         lookup.search = group.querySelector('.mvc-lookup-input');

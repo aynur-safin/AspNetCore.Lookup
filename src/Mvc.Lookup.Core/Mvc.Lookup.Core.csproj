@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>3.1.1</Version>
+    <Version>3.2.0</Version>
     <DebugType>Full</DebugType>
     <Company>NonFactors</Company>
     <Product>Mvc.Lookup</Product>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.8.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="1.1.7" />
   </ItemGroup>
 
