@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -119,10 +120,13 @@ namespace NonFactors.Mvc.Lookup
             if (key.PropertyType == typeof(String))
                 return models.Where($"@0.Contains({key.Name})", ids);
 
-            if (IsNumeric(key.PropertyType))
-                return models.Where($"@0.Contains(decimal({key.Name}))", TryParseDecimals(ids));
+            if (key.PropertyType == typeof(Guid))
+                return models.Where($"@0.Contains({key.Name})", Parse<Guid>(ids));
 
-            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string or a number.");
+            if (IsNumeric(key.PropertyType))
+                return models.Where($"@0.Contains(decimal({key.Name}))", Parse<Decimal>(ids));
+
+            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string, guid or a number.");
         }
         public virtual IQueryable<T> FilterByNotIds(IQueryable<T> models, IList<String> ids)
         {
@@ -135,10 +139,13 @@ namespace NonFactors.Mvc.Lookup
             if (key.PropertyType == typeof(String))
                 return models.Where($"!@0.Contains({key.Name})", ids);
 
-            if (IsNumeric(key.PropertyType))
-                return models.Where($"!@0.Contains(decimal({key.Name}))", TryParseDecimals(ids));
+            if (key.PropertyType == typeof(Guid))
+                return models.Where($"!@0.Contains({key.Name})", Parse<Guid>(ids));
 
-            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string or a number.");
+            if (IsNumeric(key.PropertyType))
+                return models.Where($"!@0.Contains(decimal({key.Name}))", Parse<Decimal>(ids));
+
+            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string, guid or a number.");
         }
         public virtual IQueryable<T> FilterByCheckIds(IQueryable<T> models, IList<String> ids)
         {
@@ -196,15 +203,6 @@ namespace NonFactors.Mvc.Lookup
             return data;
         }
 
-        private List<Decimal> TryParseDecimals(IList<String> values)
-        {
-            List<Decimal> numbers = new List<Decimal>();
-            foreach (String value in values)
-                if (Decimal.TryParse(value, out Decimal number))
-                    numbers.Add(number);
-
-            return numbers;
-        }
         private String GetValue(T model, String propertyName)
         {
             PropertyInfo property = typeof(T).GetProperty(propertyName);
@@ -214,6 +212,16 @@ namespace NonFactors.Mvc.Lookup
             if (column?.Format != null) return String.Format(column.Format, property.GetValue(model));
 
             return property.GetValue(model)?.ToString();
+        }
+        private List<TType> Parse<TType>(IList<String> ids)
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(TType));
+            List<TType> values = new List<TType>();
+
+            foreach (String value in ids)
+                values.Add((TType)converter.ConvertFrom(value));
+
+            return values;
         }
         private Boolean IsNumeric(Type type)
         {
