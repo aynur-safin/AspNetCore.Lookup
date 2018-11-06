@@ -494,6 +494,11 @@ var MvcLookupAutocomplete = (function () {
 
                         autocomplete.element.appendChild(item);
                         autocomplete.bind(item, [data[i]]);
+
+                        if (i == 0) {
+                            autocomplete.activeItem = item;
+                            item.classList.add('active');
+                        }
                     }
 
                     if (data.length) {
