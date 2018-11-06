@@ -514,16 +514,9 @@ var MvcLookupAutocomplete = (function () {
                 return;
             }
 
-            if (this.activeItem) {
-                this.activeItem.classList.remove('active');
-                this.activeItem = this.activeItem.previousElementSibling;
-            } else {
-                this.activeItem = this.element.lastElementChild;
-            }
-
-            if (this.activeItem) {
-                this.activeItem.classList.add('active');
-            }
+            this.activeItem.classList.remove('active');
+            this.activeItem = this.activeItem.previousElementSibling || this.element.lastElementChild;
+            this.activeItem.classList.add('active');
         },
         next: function () {
             if (!this.element.parentElement) {
@@ -532,16 +525,9 @@ var MvcLookupAutocomplete = (function () {
                 return;
             }
 
-            if (this.activeItem) {
-                this.activeItem.classList.remove('active');
-                this.activeItem = this.activeItem.nextElementSibling;
-            } else {
-                this.activeItem = this.element.firstElementChild;
-            }
-
-            if (this.activeItem) {
-                this.activeItem.classList.add('active');
-            }
+            this.activeItem.classList.remove('active');
+            this.activeItem = this.activeItem.nextElementSibling || this.element.firstElementChild;
+            this.activeItem.classList.add('active');
         },
         show: function () {
             var search = this.lookup.search.getBoundingClientRect();
