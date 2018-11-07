@@ -773,8 +773,10 @@ var MvcLookup = (function () {
             }
 
             if (triggerChanges) {
-                var change = new Event('change');
-                if (typeof Event !== 'function') {
+                var change = null;
+                if (typeof (Event) === 'function') {
+                    change = new Event('change');
+                } else {
                     change = document.createEvent('Event');
                     change.initEvent('change', true, true);
                 }
@@ -983,8 +985,10 @@ var MvcLookup = (function () {
                 } else if (e.which == 13 && lookup.autocomplete.activeItem) {
                     e.preventDefault();
 
-                    var click = new Event('click');
-                    if (typeof Event !== 'function') {
+                    var click = null;
+                    if (typeof (Event) === 'function') {
+                        click = new Event('click');
+                    } else {
                         click = document.createEvent('Event');
                         click.initEvent('click', true, true);
                     }
