@@ -660,6 +660,8 @@ var MvcLookup = (function () {
             return options;
         },
         set: function (options) {
+            this.options.loadingDelay = options.loadingDelay == null ? this.options.loadingDelay : options.loadingDelay;
+            this.options.searchDelay = options.searchDelay == null ? this.options.searchDelay : options.searchDelay;
             this.autocomplete.options = this.extend(this.autocomplete.options, options.autocomplete);
             this.setReadonly(options.readonly == null ? this.readonly : options.readonly);
             this.dialog.options = this.extend(this.dialog.options, options.dialog);
