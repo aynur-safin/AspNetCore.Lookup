@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 3.2.0
+ * Mvc.Lookup 3.2.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -87,10 +87,10 @@
 
 .mvc-lookup-control-error {
     border: 0.0625em solid rgba(255, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     transition: opacity 0.3s linear;
     color: rgba(255, 0, 0, 0.5);
     box-sizing: border-box;
-    background: #ffffff;
     border-radius: 50%;
     text-align: center;
     position: absolute;
