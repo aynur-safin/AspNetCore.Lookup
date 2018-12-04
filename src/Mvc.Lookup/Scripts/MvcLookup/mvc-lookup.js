@@ -775,7 +775,7 @@ var MvcLookup = (function () {
             }
 
             if (triggerChanges) {
-                var change = null;
+                var change;
                 if (typeof (Event) === 'function') {
                     change = new Event('change');
                 } else {
@@ -987,7 +987,7 @@ var MvcLookup = (function () {
                 } else if (e.which == 13 && lookup.autocomplete.activeItem) {
                     e.preventDefault();
 
-                    var click = null;
+                    var click;
                     if (typeof (Event) === 'function') {
                         click = new Event('click');
                     } else {
