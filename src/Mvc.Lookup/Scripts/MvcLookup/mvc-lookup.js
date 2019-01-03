@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 3.2.1
+ * Mvc.Lookup 3.3.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -1018,18 +1018,21 @@ var MvcLookup = (function () {
 
                 for (var j = 0; j < inputs.length; j++) {
                     inputs[j].addEventListener('change', function () {
-                        lookup.stopLoading();
-                        lookup.filter.page = 0;
-
                         if (lookup.events.filterChange && lookup.events.filterChange.call(lookup, this) === false) {
                             return;
                         }
 
-                        if (lookup.selected.length) {
-                            var rows = [];
-                            var ids = [].filter.call(lookup.values, function (element) { return element.value; });
+                        lookup.stopLoading();
+                        lookup.filter.page = 0;
 
+                        var ids = [].filter.call(lookup.values, function (element) {
+                            return element.value;
+                        });
+
+                        if (ids.length || lookup.selected.length) {
                             lookup.startLoading({ checkIds: ids, rows: ids.length }, function (data) {
+                                var rows = [];
+
                                 for (var i = 0; i < ids.length; i++) {
                                     var index = lookup.indexOf(data.rows, ids[i].value);
                                     if (index >= 0) {
@@ -1039,7 +1042,7 @@ var MvcLookup = (function () {
 
                                 lookup.select(rows, true);
                             }, function () {
-                                lookup.select(rows, true);
+                                lookup.select([], true);
                             });
                         }
                     });
