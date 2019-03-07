@@ -595,7 +595,7 @@ var MvcLookup = (function () {
         lookup.multi = group.dataset.multi == 'True';
         lookup.group.dataset.id = lookup.instances.length;
         lookup.readonly = group.dataset.readonly == 'True';
-        lookup.options = { searchDelay: 500, loadingDelay: 300 };
+        lookup.options = { searchDelay: 300, loadingDelay: 300 };
 
         lookup.search = group.querySelector('.mvc-lookup-input');
         lookup.browser = group.querySelector('.mvc-lookup-browser');
