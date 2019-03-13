@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 3.3.0
+ * Mvc.Lookup 4.0.0
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -11,11 +11,11 @@ var MvcLookupFilter = (function () {
     function MvcLookupFilter(lookup) {
         var data = lookup.group.dataset;
 
+        this.offset = 0;
         this.lookup = lookup;
         this.sort = data.sort || '';
         this.order = data.order || '';
         this.search = data.search || '';
-        this.page = parseInt(data.page) || 0;
         this.rows = parseInt(data.rows) || 20;
         this.additional = (data.filters || '').split(',').filter(Boolean);
     }
@@ -49,8 +49,8 @@ var MvcLookupFilter = (function () {
 
             query += '&sort=' + encode(filter.sort) +
                 '&order=' + encode(filter.order) +
+                '&offset=' + encode(filter.offset) +
                 '&rows=' + encode(filter.rows) +
-                '&page=' + encode(filter.page) +
                 '&_=' + Date.now();
 
             return url + query;
@@ -74,9 +74,9 @@ var MvcLookupDialog = (function () {
         dialog.tableHead = element.querySelector('thead');
         dialog.tableBody = element.querySelector('tbody');
         dialog.rows = element.querySelector('.mvc-lookup-rows');
-        dialog.pager = element.querySelector('.mvc-lookup-pager');
         dialog.header = element.querySelector('.mvc-lookup-title');
         dialog.search = element.querySelector('.mvc-lookup-search');
+        dialog.footer = element.querySelector('.mvc-lookup-load-more');
         dialog.selector = element.querySelector('.mvc-lookup-selector');
         dialog.closeButton = element.querySelector('.mvc-lookup-close');
         dialog.error = element.querySelector('.mvc-lookup-dialog-error');
@@ -89,15 +89,18 @@ var MvcLookupDialog = (function () {
             var filter = dialog.lookup.filter;
             MvcLookupDialog.prototype.current = this;
 
+            filter.offset = 0;
+            filter.search = dialog.options.preserveSearch ? filter.search : '';
+
             dialog.error.style.display = 'none';
             dialog.loader.style.display = 'none';
             dialog.header.innerText = dialog.title;
             dialog.selected = dialog.lookup.selected.slice();
             dialog.rows.value = dialog.limitRows(filter.rows);
             dialog.error.innerHTML = dialog.lookup.lang.error;
+            dialog.footer.innerText = dialog.lookup.lang.more;
             dialog.search.placeholder = dialog.lookup.lang.search;
             dialog.selector.style.display = dialog.lookup.multi ? '' : 'none';
-            filter.search = dialog.options.preserveSearch ? filter.search : '';
             dialog.selector.innerText = dialog.lookup.lang.select.replace('{0}', dialog.lookup.selected.length);
 
             dialog.bind();
@@ -134,7 +137,7 @@ var MvcLookupDialog = (function () {
                 dialog.loader.style.opacity = 1;
             }, dialog.lookup.options.loadingDelay);
 
-            dialog.lookup.startLoading({ selected: dialog.selected }, function (data) {
+            dialog.lookup.startLoading({ selected: dialog.selected, rows: dialog.lookup.filter.rows + 1 }, function (data) {
                 dialog.isLoading = false;
                 clearTimeout(loading);
                 dialog.render(data);
@@ -147,9 +150,12 @@ var MvcLookupDialog = (function () {
 
         render: function (data) {
             var dialog = this;
-            dialog.pager.innerHTML = '';
-            dialog.tableBody.innerHTML = '';
-            dialog.tableHead.innerHTML = '';
+
+            if (!dialog.lookup.filter.offset) {
+                dialog.tableBody.innerHTML = '';
+                dialog.tableHead.innerHTML = '';
+            }
+
             dialog.loader.style.opacity = 0;
 
             setTimeout(function () {
@@ -159,9 +165,17 @@ var MvcLookupDialog = (function () {
             if (data) {
                 dialog.error.style.display = 'none';
 
-                dialog.renderHeader(data.columns);
-                dialog.renderBody(data.columns, data.rows);
-                dialog.renderFooter(data.filteredRows);
+                if (!dialog.lookup.filter.offset) {
+                    dialog.renderHeader(data.columns);
+                }
+
+                dialog.renderBody(data);
+
+                if (data.rows.length <= dialog.lookup.filter.rows) {
+                    dialog.footer.style.display = 'none';
+                } else {
+                    dialog.footer.style.display = '';
+                }
             } else {
                 dialog.error.style.opacity = 1;
             }
@@ -171,114 +185,55 @@ var MvcLookupDialog = (function () {
 
             for (var i = 0; i < columns.length; i++) {
                 if (!columns[i].hidden) {
-                    row.appendChild(this.createHeaderColumn(columns[i]));
+                    row.appendChild(this.createHeaderCell(columns[i]));
                 }
             }
 
             row.appendChild(document.createElement('th'));
             this.tableHead.appendChild(row);
         },
-        renderBody: function (columns, rows) {
-            if (!rows.length) {
-                var empty = document.createElement('td');
-                var row = document.createElement('tr');
+        renderBody: function (data) {
+            var dialog = this;
 
-                empty.innerHTML = this.lookup.lang.noData;
-                empty.colSpan = columns.length + 1;
-                row.className = 'mvc-lookup-empty';
+            for (var i = 0; i < data.selected.length; i++) {
+                var row = dialog.createDataRow(data.columns, data.selected[i]);
+                row.className = 'selected';
 
-                this.tableBody.appendChild(row);
-                row.appendChild(empty);
+                dialog.tableBody.appendChild(row);
             }
 
-            var hasSplit = false;
-            var hasSelection = rows.length && this.lookup.indexOf(this.selected, rows[0].Id) >= 0;
+            if (data.selected.length) {
+                var separator = document.createElement('tr');
+                var content = document.createElement('td');
 
-            for (var i = 0; i < rows.length; i++) {
-                var dataRow = this.createDataRow(rows[i]);
-                var selection = document.createElement('td');
+                content.colSpan = data.columns.length + 1;
+                separator.className = 'mvc-lookup-split';
 
-                for (var j = 0; j < columns.length; j++) {
-                    if (!columns[j].hidden) {
-                        var data = document.createElement('td');
-                        data.className = columns[j].cssClass || '';
-                        data.innerText = rows[i][columns[j].key] || '';
+                dialog.tableBody.appendChild(separator);
+                separator.appendChild(content);
+            }
 
-                        dataRow.appendChild(data);
-                    }
-                }
+            for (i = 0; i < data.rows.length && i < dialog.lookup.filter.rows; i++) {
+                dialog.tableBody.appendChild(dialog.createDataRow(data.columns, data.rows[i]));
+            }
 
-                dataRow.appendChild(selection);
+            if (!data.rows.length && !dialog.lookup.filter.offset) {
+                var container = document.createElement('tr');
+                var empty = document.createElement('td');
 
-                if (!hasSplit && hasSelection && this.lookup.indexOf(this.selected, rows[i].Id) < 0) {
-                    var separator = document.createElement('tr');
-                    var content = document.createElement('td');
+                empty.innerHTML = dialog.lookup.lang.noData;
+                container.className = 'mvc-lookup-empty';
+                empty.colSpan = data.columns.length + 1;
 
-                    separator.className = 'mvc-lookup-split';
-                    content.colSpan = columns.length + 1;
-
-                    this.tableBody.appendChild(separator);
-                    separator.appendChild(content);
-
-                    hasSplit = true;
-                }
-
-                this.tableBody.appendChild(dataRow);
+                dialog.tableBody.appendChild(container);
+                container.appendChild(empty);
             }
         },
-        renderFooter: function (filteredRows) {
+
+        createHeaderCell: function (column) {
             var dialog = this;
             var filter = dialog.lookup.filter;
-
-            dialog.totalRows = filteredRows + dialog.selected.length;
-            var totalPages = Math.ceil(filteredRows / filter.rows);
-            filter.page = dialog.limitPage(filter.page);
-
-            if (totalPages) {
-                var startingPage = Math.floor(filter.page / 4) * 4;
-
-                if (filter.page && 4 < totalPages) {
-                    dialog.renderPage('&laquo', 0);
-                    dialog.renderPage('&lsaquo;', filter.page - 1);
-                }
-
-                for (var i = startingPage; i < totalPages && i < startingPage + 4; i++) {
-                    dialog.renderPage(i + 1, i);
-                }
-
-                if (4 < totalPages && filter.page < totalPages - 1) {
-                    dialog.renderPage('&rsaquo;', filter.page + 1);
-                    dialog.renderPage('&raquo;', totalPages - 1);
-                }
-            } else {
-                filter.page = 0;
-                dialog.renderPage(1, 0);
-            }
-        },
-        renderPage: function (text, value) {
-            var page = document.createElement('button');
-            var filter = this.lookup.filter;
-            page.type = 'button';
-            var dialog = this;
-
-            if (filter.page == value) {
-                page.className = 'active';
-            }
-
-            page.innerHTML = text;
-            page.addEventListener('click', function () {
-                filter.page = dialog.limitPage(value);
-
-                dialog.refresh();
-            });
-
-            dialog.pager.appendChild(page);
-        },
-
-        createHeaderColumn: function (column) {
             var header = document.createElement('th');
-            var filter = this.lookup.filter;
-            var dialog = this;
 
             if (column.cssClass) {
                 header.classList.add(column.cssClass);
@@ -292,19 +247,29 @@ var MvcLookupDialog = (function () {
             header.addEventListener('click', function () {
                 filter.order = filter.sort == column.key && filter.order == 'Asc' ? 'Desc' : 'Asc';
                 filter.sort = column.key;
+                filter.offset = 0;
 
                 dialog.refresh();
             });
 
             return header;
         },
-        createDataRow: function (data) {
+        createDataRow: function (columns, data) {
             var dialog = this;
             var lookup = this.lookup;
             var row = document.createElement('tr');
-            if (lookup.indexOf(dialog.selected, data.Id) >= 0) {
-                row.className = 'selected';
+
+            for (var i = 0; i < columns.length; i++) {
+                if (!columns[i].hidden) {
+                    var cell = document.createElement('td');
+                    cell.className = columns[i].cssClass || '';
+                    cell.innerText = data[columns[i].key] || '';
+
+                    row.appendChild(cell);
+                }
             }
+
+            row.appendChild(document.createElement('td'));
 
             row.addEventListener('click', function () {
                 if (!window.getSelection().isCollapsed) {
@@ -329,7 +294,7 @@ var MvcLookupDialog = (function () {
                 }
 
                 if (lookup.multi) {
-                    dialog.selector.innerText = dialog.lookup.lang.select.replace('{0}', dialog.selected.length);
+                    dialog.selector.innerText = lookup.lang.select.replace('{0}', dialog.selected.length);
                 } else {
                     dialog.close();
                 }
@@ -338,9 +303,6 @@ var MvcLookupDialog = (function () {
             return row;
         },
 
-        limitPage: function (value) {
-            return Math.max(0, Math.min(value, Math.ceil((this.totalRows - this.selected.length) / this.lookup.filter.rows) - 1));
-        },
         limitRows: function (value) {
             value = Math.max(this.options.rows.min, Math.min(parseInt(value), this.options.rows.max));
 
@@ -351,9 +313,17 @@ var MvcLookupDialog = (function () {
             var dialog = this;
 
             dialog.selector.addEventListener('click', dialog.close);
+            dialog.footer.addEventListener('click', dialog.loadMore);
             dialog.rows.addEventListener('change', dialog.rowsChanged);
             dialog.closeButton.addEventListener('click', dialog.close);
             dialog.search.addEventListener('keyup', dialog.searchChanged);
+        },
+        loadMore: function () {
+            var dialog = MvcLookupDialog.prototype.current;
+
+            dialog.lookup.filter.offset += dialog.lookup.filter.rows;
+
+            dialog.refresh();
         },
         rowsChanged: function () {
             var dialog = MvcLookupDialog.prototype.current;
@@ -362,7 +332,7 @@ var MvcLookupDialog = (function () {
 
             if (dialog.lookup.filter.rows != rows) {
                 dialog.lookup.filter.rows = rows;
-                dialog.lookup.filter.page = 0;
+                dialog.lookup.filter.offset = 0;
 
                 dialog.refresh();
             }
@@ -376,7 +346,7 @@ var MvcLookupDialog = (function () {
             dialog.searching = setTimeout(function () {
                 if (dialog.lookup.filter.search != input.value || e.keyCode == 13) {
                     dialog.lookup.filter.search = input.value;
-                    dialog.lookup.filter.page = 0;
+                    dialog.lookup.filter.offset = 0;
 
                     dialog.refresh();
                 }
@@ -476,24 +446,21 @@ var MvcLookupAutocomplete = (function () {
 
                 lookup.startLoading({
                     search: term,
-                    rows: autocomplete.options.rows,
-                    page: 0,
+                    selected: lookup.multi ? lookup.selected : [],
                     sort: autocomplete.options.sort,
-                    order: autocomplete.options.order
+                    order: autocomplete.options.order,
+                    offset: 0,
+                    rows: autocomplete.options.rows
                 }, function (data) {
                     autocomplete.hide();
 
-                    data = data.rows.filter(function (row) {
-                        return !lookup.multi || lookup.indexOf(lookup.selected, row.Id) < 0;
-                    });
-
-                    for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.rows.length; i++) {
                         var item = document.createElement('li');
-                        item.innerText = data[i].Label;
-                        item.dataset.id = data[i].Id;
+                        item.innerText = data.rows[i].Label;
+                        item.dataset.id = data.rows[i].Id;
 
                         autocomplete.element.appendChild(item);
-                        autocomplete.bind(item, [data[i]]);
+                        autocomplete.bind(item, [data.rows[i]]);
 
                         if (i == 0) {
                             autocomplete.activeItem = item;
@@ -501,7 +468,7 @@ var MvcLookupAutocomplete = (function () {
                         }
                     }
 
-                    if (data.length) {
+                    if (data.rows.length) {
                         autocomplete.show();
                     }
                 });
@@ -618,6 +585,7 @@ var MvcLookup = (function () {
     MvcLookup.prototype = {
         instances: [],
         lang: {
+            more: 'More...',
             search: 'Search...',
             select: 'Select ({0})',
             noData: 'No data found',
@@ -704,7 +672,6 @@ var MvcLookup = (function () {
             }
         },
         reload: function (triggerChanges) {
-            var rows = [];
             var lookup = this;
             var originalValue = lookup.search.value;
             var ids = [].filter.call(lookup.values, function (element) {
@@ -712,19 +679,12 @@ var MvcLookup = (function () {
             });
 
             if (ids.length) {
-                lookup.startLoading({ ids: ids, rows: ids.length, page: 0 }, function (data) {
-                    for (var i = 0; i < ids.length; i++) {
-                        var index = lookup.indexOf(data.rows, ids[i].value);
-                        if (index >= 0) {
-                            rows.push(data.rows[index]);
-                        }
-                    }
-
-                    lookup.select(rows, triggerChanges);
+                lookup.startLoading({ ids: ids, offset: 0, rows: ids.length }, function (data) {
+                    lookup.select(data.rows, triggerChanges);
                 });
             } else {
                 lookup.stopLoading();
-                lookup.select(rows, triggerChanges);
+                lookup.select([], triggerChanges);
 
                 if (!lookup.multi && lookup.search.name) {
                     lookup.search.value = originalValue;
@@ -792,14 +752,14 @@ var MvcLookup = (function () {
         selectFirst: function (triggerChanges) {
             var lookup = this;
 
-            lookup.startLoading({ search: '', rows: 1, page: 0 }, function (data) {
+            lookup.startLoading({ search: '', offset: 0, rows: 1 }, function (data) {
                 lookup.select(data.rows, triggerChanges);
             });
         },
         selectSingle: function (triggerChanges) {
             var lookup = this;
 
-            lookup.startLoading({ search: '', rows: 2, page: 0 }, function (data) {
+            lookup.startLoading({ search: '', offset: 0, rows: 2 }, function (data) {
                 if (data.rows.length == 1) {
                     lookup.select(data.rows, triggerChanges);
                 } else {
@@ -917,7 +877,6 @@ var MvcLookup = (function () {
             delete data.multi;
             delete data.order;
             delete data.title;
-            delete data.page;
             delete data.rows;
             delete data.sort;
             delete data.url;
@@ -1030,17 +989,8 @@ var MvcLookup = (function () {
                         });
 
                         if (ids.length || lookup.selected.length) {
-                            lookup.startLoading({ checkIds: ids, rows: ids.length }, function (data) {
-                                var rows = [];
-
-                                for (var i = 0; i < ids.length; i++) {
-                                    var index = lookup.indexOf(data.rows, ids[i].value);
-                                    if (index >= 0) {
-                                        rows.push(data.rows[index]);
-                                    }
-                                }
-
-                                lookup.select(rows, true);
+                            lookup.startLoading({ checkIds: ids, offset: 0, rows: ids.length }, function (data) {
+                                lookup.select(data.rows, true);
                             }, function () {
                                 lookup.select([], true);
                             });

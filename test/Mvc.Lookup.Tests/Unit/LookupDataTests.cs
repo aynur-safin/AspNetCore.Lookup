@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupData actual = new LookupData();
 
+            Assert.Empty(actual.Selected);
             Assert.Empty(actual.Columns);
             Assert.Empty(actual.Rows);
         }

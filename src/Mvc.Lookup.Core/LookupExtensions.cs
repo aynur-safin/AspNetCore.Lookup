@@ -65,11 +65,11 @@ namespace NonFactors.Mvc.Lookup
             IDictionary<String, Object> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
             attributes["data-filters"] = String.Join(",", lookup.AdditionalFilters);
             attributes["data-search"] = lookup.Filter.Search;
+            attributes["data-offset"] = lookup.Filter.Offset;
             attributes["data-order"] = lookup.Filter.Order;
             attributes["data-readonly"] = lookup.ReadOnly;
             attributes["data-sort"] = lookup.Filter.Sort;
             attributes["data-rows"] = lookup.Filter.Rows;
-            attributes["data-page"] = lookup.Filter.Page;
             attributes["data-dialog"] = lookup.Dialog;
             attributes["data-title"] = lookup.Title;
             attributes["data-multi"] = lookup.Multi;

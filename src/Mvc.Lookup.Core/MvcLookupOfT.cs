@@ -62,7 +62,7 @@ namespace NonFactors.Mvc.Lookup
             IQueryable<T> selected = new T[0].AsQueryable();
             IQueryable<T> notSelected = Sort(FilterByRequest(models));
 
-            if (Filter.Ids.Count == 0 && Filter.Selected.Count > 0)
+            if (Filter.Offset == 0 && Filter.Ids.Count == 0 && Filter.Selected.Count > 0)
                 selected = Sort(FilterBySelected(models, Filter.Selected));
 
             return FormLookupData(notSelected, selected, Page(notSelected));
@@ -169,21 +169,21 @@ namespace NonFactors.Mvc.Lookup
 
         public virtual IQueryable<T> Page(IQueryable<T> models)
         {
-            Filter.TotalRows = models.Count();
-            Filter.Rows = Math.Max(1, Math.Min(Filter.Rows, 99));
-            Filter.Page = Math.Max(0, Math.Min(Filter.Page, (Int32)Math.Ceiling(Filter.TotalRows / (Double)Filter.Rows) - 1));
+            Filter.Offset = Math.Max(0, Filter.Offset);
+            Filter.Rows = Math.Max(1, Math.Min(Filter.Rows, 100));
 
-
-            return models.Skip(Filter.Page * Filter.Rows).Take(Filter.Rows);
+            return models.Skip(Filter.Offset).Take(Filter.Rows);
         }
 
         public virtual LookupData FormLookupData(IQueryable<T> filtered, IQueryable<T> selected, IQueryable<T> notSelected)
         {
             LookupData data = new LookupData();
-            data.FilteredRows = Filter.TotalRows;
             data.Columns = Columns;
 
-            foreach (T model in selected.Concat(notSelected))
+            foreach (T model in selected)
+                data.Selected.Add(FormData(model));
+
+            foreach (T model in notSelected)
                 data.Rows.Add(FormData(model));
 
             return data;

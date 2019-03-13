@@ -93,7 +93,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Process_Attributes()
         {
-            helper.Page = 2;
             helper.Rows = 11;
             helper.Sort = "First";
             helper.Search = "Test";
@@ -107,8 +106,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             helper.Process(null, output);
 
-            Assert.Equal(10, output.Attributes.Count);
-            Assert.Equal(2, output.Attributes["data-page"].Value);
+            Assert.Equal(9, output.Attributes.Count);
             Assert.Equal(11, output.Attributes["data-rows"].Value);
             Assert.Equal("First", output.Attributes["data-sort"].Value);
             Assert.Equal("Test", output.Attributes["data-search"].Value);

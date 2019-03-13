@@ -11,12 +11,11 @@ namespace NonFactors.Mvc.Lookup
 
         public String Search { get; set; }
 
-        public Int32 Page { get; set; }
-        public Int32 Rows { get; set; }
-        public Int32 TotalRows { get; set; }
-
         public String Sort { get; set; }
         public LookupSortOrder Order { get; set; }
+
+        public Int32 Rows { get; set; }
+        public Int32 Offset { get; set; }
 
         public IDictionary<String, Object> AdditionalFilters { get; set; }
 

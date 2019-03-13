@@ -15,7 +15,6 @@ namespace NonFactors.Mvc.Lookup
     public class LookupTagHelper : TagHelper
     {
         public String Url { get; set; }
-        public Int32? Page { get; set; }
         public Int32? Rows { get; set; }
         public String Name { get; set; }
         public String Sort { get; set; }
@@ -150,7 +149,6 @@ namespace NonFactors.Mvc.Lookup
 
             WriteAttribute(output, "data-for", For);
             WriteAttribute(output, "data-url", Url);
-            WriteAttribute(output, "data-page", Page);
             WriteAttribute(output, "data-rows", Rows);
             WriteAttribute(output, "data-sort", Sort);
             WriteAttribute(output, "data-multi", Multi);
