@@ -114,6 +114,7 @@ var MvcLookupDialog = (function () {
                 }
 
                 dialog.overlay.show();
+                dialog.search.focus();
             }, dialog.options.openDelay);
         },
         close: function () {
