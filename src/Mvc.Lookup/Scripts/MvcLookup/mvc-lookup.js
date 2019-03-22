@@ -272,7 +272,7 @@ var MvcLookupDialog = (function () {
 
             row.appendChild(document.createElement('td'));
 
-            row.addEventListener('click', function () {
+            row.addEventListener('click', function (e) {
                 if (!window.getSelection().isCollapsed) {
                     return;
                 }
@@ -283,15 +283,17 @@ var MvcLookupDialog = (function () {
                         dialog.selected.splice(index, 1);
 
                         this.classList.remove('selected');
+                    } else if (e.shiftKey) {
+                        dialog.selected = [];
                     }
                 } else {
                     if (lookup.multi) {
                         dialog.selected.push(data);
+
+                        this.classList.add('selected');
                     } else {
                         dialog.selected = [data];
                     }
-
-                    this.classList.add('selected');
                 }
 
                 if (lookup.multi) {
