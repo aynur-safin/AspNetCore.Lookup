@@ -458,6 +458,11 @@
     margin: -1px;
 }
 
+.mvc-lookup-autocomplete-no-data {
+    font-weight: bold;
+    cursor: default;
+}
+
 @keyframes mvc-lookup-spin {
     0% {
         transform: rotate(0);

@@ -467,14 +467,20 @@ var MvcLookupAutocomplete = (function () {
                         }
                     }
 
-                    if (data.rows.length) {
-                        autocomplete.show();
+                    if (!data.rows.length) {
+                        var item = document.createElement('li');
+                        item.className = 'mvc-lookup-autocomplete-no-data';
+                        item.innerText = lookup.lang.noData;
+
+                        autocomplete.element.appendChild(item);
                     }
+
+                    autocomplete.show();
                 });
             }, autocomplete.lookup.options.searchDelay);
         },
         previous: function () {
-            if (!this.element.parentElement) {
+            if (!this.element.parentElement || !this.activeItem) {
                 this.search(this.lookup.search.value);
 
                 return;
@@ -485,7 +491,7 @@ var MvcLookupAutocomplete = (function () {
             this.activeItem.classList.add('active');
         },
         next: function () {
-            if (!this.element.parentElement) {
+            if (!this.element.parentElement || !this.activeItem) {
                 this.search(this.lookup.search.value);
 
                 return;
