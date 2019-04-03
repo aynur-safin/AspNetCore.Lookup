@@ -87,10 +87,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void MvcLookup_AddsColumns()
         {
-            List<LookupColumn> columns = new List<LookupColumn>();
-            columns.Add(new LookupColumn("Value", null) { Hidden = false, Filterable = true });
-            columns.Add(new LookupColumn("Date", "Date") { Hidden = false, Filterable = true });
-            columns.Add(new LookupColumn("Count", "Value") { Hidden = false, Filterable = false });
+            List<LookupColumn> columns = new List<LookupColumn>
+            {
+                new LookupColumn("Value", null) { Hidden = false, Filterable = true },
+                new LookupColumn("Date", "Date") { Hidden = false, Filterable = true },
+                new LookupColumn("Count", "Value") { Hidden = false, Filterable = false }
+            };
 
             IEnumerator<LookupColumn> expected = columns.GetEnumerator();
             IEnumerator<LookupColumn> actual = lookup.Columns.GetEnumerator();

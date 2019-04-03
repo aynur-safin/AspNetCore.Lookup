@@ -330,11 +330,10 @@ var MvcLookupDialog = (function () {
         },
         rowsChanged: function () {
             var dialog = MvcLookupDialog.prototype.current;
-            var rows = dialog.limitRows(this.value);
-            this.value = rows;
+            this.value = dialog.limitRows(this.value);
 
-            if (dialog.lookup.filter.rows != rows) {
-                dialog.lookup.filter.rows = rows;
+            if (dialog.lookup.filter.rows != this.value) {
+                dialog.lookup.filter.rows = parseInt(this.value);
                 dialog.lookup.filter.offset = 0;
 
                 dialog.refresh();

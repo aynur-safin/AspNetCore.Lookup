@@ -21,7 +21,6 @@ namespace NonFactors.Mvc.Lookup
 
         public LookupFilter()
         {
-            Rows = 20;
             Ids = new List<String>();
             CheckIds = new List<String>();
             Selected = new List<String>();

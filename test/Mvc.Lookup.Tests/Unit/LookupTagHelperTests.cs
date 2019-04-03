@@ -10,13 +10,12 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupTagHelperTests
     {
-        private IHtmlGenerator html;
         private LookupTagHelper helper;
         private TagHelperOutput output;
 
         public LookupTagHelperTests()
         {
-            helper = new LookupTagHelper(html = Substitute.For<IHtmlGenerator>());
+            helper = new LookupTagHelper(Substitute.For<IHtmlGenerator>());
             helper.ViewContext = new ViewContext { HttpContext = new DefaultHttpContext() };
             output = new TagHelperOutput("div", new TagHelperAttributeList(), (useCachedResult, encoder) => null);
         }
