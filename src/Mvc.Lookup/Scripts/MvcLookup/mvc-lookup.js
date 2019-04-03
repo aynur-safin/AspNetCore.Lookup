@@ -277,28 +277,25 @@ var MvcLookupDialog = (function () {
                     return;
                 }
 
-                var index = lookup.indexOf(dialog.selected, data.Id);
-                if (index >= 0) {
-                    if (lookup.multi) {
+                if (lookup.multi) {
+                    if (lookup.indexOf(dialog.selected, data.Id) >= 0) {
                         dialog.selected.splice(index, 1);
 
                         this.classList.remove('selected');
-                    } else if (e.shiftKey) {
-                        dialog.selected = [];
-                    }
-                } else {
-                    if (lookup.multi) {
+                    } else {
                         dialog.selected.push(data);
 
                         this.classList.add('selected');
+                    }
+
+                    dialog.selector.innerText = lookup.lang.select.replace('{0}', dialog.selected.length);
+                } else {
+                    if (e.shiftKey && lookup.indexOf(dialog.selected, data.Id) >= 0) {
+                        dialog.selected = [];
                     } else {
                         dialog.selected = [data];
                     }
-                }
 
-                if (lookup.multi) {
-                    dialog.selector.innerText = lookup.lang.select.replace('{0}', dialog.selected.length);
-                } else {
                     dialog.close();
                 }
             });
