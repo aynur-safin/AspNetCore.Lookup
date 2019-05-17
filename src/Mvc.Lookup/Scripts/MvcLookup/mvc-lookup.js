@@ -122,9 +122,12 @@ var MvcLookupDialog = (function () {
             dialog.lookup.group.classList.remove('mvc-lookup-error');
 
             dialog.lookup.select(dialog.selected, true);
-            dialog.lookup.search.focus();
             dialog.lookup.stopLoading();
             dialog.overlay.hide();
+
+            if (dialog.lookup.browser) {
+                dialog.lookup.browser.focus();
+            }
 
             MvcLookupDialog.prototype.current = null;
         },
