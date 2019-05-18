@@ -293,7 +293,7 @@ var MvcLookupDialog = (function () {
 
                     dialog.selector.innerText = lookup.lang.select.replace('{0}', dialog.selected.length);
                 } else {
-                    if (e.shiftKey && lookup.indexOf(dialog.selected, data.Id) >= 0) {
+                    if (e.ctrlKey && lookup.indexOf(dialog.selected, data.Id) >= 0) {
                         dialog.selected = [];
                     } else {
                         dialog.selected = [data];
