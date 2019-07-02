@@ -957,20 +957,47 @@ var MvcLookup = (function () {
             });
 
             lookup.search.addEventListener('keydown', function (e) {
-                if (e.which == 8 && !this.value.length && lookup.selected.length) {
-                    lookup.select(lookup.selected.slice(0, -1), true);
-                } else if (e.which == 38) {
-                    e.preventDefault();
+                switch (e.which) {
+                    case 8:
+                        if (!this.value.length && lookup.selected.length) {
+                            lookup.select(lookup.selected.slice(0, -1), true);
+                        }
 
-                    lookup.autocomplete.previous();
-                } else if (e.which == 40) {
-                    e.preventDefault();
+                        break;
+                    case 9:
+                        if (lookup.autocomplete.activeItem) {
+                            if (lookup.browser) {
+                                lookup.browser.tabIndex = -1;
 
-                    lookup.autocomplete.next();
-                } else if (e.which == 13 && lookup.autocomplete.activeItem) {
-                    e.preventDefault();
+                                setTimeout(function () {
+                                    lookup.browser.removeAttribute('tabindex');
+                                }, 100);
+                            }
 
-                    lookup.autocomplete.activeItem.click();
+                            lookup.autocomplete.activeItem.click();
+                        }
+
+                        break;
+                    case 13:
+                        if (lookup.autocomplete.activeItem) {
+                            e.preventDefault();
+
+                            lookup.autocomplete.activeItem.click();
+                        }
+
+                        break;
+                    case 38:
+                        e.preventDefault();
+
+                        lookup.autocomplete.previous();
+
+                        break;
+                    case 40:
+                        e.preventDefault();
+
+                        lookup.autocomplete.next();
+
+                        break;
                 }
             });
             lookup.search.addEventListener('input', function () {
