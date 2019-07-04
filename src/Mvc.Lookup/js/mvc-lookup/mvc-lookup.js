@@ -87,7 +87,7 @@ var MvcLookupDialog = (function () {
         open: function () {
             var dialog = this;
             var filter = dialog.lookup.filter;
-            MvcLookupDialog.prototype.current = this;
+            MvcLookupDialog.prototype.current = dialog;
 
             filter.offset = 0;
             filter.search = dialog.options.preserveSearch ? filter.search : '';
@@ -260,7 +260,7 @@ var MvcLookupDialog = (function () {
         },
         createDataRow: function (columns, data) {
             var dialog = this;
-            var lookup = this.lookup;
+            var lookup = dialog.lookup;
             var row = document.createElement('tr');
 
             for (var i = 0; i < columns.length; i++) {
@@ -329,25 +329,27 @@ var MvcLookupDialog = (function () {
             dialog.refresh();
         },
         rowsChanged: function () {
+            var rows = this;
             var dialog = MvcLookupDialog.prototype.current;
-            this.value = dialog.limitRows(this.value);
 
-            if (dialog.lookup.filter.rows != this.value) {
-                dialog.lookup.filter.rows = parseInt(this.value);
+            rows.value = dialog.limitRows(rows.value);
+
+            if (dialog.lookup.filter.rows != rows.value) {
+                dialog.lookup.filter.rows = parseInt(rows.value);
                 dialog.lookup.filter.offset = 0;
 
                 dialog.refresh();
             }
         },
         searchChanged: function (e) {
-            var input = this;
+            var search = this;
             var dialog = MvcLookupDialog.prototype.current;
 
             dialog.lookup.stopLoading();
             clearTimeout(dialog.searching);
             dialog.searching = setTimeout(function () {
-                if (dialog.lookup.filter.search != input.value || e.keyCode == 13) {
-                    dialog.lookup.filter.search = input.value;
+                if (dialog.lookup.filter.search != search.value || e.keyCode == 13) {
+                    dialog.lookup.filter.search = search.value;
                     dialog.lookup.filter.offset = 0;
 
                     dialog.refresh();
@@ -408,7 +410,7 @@ var MvcLookupOverlay = (function () {
             document.addEventListener('keydown', this.onKeyDown);
         },
         onClick: function (e) {
-            var targetClasses = (e.target || e.srcElement).classList;
+            var targetClasses = e.target.classList;
 
             if (targetClasses.contains('mvc-lookup-overlay') || targetClasses.contains('mvc-lookup-wrapper')) {
                 MvcLookupDialog.prototype.current.close();
