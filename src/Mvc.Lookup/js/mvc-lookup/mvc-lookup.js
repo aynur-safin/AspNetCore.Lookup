@@ -281,7 +281,9 @@ var MvcLookupDialog = (function () {
                 }
 
                 if (lookup.multi) {
-                    if (lookup.indexOf(dialog.selected, data.Id) >= 0) {
+                    var index = lookup.indexOf(dialog.selected, data.Id);
+
+                    if (index >= 0) {
                         dialog.selected.splice(index, 1);
 
                         this.classList.remove('selected');
