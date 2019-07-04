@@ -408,10 +408,10 @@ var MvcLookupOverlay = (function () {
         },
 
         bind: function () {
-            this.element.addEventListener('click', this.onClick);
+            this.element.addEventListener('mousedown', this.onMouseDown);
             document.addEventListener('keydown', this.onKeyDown);
         },
-        onClick: function (e) {
+        onMouseDown: function (e) {
             var targetClasses = e.target.classList;
 
             if (targetClasses.contains('mvc-lookup-overlay') || targetClasses.contains('mvc-lookup-wrapper')) {
