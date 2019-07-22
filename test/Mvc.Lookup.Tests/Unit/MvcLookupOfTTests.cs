@@ -15,6 +15,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public MvcLookupOfTTests()
         {
             lookup = new TestLookup<TestModel>();
+            lookup.Filter.Rows = 20;
 
             for (Int32 i = 0; i < 200; i++)
                 lookup.Models.Add(new TestModel
