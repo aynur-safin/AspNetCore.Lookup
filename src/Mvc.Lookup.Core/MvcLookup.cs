@@ -22,7 +22,6 @@ namespace NonFactors.Mvc.Lookup
             AdditionalFilters = new List<String>();
             Columns = new List<LookupColumn>();
             Filter = new LookupFilter();
-            Dialog = "MvcLookupDialog";
         }
 
         public abstract LookupData GetData();
