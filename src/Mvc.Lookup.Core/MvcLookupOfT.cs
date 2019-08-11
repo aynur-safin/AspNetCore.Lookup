@@ -191,14 +191,13 @@ namespace NonFactors.Mvc.Lookup
 
         public virtual Dictionary<String, String> FormData(T model)
         {
-            Dictionary<String, String> data = new Dictionary<String, String>
-            {
-                ["Id"] = GetId(model),
-                ["Label"] = GetLabel(model)
-            };
+            Dictionary<String, String> data = new Dictionary<String, String>();
 
             foreach (LookupColumn column in Columns)
                 data[column.Key] = GetValue(model, column.Key);
+
+            data["Label"] = GetLabel(model);
+            data["Id"] = GetId(model);
 
             return data;
         }

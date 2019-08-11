@@ -856,8 +856,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { "Id", "Label", "Test" }, row.Keys);
-            Assert.Equal(new[] { "1", null,null }, row.Values);
+            Assert.Equal(new[] { "Test", "Label", "Id"}, row.Keys);
+            Assert.Equal(new[] { null, null, "1" }, row.Values);
         }
 
         [Fact]
@@ -865,8 +865,19 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { "1", "Test", "Test", DateTime.Now.Date.ToString("d"), "4" }, row.Values);
-            Assert.Equal(new[] { "Id", "Label", "Value", "Date", "Count" }, row.Keys);
+            Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test", "1" }, row.Values);
+            Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);
+        }
+
+        [Fact]
+        public void FormData_OverridenValues()
+        {
+            lookup.GetId = (model) => $"Test {model.Id}";
+            lookup.GetLabel = (model) => $"Test label {model.Id}";
+            Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+
+            Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test label 1", "Test 1" }, row.Values);
+            Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);
         }
 
         #endregion
