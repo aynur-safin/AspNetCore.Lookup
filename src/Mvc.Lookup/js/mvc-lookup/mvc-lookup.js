@@ -31,7 +31,7 @@ var MvcLookupFilter = (function () {
 
             filter.additional.forEach(function (name) {
                 [].forEach.call(document.querySelectorAll('[name="' + name + '"]'), function (filter) {
-                    query += '&' + encode(name + '=' + encode(filter.value));
+                    query += '&' + encode(name) + '=' + encode(filter.value);
                 });
             });
 
