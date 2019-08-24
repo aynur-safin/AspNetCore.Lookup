@@ -1029,7 +1029,7 @@ var MvcLookup = (function () {
                         }
 
                         lookup.stopLoading();
-                        lookup.filter.page = 0;
+                        lookup.filter.offset = 0;
 
                         var ids = [].filter.call(lookup.values, function (element) {
                             return element.value;
