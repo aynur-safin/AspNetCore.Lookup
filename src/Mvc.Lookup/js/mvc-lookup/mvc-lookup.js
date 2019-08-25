@@ -574,7 +574,6 @@ var MvcLookup = (function () {
         }
 
         lookup.items = [];
-        lookup.events = {};
         lookup.group = group;
         lookup.selected = [];
         lookup.for = group.dataset.for;
@@ -653,7 +652,6 @@ var MvcLookup = (function () {
             lookup.autocomplete.options = lookup.extend(lookup.autocomplete.options, options.autocomplete);
             lookup.setReadonly(options.readonly == null ? lookup.readonly : options.readonly);
             lookup.dialog.options = lookup.extend(lookup.dialog.options, options.dialog);
-            lookup.events = lookup.extend(lookup.events, options.events);
 
             return lookup;
         },
@@ -717,7 +715,7 @@ var MvcLookup = (function () {
             var lookup = this;
             triggerChanges = triggerChanges == null || triggerChanges;
 
-            if (lookup.events.select && lookup.events.select.call(lookup, data, triggerChanges) === false) {
+            if (!lookup.dispatchEvent(lookup.group, 'lookupselect', { lookup: lookup, data: data, triggerChanges: triggerChanges })) {
                 return;
             }
 
@@ -763,7 +761,7 @@ var MvcLookup = (function () {
                     change = new Event('change');
                 } else {
                     change = document.createEvent('Event');
-                    change.initEvent('change', true, true);
+                    change.initEvent('change', true, false);
                 }
 
                 lookup.search.dispatchEvent(change);
@@ -875,6 +873,23 @@ var MvcLookup = (function () {
             lookup.group.classList.remove('mvc-lookup-loading');
         },
 
+        dispatchEvent: function (element, type, detail) {
+            var event;
+
+            if (typeof Event === 'function') {
+                event = new CustomEvent(type, {
+                    cancelable: true,
+                    detail: detail,
+                    bubbles: true
+                });
+            } else {
+                event = document.createEvent('Event');
+                event.initEvent(type, true, true);
+                event.detail = detail;
+            }
+
+            return element.dispatchEvent(event);
+        },
         bindDeselect: function (close, id) {
             var lookup = this;
 
@@ -1024,7 +1039,7 @@ var MvcLookup = (function () {
 
                 for (var j = 0; j < inputs.length; j++) {
                     inputs[j].addEventListener('change', function () {
-                        if (lookup.events.filterChange && lookup.events.filterChange.call(lookup, this) === false) {
+                        if (!lookup.dispatchEvent(this, 'filterchange', { lookup: lookup })) {
                             return;
                         }
 
