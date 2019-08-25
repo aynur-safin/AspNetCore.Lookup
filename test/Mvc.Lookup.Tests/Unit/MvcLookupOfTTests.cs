@@ -28,8 +28,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 });
         }
 
-        #region GetId
-
         [Fact]
         public void GetId_NoProperty()
         {
@@ -44,10 +42,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region GetLabel
 
         [Fact]
         public void GetLabel_NoColumns()
@@ -66,10 +60,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region AttributedProperties
-
         [Fact]
         public void AttributedProperties_GetsOrderedProperties()
         {
@@ -80,10 +70,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region MvcLookup()
 
         [Fact]
         public void MvcLookup_AddsColumns()
@@ -108,10 +94,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             }
         }
 
-        #endregion
-
-        #region GetColumnKey(PropertyInfo property)
-
         [Fact]
         public void GetColumnKey_NullProperty_Throws()
         {
@@ -130,10 +112,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region GetColumnHeader(PropertyInfo property)
 
         [Fact]
         public void GetColumnHeader_NullProperty_ReturnsNull()
@@ -171,19 +149,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region GetColumnCssClass(PropertyInfo property)
-
         [Fact]
         public void GetColumnCssClass_ReturnsNull()
         {
             Assert.Null(lookup.GetColumnCssClass(null));
         }
-
-        #endregion
-
-        #region GetData()
 
         [Fact]
         public void GetData_FiltersByIds()
@@ -348,10 +318,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("155I", actual.Rows[1]["Id"]);
         }
 
-        #endregion
-
-        #region FilterBySearch(IQueryable<T> models)
-
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -415,10 +381,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region FilterByAdditionalFilters(IQueryable<T> models)
-
         [Fact]
         public void FilterByAdditionalFilters_SkipsNullValues()
         {
@@ -443,10 +405,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region FilterByIds(IQueryable<T> models, IList<String> ids)
 
         [Fact]
         public void FilterByIds_NoIdProperty_Throws()
@@ -508,10 +466,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region FilterByNotIds(IQueryable<T> models, IList<String> ids)
-
         [Fact]
         public void FilterByNotIds_NoIdProperty_Throws()
         {
@@ -572,10 +526,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region FilterByCheckIds(IQueryable<T> models, IList<String> ids)
-
         [Fact]
         public void FilterByCheckIds_NoIdProperty_Throws()
         {
@@ -622,10 +572,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region FilterBySelected(IQueryable<T> models, IList<String> ids)
 
         [Fact]
         public void FilterBySelected_NoIdProperty_Throws()
@@ -675,10 +621,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region Sort(IQueryable<T> models)
-
         [Fact]
         public void Sort_ByColumn()
         {
@@ -720,10 +662,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region Page(IQueryable<T> models)
-
         [Theory]
         [InlineData(-1, -1, 0, 1)]
         [InlineData(-1, 0, 0, 1)]
@@ -752,10 +690,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expectedRows, lookup.Filter.Rows);
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region FormLookupData(IQueryable<T> filtered, IQueryable<T> selected, IQueryable<T> notSelected)
 
         [Fact]
         public void FormLookupData_Columns()
@@ -844,10 +778,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Assert.Equal(expected.Current, actual.Current);
         }
 
-        #endregion
-
-        #region FormData(T model)
-
         [Fact]
         public void FormData_EmptyValues()
         {
@@ -879,7 +809,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test label 1", "Test 1" }, row.Values);
             Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);
         }
-
-        #endregion
     }
 }

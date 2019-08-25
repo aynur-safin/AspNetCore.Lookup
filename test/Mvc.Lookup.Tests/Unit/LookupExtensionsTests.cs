@@ -44,8 +44,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Filter.Order = LookupSortOrder.Desc;
         }
 
-        #region AutoComplete<TModel>(this IHtmlHelper<TModel> html, String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
-
         [Fact]
         public void AutoComplete_Readonly()
         {
@@ -116,10 +114,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
 
         [Fact]
         public void AutoCompleteFor_Readonly()
@@ -192,10 +186,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
-
-        #region Lookup<TModel>(this IHtmlHelper<TModel> html, String name, MvcLookup model, Object value = null, Object htmlAttributes = null)
 
         [Fact]
         public void Lookup_Readonly()
@@ -275,10 +265,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
-
         [Fact]
         public void LookupFor_Readonly()
         {
@@ -357,10 +343,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        #endregion
-
-        #region Test helpers
-
         private IHtmlHelper<TestModel> MockHtmlHelper()
         {
             IOptions<MvcViewOptions> options = Substitute.For<IOptions<MvcViewOptions>>();
@@ -404,7 +386,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 return writer.ToString();
             }
         }
-
-        #endregion
     }
 }

@@ -20,8 +20,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             output = new TagHelperOutput("div", new TagHelperAttributeList(), (useCachedResult, encoder) => null);
         }
 
-        #region Process(TagHelperContext context, TagHelperOutput output)
-
         [Theory]
         [InlineData("", "/People/All", "/People/All")]
         [InlineData("", "~/People/All", "/People/All")]
@@ -116,7 +114,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal("Dialog lookup title", output.Attributes["data-title"].Value);
             Assert.Equal("http://localhost/Lookup", output.Attributes["data-url"].Value);
         }
-
-        #endregion
     }
 }

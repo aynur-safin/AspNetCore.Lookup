@@ -6,8 +6,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupQueryTests
     {
-        #region IsOrdered(IQueryable models)
-
         [Fact]
         public void IsOrdered_False()
         {
@@ -19,7 +17,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             Assert.True(LookupQuery.IsOrdered(new Object[0].AsQueryable().OrderBy(model => 0)));
         }
-
-        #endregion
     }
 }

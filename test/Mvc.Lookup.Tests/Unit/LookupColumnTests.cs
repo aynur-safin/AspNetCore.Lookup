@@ -5,8 +5,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnTests
     {
-        #region LookupColumn(String key, String header)
-
         [Fact]
         public void LookupColumn_NullKey_Throws()
         {
@@ -32,7 +30,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.Equal(expected, actual);
         }
-
-        #endregion
     }
 }

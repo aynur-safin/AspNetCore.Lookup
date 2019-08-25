@@ -6,8 +6,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class MvcLookupTests
     {
-        #region MvcLookup()
-
         [Fact]
         public void MvcLookup_Defaults()
         {
@@ -17,7 +15,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.NotNull(actual.Filter);
             Assert.Empty(actual.Columns);
         }
-
-        #endregion
     }
 }

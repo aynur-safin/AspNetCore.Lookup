@@ -4,8 +4,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupColumnAttributeTests
     {
-        #region LookupColumnAttribute()
-
         [Fact]
         public void LookupColumnAttribute()
         {
@@ -13,10 +11,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Assert.True(attribute.Filterable);
         }
-
-        #endregion
-
-        #region LookupColumnAttribute(Int32 position)
 
         [Fact]
         public void LookupColumnAttribute_Position()
@@ -26,7 +20,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(-5, attribute.Position);
             Assert.True(attribute.Filterable);
         }
-
-        #endregion
     }
 }

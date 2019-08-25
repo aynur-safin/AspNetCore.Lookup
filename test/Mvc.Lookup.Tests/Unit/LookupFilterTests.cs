@@ -4,8 +4,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class LookupFilterTests
     {
-        #region LookupFilter()
-
         [Fact]
         public void LookupFilter_CreatesEmpty()
         {
@@ -16,7 +14,5 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Empty(filter.CheckIds);
             Assert.Empty(filter.Ids);
         }
-
-        #endregion
     }
 }
