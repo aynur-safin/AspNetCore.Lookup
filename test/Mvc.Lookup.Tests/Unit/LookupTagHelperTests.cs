@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using NSubstitute;
@@ -12,27 +14,25 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
     {
         private LookupTagHelper helper;
         private TagHelperOutput output;
+        private IUrlHelperFactory factory;
 
         public LookupTagHelperTests()
         {
-            helper = new LookupTagHelper(Substitute.For<IHtmlGenerator>());
+            factory = Substitute.For<IUrlHelperFactory>();
+            helper = new LookupTagHelper(Substitute.For<IHtmlGenerator>(), factory);
             helper.ViewContext = new ViewContext { HttpContext = new DefaultHttpContext() };
             output = new TagHelperOutput("div", new TagHelperAttributeList(), (useCachedResult, encoder) => null);
         }
 
         [Theory]
-        [InlineData("", "/People/All", "/People/All")]
-        [InlineData("", "~/People/All", "/People/All")]
-        [InlineData("/", "/People/All", "/People/All")]
-        [InlineData("/", "~/People/All", "/People/All")]
-        [InlineData(null, "/People/All", "/People/All")]
-        [InlineData(null, "~/People/All", "/People/All")]
-        [InlineData("/Test", "/People/All", "/People/All")]
-        [InlineData("/Test", "~/People/All", "/Test/People/All")]
-        public void Process_Url(String pathBase, String url, String fullUrl)
+        [InlineData("/People/All", "/People/All")]
+        [InlineData("~/People/All", "/People/All/Expand")]
+        public void Process_Url(String url, String fullUrl)
         {
             helper.Url = url;
-            helper.ViewContext.HttpContext.Request.PathBase = pathBase;
+            IUrlHelper urlHelper = Substitute.For<IUrlHelper>();
+            urlHelper.Content(url).Returns("/People/All/Expand");
+            factory.GetUrlHelper(helper.ViewContext).Returns(urlHelper);
 
             helper.Process(null, output);
 

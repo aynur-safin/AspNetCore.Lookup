@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace NonFactors.Mvc.Lookup
         public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
-            String name = ExpressionHelper.GetExpressionText(expression);
+            String name = LookupExpressionMetadata.GetName(expression);
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
             lookup.AddCssClass("mvc-lookup-browseless");
 
@@ -50,7 +49,7 @@ namespace NonFactors.Mvc.Lookup
         public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object htmlAttributes = null)
         {
-            String name = ExpressionHelper.GetExpressionText(expression);
+            String name = LookupExpressionMetadata.GetName(expression);
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
 
             lookup.InnerHtml.AppendHtml(CreateLookupValues(html, model, expression));
@@ -85,10 +84,11 @@ namespace NonFactors.Mvc.Lookup
 
             return group;
         }
+
         private static IHtmlContent CreateLookupValues<TModel, TProperty>(IHtmlHelper<TModel> html, MvcLookup lookup, Expression<Func<TModel, TProperty>> expression)
         {
-            Object value = ExpressionMetadataProvider.FromLambdaExpression(expression, html.ViewData, html.MetadataProvider).Model;
-            String name = ExpressionHelper.GetExpressionText(expression);
+            Object value = LookupExpressionMetadata.GetValue(html, expression).Model;
+            String name = LookupExpressionMetadata.GetName(expression);
 
             if (lookup.Multi)
                 return CreateLookupValues(html, lookup, name, value);
@@ -118,7 +118,8 @@ namespace NonFactors.Mvc.Lookup
             if (lookup.Multi)
             {
                 IEnumerable<Object> values = (value as IEnumerable)?.Cast<Object>();
-                if (values == null) return container;
+                if (values == null)
+                    return container;
 
                 IHtmlContentBuilder inputs = new HtmlContentBuilder();
                 foreach (Object val in values)
@@ -142,7 +143,6 @@ namespace NonFactors.Mvc.Lookup
 
             return container;
         }
-
         private static IHtmlContent CreateLookupControl(IHtmlHelper html, MvcLookup lookup, String name)
         {
             TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
@@ -151,10 +151,14 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder loader = new TagBuilder("div");
             TagBuilder error = new TagBuilder("div");
 
-            if (lookup.Name != null) attributes["id"] = ExpressionHelper.GetExpressionText(lookup.Name);
-            if (lookup.Placeholder != null) attributes["placeholder"] = lookup.Placeholder;
-            if (lookup.Name != null) attributes["name"] = lookup.Name;
-            if (lookup.ReadOnly) attributes["readonly"] = "readonly";
+            if (lookup.Placeholder != null)
+                attributes["placeholder"] = lookup.Placeholder;
+            if (lookup.Name != null)
+                attributes["id"] = html.Id(lookup.Name);
+            if (lookup.Name != null)
+                attributes["name"] = lookup.Name;
+            if (lookup.ReadOnly)
+                attributes["readonly"] = "readonly";
             attributes["class"] = "mvc-lookup-input";
             attributes["autocomplete"] = "off";
 

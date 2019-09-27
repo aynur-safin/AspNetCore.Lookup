@@ -355,7 +355,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 provider,
                 Substitute.For<IUrlHelperFactory>(),
                 HtmlEncoder.Default,
-                new ClientValidatorCache(),
                 new DefaultValidationHtmlAttributeProvider(options, provider, new ClientValidatorCache()));
 
             HtmlHelper<TestModel> htmlHelper = new HtmlHelper<TestModel>(

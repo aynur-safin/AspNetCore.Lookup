@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,15 +42,17 @@ namespace NonFactors.Mvc.Lookup
 
         private String For { get; set; }
         private IHtmlGenerator Html { get; }
+        private Func<ViewContext, IUrlHelper> UrlFactory { get; }
 
-        public LookupTagHelper(IHtmlGenerator html)
+        public LookupTagHelper(IHtmlGenerator html, IUrlHelperFactory factory)
         {
             Html = html;
+            UrlFactory = factory.GetUrlHelper;
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            Url = Url.StartsWith("~") ? new UrlHelper(ViewContext).Content(Url) : Url;
+            Url = Url.StartsWith("~") ? UrlFactory(ViewContext).Content(Url) : Url;
             For = LookupName ?? Lookup?.Name;
             Value = Value ?? Lookup?.Model;
 
@@ -63,9 +66,11 @@ namespace NonFactors.Mvc.Lookup
 
         private void WriteValues(TagHelperOutput output)
         {
-            IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes["class"] = "mvc-lookup-value";
-            attributes["autocomplete"] = "off";
+            IDictionary<String, Object> attributes = new Dictionary<String, Object>
+            {
+                ["class"] = "mvc-lookup-value",
+                ["autocomplete"] = "off"
+            };
 
             TagBuilder container = new TagBuilder("div");
             container.AddCssClass("mvc-lookup-values");
@@ -100,12 +105,15 @@ namespace NonFactors.Mvc.Lookup
             TagBuilder loader = new TagBuilder("div");
             TagBuilder error = new TagBuilder("div");
 
-            if (Name != null) attributes["id"] = ExpressionHelper.GetExpressionText(Name);
-            if (Placeholder != null) attributes["placeholder"] = Placeholder;
-            if (Readonly == true) attributes["readonly"] = "readonly";
-            if (Name != null) attributes["name"] = Name;
             attributes["class"] = "mvc-lookup-input";
             attributes["autocomplete"] = "off";
+
+            if (Placeholder != null)
+                attributes["placeholder"] = Placeholder;
+            if (Readonly == true)
+                attributes["readonly"] = "readonly";
+            if (Name != null)
+                attributes["name"] = Name;
 
             loader.AddCssClass("mvc-lookup-control-loader");
             error.AddCssClass("mvc-lookup-control-error");
