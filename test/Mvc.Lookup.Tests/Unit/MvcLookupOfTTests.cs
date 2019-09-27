@@ -449,7 +449,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
             for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
 
-            IQueryable<Int32Model> actual = testLookup.FilterByIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<Int32Model> actual = testLookup.FilterByIds(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
 
             Assert.Equal(expected, actual);
@@ -509,7 +509,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
             for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
 
-            IQueryable<Int32Model> actual = testLookup.FilterByNotIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<Int32Model> actual = testLookup.FilterByNotIds(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => !new[] { 9, 10 }.Contains(model.Value));
 
             Assert.Equal(expected, actual);
@@ -556,7 +556,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
             for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
 
-            IQueryable<Int32Model> actual = testLookup.FilterByCheckIds(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<Int32Model> actual = testLookup.FilterByCheckIds(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
 
             Assert.Equal(expected, actual);
@@ -601,10 +601,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterBySelected_NumberKey()
         {
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
-            for (Int32 i = 0; i < 20; i++)
-                testLookup.Models.Add(new Int32Model { Value = i });
+            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
 
-            IQueryable<Int32Model> actual = testLookup.FilterBySelected(testLookup.GetModels(), new List<String> { "9.0", "10" });
+            IQueryable<Int32Model> actual = testLookup.FilterBySelected(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
 
             Assert.Equal(expected, actual);

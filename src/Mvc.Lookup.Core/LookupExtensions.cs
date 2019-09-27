@@ -93,9 +93,11 @@ namespace NonFactors.Mvc.Lookup
             if (lookup.Multi)
                 return CreateLookupValues(html, lookup, name, value);
 
-            IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes["class"] = "mvc-lookup-value";
-            attributes["autocomplete"] = "off";
+            IDictionary<String, Object> attributes = new Dictionary<String, Object>
+            {
+                ["class"] = "mvc-lookup-value",
+                ["autocomplete"] = "off"
+            };
 
             TagBuilder container = new TagBuilder("div");
             container.AddCssClass("mvc-lookup-values");
@@ -107,9 +109,11 @@ namespace NonFactors.Mvc.Lookup
         }
         private static IHtmlContent CreateLookupValues(IHtmlHelper html, MvcLookup lookup, String name, Object value)
         {
-            IDictionary<String, Object> attributes = new Dictionary<String, Object>();
-            attributes["class"] = "mvc-lookup-value";
-            attributes["autocomplete"] = "off";
+            IDictionary<String, Object> attributes = new Dictionary<String, Object>
+            {
+                ["class"] = "mvc-lookup-value",
+                ["autocomplete"] = "off"
+            };
 
             TagBuilder container = new TagBuilder("div");
             container.AddCssClass("mvc-lookup-values");
@@ -146,10 +150,15 @@ namespace NonFactors.Mvc.Lookup
         private static IHtmlContent CreateLookupControl(IHtmlHelper html, MvcLookup lookup, String name)
         {
             TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
-            Dictionary<String, Object> attributes = new Dictionary<String, Object>();
             TagBuilder control = new TagBuilder("div");
             TagBuilder loader = new TagBuilder("div");
             TagBuilder error = new TagBuilder("div");
+
+            Dictionary<String, Object> attributes = new Dictionary<String, Object>
+            {
+                ["class"] = "mvc-lookup-input",
+                ["autocomplete"] = "off"
+            };
 
             if (lookup.Placeholder != null)
                 attributes["placeholder"] = lookup.Placeholder;
@@ -159,8 +168,6 @@ namespace NonFactors.Mvc.Lookup
                 attributes["name"] = lookup.Name;
             if (lookup.ReadOnly)
                 attributes["readonly"] = "readonly";
-            attributes["class"] = "mvc-lookup-input";
-            attributes["autocomplete"] = "off";
 
             loader.AddCssClass("mvc-lookup-control-loader");
             error.AddCssClass("mvc-lookup-control-error");

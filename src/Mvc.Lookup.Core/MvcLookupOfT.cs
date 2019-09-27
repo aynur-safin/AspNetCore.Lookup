@@ -95,7 +95,8 @@ namespace NonFactors.Mvc.Lookup
                 if (typeof(T).GetProperty(property)?.PropertyType == typeof(String))
                     queries.Add($"({property} != null && {property}.ToLower().Contains(@0))");
 
-            if (queries.Count == 0) return models;
+            if (queries.Count == 0)
+                return models;
 
             return models.Where(String.Join(" || ", queries), Filter.Search.ToLower());
         }
@@ -117,14 +118,8 @@ namespace NonFactors.Mvc.Lookup
             if (key == null)
                 throw new LookupException($"'{typeof(T).Name}' type does not have key or property named 'Id', required for automatic id filtering.");
 
-            if (key.PropertyType == typeof(String))
-                return models.Where($"@0.Contains({key.Name})", ids);
-
-            if (key.PropertyType == typeof(Guid))
-                return models.Where($"@0.Contains({key.Name})", Parse<Guid>(ids));
-
-            if (IsNumeric(key.PropertyType))
-                return models.Where($"@0.Contains(decimal({key.Name}))", Parse<Decimal>(ids));
+            if (IsFilterable(key.PropertyType))
+                return models.Where($"@0.Contains({key.Name})", Parse(key.PropertyType, ids));
 
             throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string, guid or a number.");
         }
@@ -136,14 +131,8 @@ namespace NonFactors.Mvc.Lookup
             if (key == null)
                 throw new LookupException($"'{typeof(T).Name}' type does not have key or property named 'Id', required for automatic id filtering.");
 
-            if (key.PropertyType == typeof(String))
-                return models.Where($"!@0.Contains({key.Name})", ids);
-
-            if (key.PropertyType == typeof(Guid))
-                return models.Where($"!@0.Contains({key.Name})", Parse<Guid>(ids));
-
-            if (IsNumeric(key.PropertyType))
-                return models.Where($"!@0.Contains(decimal({key.Name}))", Parse<Decimal>(ids));
+            if (IsFilterable(key.PropertyType))
+                return models.Where($"!@0.Contains({key.Name})", Parse(key.PropertyType, ids));
 
             throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string, guid or a number.");
         }
@@ -205,24 +194,25 @@ namespace NonFactors.Mvc.Lookup
         private String GetValue(T model, String propertyName)
         {
             PropertyInfo property = typeof(T).GetProperty(propertyName);
-            if (property == null) return null;
+            if (property == null)
+                return null;
 
-            LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
-            if (column?.Format != null) return String.Format(column.Format, property.GetValue(model));
+            if (property.GetCustomAttribute<LookupColumnAttribute>(false) is LookupColumnAttribute column && column.Format != null)
+                return String.Format(column.Format, property.GetValue(model));
 
             return property.GetValue(model)?.ToString();
         }
-        private List<TType> Parse<TType>(IList<String> ids)
+        private Object Parse(Type type, IList<String> ids)
         {
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof(TType));
-            List<TType> values = new List<TType>();
+            TypeConverter converter = TypeDescriptor.GetConverter(type);
+            IList values = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
 
             foreach (String value in ids)
-                values.Add((TType)converter.ConvertFrom(value));
+                values.Add(converter.ConvertFrom(value));
 
             return values;
         }
-        private Boolean IsNumeric(Type type)
+        private Boolean IsFilterable(Type type)
         {
             type = Nullable.GetUnderlyingType(type) ?? type;
 
@@ -239,9 +229,10 @@ namespace NonFactors.Mvc.Lookup
                 case TypeCode.Single:
                 case TypeCode.Double:
                 case TypeCode.Decimal:
+                case TypeCode.String:
                     return true;
                 default:
-                    return false;
+                    return type == typeof(Guid);
             }
         }
     }
