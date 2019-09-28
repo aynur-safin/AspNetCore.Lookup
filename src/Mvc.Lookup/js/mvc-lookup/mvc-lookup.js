@@ -1,5 +1,5 @@
 /*!
- * Mvc.Lookup 4.1.0
+ * Mvc.Lookup 4.1.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -490,7 +490,7 @@ var MvcLookupAutocomplete = (function () {
         previous: function () {
             var autocomplete = this;
 
-            if (!autocomplete.element.parentElement || !thautocompleteis.activeItem) {
+            if (!autocomplete.element.parentElement || !autocomplete.activeItem) {
                 autocomplete.search(autocomplete.lookup.search.value);
 
                 return;
