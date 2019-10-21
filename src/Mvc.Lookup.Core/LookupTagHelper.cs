@@ -15,34 +15,34 @@ namespace NonFactors.Mvc.Lookup
     [HtmlTargetElement("div", Attributes = "mvc-lookup-for,url")]
     public class LookupTagHelper : TagHelper
     {
-        public String Url { get; set; }
+        public String? Url { get; set; }
         public Int32? Rows { get; set; }
-        public String Name { get; set; }
-        public String Sort { get; set; }
-        public Object Value { get; set; }
-        public String Title { get; set; }
-        public String Search { get; set; }
-        public String Dialog { get; set; }
-        public String Filters { get; set; }
+        public String? Name { get; set; }
+        public String? Sort { get; set; }
+        public Object? Value { get; set; }
+        public String? Title { get; set; }
+        public String? Search { get; set; }
+        public String? Dialog { get; set; }
+        public String? Filters { get; set; }
         public Boolean? Multi { get; set; }
         public Boolean? Browser { get; set; }
         public Boolean? Readonly { get; set; }
-        public String Placeholder { get; set; }
+        public String? Placeholder { get; set; }
         public new LookupSortOrder? Order { get; set; }
 
         [HtmlAttributeName("mvc-lookup")]
-        public String LookupName { get; set; }
+        public String? LookupName { get; set; }
 
         [HtmlAttributeName("mvc-lookup-for")]
-        public ModelExpression Lookup { get; set; }
+        public ModelExpression? Lookup { get; set; }
 
         [ViewContext]
         [HtmlAttributeNotBound]
-        public ViewContext ViewContext { get; set; }
+        public ViewContext? ViewContext { get; set; }
 
-        private String For { get; set; }
+        private String? For { get; set; }
         private IHtmlGenerator Html { get; }
-        private Func<ViewContext, IUrlHelper> UrlFactory { get; }
+        private Func<ViewContext?, IUrlHelper> UrlFactory { get; }
 
         public LookupTagHelper(IHtmlGenerator html, IUrlHelperFactory factory)
         {
@@ -50,9 +50,9 @@ namespace NonFactors.Mvc.Lookup
             UrlFactory = factory.GetUrlHelper;
         }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext? context, TagHelperOutput output)
         {
-            Url = Url.StartsWith("~") ? UrlFactory(ViewContext).Content(Url) : Url;
+            Url = Url?.StartsWith("~") == true ? UrlFactory(ViewContext).Content(Url) : Url;
             For = LookupName ?? Lookup?.Name;
             Value = Value ?? Lookup?.Model;
 
@@ -168,7 +168,7 @@ namespace NonFactors.Mvc.Lookup
             WriteAttribute(output, "data-readonly", Readonly);
             WriteAttribute(output, "class", (classes + " " + output.Attributes["class"]?.Value).Trim());
         }
-        private void WriteAttribute(TagHelperOutput output, String key, Object value)
+        private void WriteAttribute(TagHelperOutput output, String key, Object? value)
         {
             if (value != null)
                 output.Attributes.SetAttribute(key, value);

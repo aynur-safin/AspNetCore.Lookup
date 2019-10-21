@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Lookup
             Boolean lastIsModel = false;
             Int32 trailingMemberExpressions = 0;
 
-            Expression part = expression.Body;
+            Expression? part = expression.Body;
             while (part != null)
             {
                 switch (part.NodeType)
@@ -133,9 +133,9 @@ namespace NonFactors.Mvc.Lookup
         }
         public static ModelExplorer GetValue<TModel, TResult>(IHtmlHelper html, Expression<Func<TModel, TResult>> expression)
         {
-            Type containerType = null;
-            String propertyName = null;
-            ModelMetadata metadata = null;
+            Type? containerType = null;
+            String? propertyName = null;
+            ModelMetadata? metadata = null;
             Boolean legalExpression = false;
 
             switch (expression.Body.NodeType)
@@ -167,7 +167,7 @@ namespace NonFactors.Mvc.Lookup
             if (!legalExpression)
                 throw new InvalidOperationException("Resources.TemplateHelpers_TemplateLimitations");
 
-            Object modelAccessor(Object container)
+            Object? modelAccessor(Object container)
             {
                 try
                 {
@@ -192,9 +192,9 @@ namespace NonFactors.Mvc.Lookup
         {
             if (expression is MethodCallExpression method && method.Arguments.Count == 1)
             {
-                Type type = method.Method.DeclaringType;
+                Type? type = method.Method.DeclaringType;
 
-                if (type.GetTypeInfo().GetCustomAttribute<DefaultMemberAttribute>(true) is DefaultMemberAttribute member)
+                if (type?.GetTypeInfo().GetCustomAttribute<DefaultMemberAttribute>(true) is DefaultMemberAttribute member)
                     foreach (PropertyInfo property in type.GetRuntimeProperties())
                         if (String.Equals(member.MemberName, property.Name, StringComparison.Ordinal) && property.GetMethod == method.Method)
                             return true;
@@ -206,7 +206,7 @@ namespace NonFactors.Mvc.Lookup
         {
             UnaryExpression converted = Expression.Convert(index, typeof(Object));
             ParameterExpression parameter = Expression.Parameter(typeof(Object), null);
-            Expression<Func<Object, Object>> lambda = Expression.Lambda<Func<Object, Object>>(converted, parameter);
+            Expression<Func<Object?, Object>> lambda = Expression.Lambda<Func<Object?, Object>>(converted, parameter);
 
             builder.Insert(0, ']');
             builder.Insert(0, Convert.ToString(lambda.Compile()(null), CultureInfo.InvariantCulture));

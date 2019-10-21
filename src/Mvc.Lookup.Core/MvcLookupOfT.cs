@@ -20,18 +20,18 @@ namespace NonFactors.Mvc.Lookup
                 return typeof(T)
                     .GetProperties()
                     .Where(property => property.IsDefined(typeof(LookupColumnAttribute), false))
-                    .OrderBy(property => property.GetCustomAttribute<LookupColumnAttribute>(false).Position);
+                    .OrderBy(property => property.GetCustomAttribute<LookupColumnAttribute>(false)!.Position);
             }
         }
 
         protected MvcLookup()
         {
-            GetId = (model) => GetValue(model, "Id");
-            GetLabel = (model) => GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? "");
+            GetId = (model) => GetValue(model, "Id") ?? "";
+            GetLabel = (model) => GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? "") ?? "";
 
             foreach (PropertyInfo property in AttributedProperties)
             {
-                LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false);
+                LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false)!;
                 Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
                 {
                     CssClass = GetColumnCssClass(property),
@@ -49,11 +49,11 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual String GetColumnHeader(PropertyInfo property)
         {
-            return property?.GetCustomAttribute<DisplayAttribute>(false)?.GetShortName();
+            return property?.GetCustomAttribute<DisplayAttribute>(false)?.GetShortName() ?? "";
         }
         public virtual String GetColumnCssClass(PropertyInfo property)
         {
-            return null;
+            return "";
         }
 
         public override LookupData GetData()
@@ -98,11 +98,11 @@ namespace NonFactors.Mvc.Lookup
             if (queries.Count == 0)
                 return models;
 
-            return models.Where(String.Join(" || ", queries), Filter.Search.ToLower());
+            return models.Where(String.Join(" || ", queries), Filter.Search!.ToLower());
         }
         public virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
-            foreach (KeyValuePair<String, Object> filter in Filter.AdditionalFilters.Where(item => item.Value != null))
+            foreach (KeyValuePair<String, Object?> filter in Filter.AdditionalFilters.Where(item => item.Value != null))
                 if (filter.Value is IEnumerable && !(filter.Value is String))
                     models = models.Where($"@0.Contains({filter.Key})", filter.Value);
                 else
@@ -112,7 +112,7 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual IQueryable<T> FilterByIds(IQueryable<T> models, IList<String> ids)
         {
-            PropertyInfo key = typeof(T).GetProperties()
+            PropertyInfo? key = typeof(T).GetProperties()
                 .FirstOrDefault(prop => prop.IsDefined(typeof(KeyAttribute))) ?? typeof(T).GetProperty("Id");
 
             if (key == null)
@@ -125,7 +125,7 @@ namespace NonFactors.Mvc.Lookup
         }
         public virtual IQueryable<T> FilterByNotIds(IQueryable<T> models, IList<String> ids)
         {
-            PropertyInfo key = typeof(T).GetProperties()
+            PropertyInfo? key = typeof(T).GetProperties()
                 .FirstOrDefault(prop => prop.IsDefined(typeof(KeyAttribute))) ?? typeof(T).GetProperty("Id");
 
             if (key == null)
@@ -178,9 +178,9 @@ namespace NonFactors.Mvc.Lookup
             return data;
         }
 
-        public virtual Dictionary<String, String> FormData(T model)
+        public virtual Dictionary<String, String?> FormData(T model)
         {
-            Dictionary<String, String> data = new Dictionary<String, String>();
+            Dictionary<String, String?> data = new Dictionary<String, String?>();
 
             foreach (LookupColumn column in Columns)
                 data[column.Key] = GetValue(model, column.Key);
@@ -191,9 +191,9 @@ namespace NonFactors.Mvc.Lookup
             return data;
         }
 
-        private String GetValue(T model, String propertyName)
+        private String? GetValue(T model, String propertyName)
         {
-            PropertyInfo property = typeof(T).GetProperty(propertyName);
+            PropertyInfo? property = typeof(T).GetProperty(propertyName);
             if (property == null)
                 return null;
 
@@ -205,7 +205,7 @@ namespace NonFactors.Mvc.Lookup
         private Object Parse(Type type, IList<String> ids)
         {
             TypeConverter converter = TypeDescriptor.GetConverter(type);
-            IList values = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+            IList values = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type))!;
 
             foreach (String value in ids)
                 values.Add(converter.ConvertFrom(value));

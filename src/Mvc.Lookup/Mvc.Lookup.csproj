@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>4.1.1</Version>
+    <Version>4.2.0</Version>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
     <PackageId>NonFactors.Lookup.Mvc6</PackageId>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>

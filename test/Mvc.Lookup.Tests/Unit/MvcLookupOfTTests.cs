@@ -31,7 +31,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetId_NoProperty()
         {
-            Assert.Null(new TestLookup<NoIdModel>().GetId(new NoIdModel()));
+            Assert.Empty(new TestLookup<NoIdModel>().GetId(new NoIdModel()));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
 
-            Assert.Null(lookup.GetLabel(new TestModel()));
+            Assert.Empty(lookup.GetLabel(new TestModel()));
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             IEnumerable<PropertyInfo> actual = lookup.AttributedProperties;
             IEnumerable<PropertyInfo> expected = typeof(TestModel).GetProperties()
                 .Where(property => property.GetCustomAttribute<LookupColumnAttribute>(false) != null)
-                .OrderBy(property => property.GetCustomAttribute<LookupColumnAttribute>(false).Position);
+                .OrderBy(property => property.GetCustomAttribute<LookupColumnAttribute>(false)!.Position);
 
             Assert.Equal(expected, actual);
         }
@@ -76,7 +76,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             List<LookupColumn> columns = new List<LookupColumn>
             {
-                new LookupColumn("Value", null) { Hidden = false, Filterable = true },
+                new LookupColumn("Value", "") { Hidden = false, Filterable = true },
                 new LookupColumn("Date", "Date") { Hidden = false, Filterable = true },
                 new LookupColumn("Count", "Value") { Hidden = false, Filterable = false }
             };
@@ -97,7 +97,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetColumnKey_NullProperty_Throws()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.GetColumnKey(null));
+            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.GetColumnKey(null!));
 
             Assert.Equal("property", actual.ParamName);
         }
@@ -105,7 +105,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetColumnKey_ReturnsPropertyName()
         {
-            PropertyInfo property = typeof(TestModel).GetProperty("Count");
+            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Count))!;
 
             String actual = lookup.GetColumnKey(property);
             String expected = property.Name;
@@ -114,26 +114,26 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnHeader_NullProperty_ReturnsNull()
+        public void GetColumnHeader_NullProperty_ReturnsEmpty()
         {
-            Assert.Null(lookup.GetColumnHeader(null));
+            Assert.Empty(lookup.GetColumnHeader(null!));
         }
 
         [Fact]
-        public void GetColumnHeader_NoDisplayName_ReturnsNull()
+        public void GetColumnHeader_NoDisplayName_ReturnsEmpty()
         {
-            PropertyInfo property = typeof(TestModel).GetProperty("Value");
+            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Value))!;
 
-            Assert.Null(lookup.GetColumnHeader(property));
+            Assert.Empty(lookup.GetColumnHeader(property));
         }
 
         [Fact]
         public void GetColumnHeader_ReturnsDisplayName()
         {
-            PropertyInfo property = typeof(TestModel).GetProperty("Date");
+            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Date))!;
 
-            String expected = property.GetCustomAttribute<DisplayAttribute>().Name;
-            String actual = lookup.GetColumnHeader(property);
+            String? expected = property.GetCustomAttribute<DisplayAttribute>()?.Name;
+            String? actual = lookup.GetColumnHeader(property);
 
             Assert.Equal(expected, actual);
         }
@@ -141,18 +141,18 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetColumnHeader_ReturnsDisplayShortName()
         {
-            PropertyInfo property = typeof(TestModel).GetProperty("Count");
+            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Count))!;
 
-            String expected = property.GetCustomAttribute<DisplayAttribute>().ShortName;
-            String actual = lookup.GetColumnHeader(property);
+            String? expected = property.GetCustomAttribute<DisplayAttribute>()?.ShortName;
+            String? actual = lookup.GetColumnHeader(property);
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void GetColumnCssClass_ReturnsNull()
+        public void GetColumnCssClass_ReturnsEmpty()
         {
-            Assert.Null(lookup.GetColumnCssClass(null));
+            Assert.Empty(lookup.GetColumnCssClass(null!));
         }
 
         [Fact]
@@ -349,7 +349,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Filter.Search = "1";
 
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id.Contains("1"));
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id!.Contains("1"));
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
 
             Assert.Equal(expected, actual);
@@ -360,7 +360,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "1";
-            lookup.Columns.Add(new LookupColumn("Count", null));
+            lookup.Columns.Add(new LookupColumn("Count", ""));
 
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -373,7 +373,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "1";
-            lookup.Columns.Add(new LookupColumn("Value", null) { Filterable = false });
+            lookup.Columns.Add(new LookupColumn("Value", "") { Filterable = false });
 
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -411,7 +411,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByIds(null, null));
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByIds(Array.Empty<NoIdModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
@@ -425,7 +425,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             List<String> ids = new List<String> { "9I", "10I" };
 
             IQueryable<TestModel> actual = lookup.FilterByIds(lookup.GetModels(), ids);
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id!));
 
             Assert.Equal(expected, actual);
         }
@@ -434,7 +434,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByIds_Guids()
         {
             TestLookup<GuidModel> testLookup = new TestLookup<GuidModel>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new GuidModel { Id = Guid.NewGuid() });
+            for (Int32 i = 0; i < 20; i++)
+                testLookup.Models.Add(new GuidModel { Id = Guid.NewGuid() });
             List<String> ids = new List<String> { testLookup.Models[4].Id.ToString(), testLookup.Models[9].Id.ToString() };
 
             IQueryable<GuidModel> expected = testLookup.GetModels().Where(model => ids.Contains(model.Id.ToString()));
@@ -447,7 +448,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByIds_NumberKey()
         {
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
+            for (Int32 i = 0; i < 20; i++)
+                testLookup.Models.Add(new Int32Model { Value = i });
 
             IQueryable<Int32Model> actual = testLookup.FilterByIds(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
@@ -458,7 +460,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByIds_NotSupportedIdType_Throws()
         {
-            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByIds(null, new String[0]));
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByIds(Array.Empty<ObjectModel>().AsQueryable(), new String[0]));
 
             String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
             String actual = exception.Message;
@@ -471,7 +473,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByNotIds(null, null));
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByNotIds(Array.Empty<NoIdModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
@@ -485,7 +487,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             List<String> ids = new List<String> { "9I", "10I" };
 
             IQueryable<TestModel> actual = lookup.FilterByNotIds(lookup.GetModels(), ids);
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => !ids.Contains(model.Id));
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => !ids.Contains(model.Id!));
 
             Assert.Equal(expected, actual);
         }
@@ -494,7 +496,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByNotIds_Guids()
         {
             TestLookup<GuidModel> testLookup = new TestLookup<GuidModel>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new GuidModel { Id = Guid.NewGuid() });
+            for (Int32 i = 0; i < 20; i++)
+                testLookup.Models.Add(new GuidModel { Id = Guid.NewGuid() });
             List<String> ids = new List<String> { testLookup.Models[4].Id.ToString(), testLookup.Models[9].Id.ToString() };
 
             IQueryable<GuidModel> expected = testLookup.GetModels().Where(model => !ids.Contains(model.Id.ToString()));
@@ -507,7 +510,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByNotIds_NumberKey()
         {
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
+            for (Int32 i = 0; i < 20; i++)
+                testLookup.Models.Add(new Int32Model { Value = i });
 
             IQueryable<Int32Model> actual = testLookup.FilterByNotIds(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => !new[] { 9, 10 }.Contains(model.Value));
@@ -518,7 +522,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByNotIds_NotSupportedIdType_Throws()
         {
-            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByNotIds(null, new String[0]));
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByNotIds(Array.Empty<ObjectModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
             String actual = exception.Message;
@@ -531,7 +535,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByCheckIds(null, null));
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterByCheckIds(Array.Empty<NoIdModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
@@ -545,7 +549,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             List<String> ids = new List<String> { "9I", "10I" };
 
             IQueryable<TestModel> actual = lookup.FilterByCheckIds(lookup.GetModels(), ids);
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id!));
 
             Assert.Equal(expected, actual);
         }
@@ -554,7 +558,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterByCheckIds_NumberKey()
         {
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
+            for (Int32 i = 0; i < 20; i++)
+                testLookup.Models.Add(new Int32Model { Value = i });
 
             IQueryable<Int32Model> actual = testLookup.FilterByCheckIds(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
@@ -565,7 +570,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByCheckIds_NotSupportedIdType_Throws()
         {
-            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByCheckIds(null, new String[0]));
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByCheckIds(Array.Empty<ObjectModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
             String actual = exception.Message;
@@ -578,7 +583,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             TestLookup<NoIdModel> testLookup = new TestLookup<NoIdModel>();
 
-            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterBySelected(null, null));
+            LookupException exception = Assert.Throws<LookupException>(() => testLookup.FilterBySelected(Array.Empty<NoIdModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(NoIdModel).Name}' type does not have key or property named 'Id', required for automatic id filtering.";
             String actual = exception.Message;
@@ -592,7 +597,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             List<String> ids = new List<String> { "9I", "10I" };
 
             IQueryable<TestModel> actual = lookup.FilterBySelected(lookup.GetModels(), ids);
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id));
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => ids.Contains(model.Id!));
 
             Assert.Equal(expected, actual);
         }
@@ -601,7 +606,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FilterBySelected_NumberKey()
         {
             TestLookup<Int32Model> testLookup = new TestLookup<Int32Model>();
-            for (Int32 i = 0; i < 20; i++) testLookup.Models.Add(new Int32Model { Value = i });
+            for (Int32 i = 0; i < 20; i++)
+                testLookup.Models.Add(new Int32Model { Value = i });
 
             IQueryable<Int32Model> actual = testLookup.FilterBySelected(testLookup.GetModels(), new List<String> { "9", "10" });
             IQueryable<Int32Model> expected = testLookup.GetModels().Where(model => new[] { 9, 10 }.Contains(model.Value));
@@ -612,7 +618,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterBySelected_NotSupportedIdType_Throws()
         {
-            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterBySelected(null, new String[0]));
+            LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterBySelected(Array.Empty<ObjectModel>().AsQueryable(), Array.Empty<String>()));
 
             String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
             String actual = exception.Message;
@@ -781,18 +787,18 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void FormData_EmptyValues()
         {
             lookup.Columns.Clear();
-            lookup.Columns.Add(new LookupColumn("Test", null));
+            lookup.Columns.Add(new LookupColumn("Test", ""));
 
-            Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { "Test", "Label", "Id"}, row.Keys);
-            Assert.Equal(new[] { null, null, "1" }, row.Values);
+            Assert.Equal(new[] { "Test", "Label", "Id" }, row.Keys);
+            Assert.Equal(new[] { null, "", "1" }, row.Values);
         }
 
         [Fact]
         public void FormData_Values()
         {
-            Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
             Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test", "1" }, row.Values);
             Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);
@@ -803,7 +809,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.GetId = (model) => $"Test {model.Id}";
             lookup.GetLabel = (model) => $"Test label {model.Id}";
-            Dictionary<String, String> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
             Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test label 1", "Test 1" }, row.Values);
             Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);

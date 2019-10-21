@@ -7,7 +7,7 @@ namespace NonFactors.Mvc.Lookup
         public Boolean Filterable { get; set; }
         public Int32 Position { get; set; }
         public Boolean Hidden { get; set; }
-        public String Format { get; set; }
+        public String? Format { get; set; }
 
         public LookupColumnAttribute()
         {

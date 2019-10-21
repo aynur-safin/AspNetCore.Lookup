@@ -6,6 +6,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
     public class ObjectModel
     {
         [Key]
-        public Object Id { get; set; }
+        public Object? Id { get; set; }
     }
 }

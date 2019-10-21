@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <Version>4.1.1</Version>
+    <Nullable>enable</Nullable>
     <DebugType>Full</DebugType>
+    <LangVersion>8.0</LangVersion>
     <GenerateFullPaths>true</GenerateFullPaths>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <TargetFrameworks>net461;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net48;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

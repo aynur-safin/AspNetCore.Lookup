@@ -14,6 +14,7 @@ namespace NonFactors.Mvc.Lookup
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             Header = header;
+            CssClass = "";
         }
     }
 }
