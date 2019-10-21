@@ -176,10 +176,7 @@ namespace NonFactors.Mvc.Lookup
             search.MergeAttributes(attributes);
             error.InnerHtml.Append("!");
 
-            if (lookup.Name != null)
-                control.InnerHtml.AppendHtml(html.TextBox(lookup.Name, null, attributes));
-            else
-                control.InnerHtml.AppendHtml(search);
+            control.InnerHtml.AppendHtml(lookup.Name == null ? search : html.TextBox(lookup.Name, null, attributes));
             control.InnerHtml.AppendHtml(loader);
             control.InnerHtml.AppendHtml(error);
 

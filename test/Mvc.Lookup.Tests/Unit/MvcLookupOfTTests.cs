@@ -81,8 +81,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 new LookupColumn("Count", "Value") { Hidden = false, Filterable = false }
             };
 
-            IEnumerator<LookupColumn> expected = columns.GetEnumerator();
-            IEnumerator<LookupColumn> actual = lookup.Columns.GetEnumerator();
+            using IEnumerator<LookupColumn> expected = columns.GetEnumerator();
+            using IEnumerator<LookupColumn> actual = lookup.Columns.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
             {
@@ -711,8 +711,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             IQueryable<TestModel> notSelected = new TestModel[0].AsQueryable();
             IQueryable<TestModel> selected = lookup.GetModels().Skip(6).Take(3);
 
-            IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), selected, notSelected).Selected.GetEnumerator();
-            IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>
+            using IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), selected, notSelected).Selected.GetEnumerator();
+            using IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>
             {
                 new Dictionary<String, String>
                 {
@@ -750,8 +750,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             IQueryable<TestModel> selected = new TestModel[0].AsQueryable();
             IQueryable<TestModel> notSelected = lookup.GetModels().Skip(6).Take(3);
 
-            IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), selected, notSelected).Rows.GetEnumerator();
-            IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>
+            using IEnumerator<Dictionary<String, String>> actual = lookup.FormLookupData(lookup.GetModels(), selected, notSelected).Rows.GetEnumerator();
+            using IEnumerator<Dictionary<String, String>> expected = new List<Dictionary<String, String>>
             {
                 new Dictionary<String, String>
                 {

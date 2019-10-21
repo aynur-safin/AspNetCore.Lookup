@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,7 +53,7 @@ namespace NonFactors.Mvc.Lookup
         {
             Url = Url?.StartsWith("~") == true ? UrlFactory(ViewContext).Content(Url) : Url;
             For = LookupName ?? Lookup?.Name;
-            Value = Value ?? Lookup?.Model;
+            Value ??= Lookup?.Model;
 
             WriteAttributes(output);
             WriteValues(output);
@@ -122,10 +121,7 @@ namespace NonFactors.Mvc.Lookup
             search.MergeAttributes(attributes);
             error.InnerHtml.Append("!");
 
-            if (Name != null)
-                control.InnerHtml.AppendHtml(Html.GenerateTextBox(ViewContext, null, Name, null, null, attributes));
-            else
-                control.InnerHtml.AppendHtml(search);
+            control.InnerHtml.AppendHtml(Name == null ? search : Html.GenerateTextBox(ViewContext, null, Name, null, null, attributes));
             control.InnerHtml.AppendHtml(loader);
             control.InnerHtml.AppendHtml(error);
 

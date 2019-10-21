@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Lookup
 
         private class LookupExpressionVisitor : ExpressionVisitor
         {
-            public Boolean Ordered { get; set; }
+            public Boolean Ordered { get; private set; }
 
             protected override Expression VisitMethodCall(MethodCallExpression node)
             {

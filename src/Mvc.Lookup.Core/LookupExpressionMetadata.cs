@@ -167,7 +167,7 @@ namespace NonFactors.Mvc.Lookup
             if (!legalExpression)
                 throw new InvalidOperationException("Resources.TemplateHelpers_TemplateLimitations");
 
-            Object? modelAccessor(Object container)
+            Object? ModelAccessor(Object container)
             {
                 try
                 {
@@ -185,7 +185,7 @@ namespace NonFactors.Mvc.Lookup
             if (metadata == null)
                 metadata = html.MetadataProvider.GetMetadataForType(typeof(TResult));
 
-            return html.ViewData.ModelExplorer.GetExplorerForExpression(metadata, modelAccessor);
+            return html.ViewData.ModelExplorer.GetExplorerForExpression(metadata, ModelAccessor);
         }
 
         private static Boolean IsSingleArgumentIndexer(Expression expression)

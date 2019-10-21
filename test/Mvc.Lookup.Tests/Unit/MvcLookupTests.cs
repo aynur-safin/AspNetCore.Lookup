@@ -1,5 +1,4 @@
 ﻿using NSubstitute;
-using System.Reflection;
 using Xunit;
 
 namespace NonFactors.Mvc.Lookup.Tests.Unit

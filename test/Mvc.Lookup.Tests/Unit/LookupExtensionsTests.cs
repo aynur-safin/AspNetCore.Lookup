@@ -378,12 +378,11 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         private String ToString(IHtmlContent content)
         {
-            using (StringWriter writer = new StringWriter())
-            {
-                content.WriteTo(writer, HtmlEncoder.Default);
+            using StringWriter writer = new StringWriter();
 
-                return writer.ToString();
-            }
+            content.WriteTo(writer, HtmlEncoder.Default);
+
+            return writer.ToString();
         }
     }
 }
