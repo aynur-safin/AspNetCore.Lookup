@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Lookup 4.2.0
+ * Mvc.Lookup 4.2.1
  * https://github.com/NonFactors/MVC6.Lookup
  *
  * Copyright © NonFactors
@@ -213,7 +213,7 @@
     border-radius: 0.25em 0.25em 0 0;
     color: rgba(255, 255, 255, 0.8);
     padding: 0.4em 0.6em 0.4em 1em;
-    background: #62759c;
+    background: #4d6189;
     border-bottom: none;
     font-weight: bold;
     display: flex;
