@@ -34,6 +34,7 @@ namespace NonFactors.Mvc.Lookup
                 LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false)!;
                 Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
                 {
+                    FilterPredicate = column.FilterPredicate,
                     CssClass = GetColumnCssClass(property),
                     FilterCase = column.FilterCase,
                     Filterable = column.Filterable,
@@ -97,7 +98,8 @@ namespace NonFactors.Mvc.Lookup
             foreach (LookupColumn column in Columns.Where(column => !column.Hidden && column.Filterable))
                 if (typeof(T).GetProperty(column.Key)?.PropertyType == typeof(String))
                 {
-                    queries.Add($"({column.Key} != null && {ConvertCase(column)}.Contains(@{queries.Count}))");
+                    LookupFilterPredicate predicate = column.FilterPredicate == LookupFilterPredicate.Unspecified ? FilterPredicate : column.FilterPredicate;
+                    queries.Add($"({column.Key} != null && {ConvertCase(column)}.{predicate}(@{queries.Count}))");
                     values.Add(ConvertCase(column, Filter.Search!));
                 }
 

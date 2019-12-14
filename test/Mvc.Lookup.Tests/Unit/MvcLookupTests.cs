@@ -10,6 +10,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             MvcLookup actual = Substitute.For<MvcLookup>();
 
+            Assert.Equal(LookupFilterPredicate.Contains, actual.FilterPredicate);
             Assert.Equal(LookupFilterCase.Lower, actual.FilterCase);
             Assert.Empty(actual.AdditionalFilters);
             Assert.NotNull(actual.Filter);

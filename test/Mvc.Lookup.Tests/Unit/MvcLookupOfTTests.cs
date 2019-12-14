@@ -92,6 +92,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
                 Assert.Equal(expected.Current.Filterable, actual.Current.Filterable);
                 Assert.Equal(expected.Current.FilterCase, actual.Current.FilterCase);
+                Assert.Equal(expected.Current.FilterPredicate, actual.Current.FilterPredicate);
             }
         }
 

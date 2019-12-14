@@ -13,6 +13,7 @@ namespace NonFactors.Mvc.Lookup
         public Boolean ReadOnly { get; set; }
         public String? Placeholder { get; set; }
         public LookupFilterCase FilterCase { get; set; }
+        public LookupFilterPredicate FilterPredicate { get; set; }
 
         public LookupFilter Filter { get; set; }
         public IList<LookupColumn> Columns { get; set; }
@@ -20,6 +21,7 @@ namespace NonFactors.Mvc.Lookup
 
         protected MvcLookup()
         {
+            FilterPredicate = LookupFilterPredicate.Contains;
             AdditionalFilters = new List<String>();
             FilterCase = LookupFilterCase.Lower;
             Columns = new List<LookupColumn>();

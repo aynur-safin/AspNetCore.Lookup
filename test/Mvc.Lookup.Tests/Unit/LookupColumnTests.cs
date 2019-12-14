@@ -8,27 +8,20 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void LookupColumn_NullKey_Throws()
         {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => new LookupColumn(null!, "Test"));
-
-            Assert.Equal("key", actual.ParamName);
+            Assert.Equal("key", Assert.Throws<ArgumentNullException>(() => new LookupColumn(null!, "Test")).ParamName);
         }
 
         [Fact]
-        public void LookupColumn_Key()
+        public void LookupColumn_Defaults()
         {
-            String actual = new LookupColumn("Test", "").Key;
-            String expected = "Test";
+            LookupColumn actual = new LookupColumn("Test", "Headers");
 
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void LookupColumn_Header()
-        {
-            String actual = new LookupColumn("Test", "Test").Header;
-            String expected = "Test";
-
-            Assert.Equal(expected, actual);
+            Assert.Equal(LookupFilterPredicate.Unspecified, actual.FilterPredicate);
+            Assert.Equal(LookupFilterCase.Unspecified, actual.FilterCase);
+            Assert.Equal("Headers", actual.Header);
+            Assert.Equal("Test", actual.Key);
+            Assert.Empty(actual.CssClass);
+            Assert.False(actual.Hidden);
         }
     }
 }
