@@ -22,8 +22,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 {
                     Id = i + "I",
                     Count = i + 10,
-                    Value = i + "V",
                     ParentId = "1000",
+                    Value = i + "Value",
                     Date = new DateTime(2014, 12, 10).AddDays(i)
                 });
         }
@@ -91,6 +91,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Assert.Equal(expected.Current.Hidden, actual.Current.Hidden);
                 Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
                 Assert.Equal(expected.Current.Filterable, actual.Current.Filterable);
+                Assert.Equal(expected.Current.FilterCase, actual.Current.FilterCase);
             }
         }
 
@@ -163,19 +164,19 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             lookup.Filter.Sort = "Count";
             lookup.Filter.Search = "Term";
             lookup.Filter.Selected.Add("17I");
-            lookup.Filter.AdditionalFilters.Add("Value", "5V");
+            lookup.Filter.AdditionalFilters.Add("Value", "5Value");
 
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("9V", actual.Rows[0]["Label"]);
-            Assert.Equal("9V", actual.Rows[0]["Value"]);
+            Assert.Equal("9Value", actual.Rows[0]["Label"]);
+            Assert.Equal("9Value", actual.Rows[0]["Value"]);
             Assert.Equal("19", actual.Rows[0]["Count"]);
             Assert.Equal("9I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15V", actual.Rows[1]["Label"]);
-            Assert.Equal("15V", actual.Rows[1]["Value"]);
+            Assert.Equal("15Value", actual.Rows[1]["Label"]);
+            Assert.Equal("15Value", actual.Rows[1]["Value"]);
             Assert.Equal("25", actual.Rows[1]["Count"]);
             Assert.Equal("15I", actual.Rows[1]["Id"]);
 
@@ -195,14 +196,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("9V", actual.Rows[0]["Label"]);
-            Assert.Equal("9V", actual.Rows[0]["Value"]);
+            Assert.Equal("9Value", actual.Rows[0]["Label"]);
+            Assert.Equal("9Value", actual.Rows[0]["Value"]);
             Assert.Equal("19", actual.Rows[0]["Count"]);
             Assert.Equal("9I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15V", actual.Rows[1]["Label"]);
-            Assert.Equal("15V", actual.Rows[1]["Value"]);
+            Assert.Equal("15Value", actual.Rows[1]["Label"]);
+            Assert.Equal("15Value", actual.Rows[1]["Value"]);
             Assert.Equal("25", actual.Rows[1]["Count"]);
             Assert.Equal("15I", actual.Rows[1]["Id"]);
 
@@ -215,7 +216,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void GetData_FiltersByNotSelected()
         {
             lookup.Filter.Sort = "Count";
-            lookup.Filter.Search = "133V";
+            lookup.Filter.Search = "133Value";
             lookup.Filter.Selected.Add("15I");
             lookup.Filter.Selected.Add("125I");
 
@@ -224,20 +225,20 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Selected[0]["Date"]);
-            Assert.Equal("15V", actual.Selected[0]["Label"]);
-            Assert.Equal("15V", actual.Selected[0]["Value"]);
+            Assert.Equal("15Value", actual.Selected[0]["Label"]);
+            Assert.Equal("15Value", actual.Selected[0]["Value"]);
             Assert.Equal("25", actual.Selected[0]["Count"]);
             Assert.Equal("15I", actual.Selected[0]["Id"]);
 
             Assert.Equal(new DateTime(2015, 4, 14).ToString("d"), actual.Selected[1]["Date"]);
-            Assert.Equal("125V", actual.Selected[1]["Label"]);
-            Assert.Equal("125V", actual.Selected[1]["Value"]);
+            Assert.Equal("125Value", actual.Selected[1]["Label"]);
+            Assert.Equal("125Value", actual.Selected[1]["Value"]);
             Assert.Equal("135", actual.Selected[1]["Count"]);
             Assert.Equal("125I", actual.Selected[1]["Id"]);
 
             Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("133V", actual.Rows[0]["Label"]);
-            Assert.Equal("133V", actual.Rows[0]["Value"]);
+            Assert.Equal("133Value", actual.Rows[0]["Label"]);
+            Assert.Equal("133Value", actual.Rows[0]["Value"]);
             Assert.Equal("143", actual.Rows[0]["Count"]);
             Assert.Equal("133I", actual.Rows[0]["Id"]);
 
@@ -249,7 +250,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_FiltersByAdditionalFilters()
         {
-            lookup.Filter.Search = "6V";
+            lookup.Filter.Search = "6Value";
             lookup.Filter.AdditionalFilters.Add("Count", 16);
 
             lookup.GetData();
@@ -257,8 +258,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2014, 12, 16).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("6V", actual.Rows[0]["Label"]);
-            Assert.Equal("6V", actual.Rows[0]["Value"]);
+            Assert.Equal("6Value", actual.Rows[0]["Label"]);
+            Assert.Equal("6Value", actual.Rows[0]["Value"]);
             Assert.Equal("16", actual.Rows[0]["Count"]);
             Assert.Equal("6I", actual.Rows[0]["Id"]);
 
@@ -270,7 +271,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_FiltersBySearch()
         {
-            lookup.Filter.Search = "33V";
+            lookup.Filter.Search = "33Value";
             lookup.Filter.Sort = "Count";
 
             lookup.GetData();
@@ -278,14 +279,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2015, 1, 12).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("33V", actual.Rows[0]["Label"]);
-            Assert.Equal("33V", actual.Rows[0]["Value"]);
+            Assert.Equal("33Value", actual.Rows[0]["Label"]);
+            Assert.Equal("33Value", actual.Rows[0]["Value"]);
             Assert.Equal("43", actual.Rows[0]["Count"]);
             Assert.Equal("33I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("133V", actual.Rows[1]["Label"]);
-            Assert.Equal("133V", actual.Rows[1]["Value"]);
+            Assert.Equal("133Value", actual.Rows[1]["Label"]);
+            Assert.Equal("133Value", actual.Rows[1]["Value"]);
             Assert.Equal("143", actual.Rows[1]["Count"]);
             Assert.Equal("133I", actual.Rows[1]["Id"]);
 
@@ -298,7 +299,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void GetData_Sorts()
         {
             lookup.Filter.Order = LookupSortOrder.Asc;
-            lookup.Filter.Search = "55V";
+            lookup.Filter.Search = "55Value";
             lookup.Filter.Sort = "Count";
 
             lookup.GetData();
@@ -306,14 +307,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             LookupData actual = lookup.GetData();
 
             Assert.Equal(new DateTime(2015, 2, 3).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("55V", actual.Rows[0]["Label"]);
-            Assert.Equal("55V", actual.Rows[0]["Value"]);
+            Assert.Equal("55Value", actual.Rows[0]["Label"]);
+            Assert.Equal("55Value", actual.Rows[0]["Value"]);
             Assert.Equal("65", actual.Rows[0]["Count"]);
             Assert.Equal("55I", actual.Rows[0]["Id"]);
 
             Assert.Equal(new DateTime(2015, 5, 14).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("155V", actual.Rows[1]["Label"]);
-            Assert.Equal("155V", actual.Rows[1]["Value"]);
+            Assert.Equal("155Value", actual.Rows[1]["Label"]);
+            Assert.Equal("155Value", actual.Rows[1]["Value"]);
             Assert.Equal("165", actual.Rows[1]["Count"]);
             Assert.Equal("155I", actual.Rows[1]["Id"]);
         }
@@ -345,11 +346,24 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterBySearch_UsesContainsSearch()
+        public void FilterBySearch_UsesCaseSensitiveSearch()
         {
-            lookup.Filter.Search = "1";
+            lookup.Filter.Search = "1va";
+            lookup.FilterCase = LookupFilterCase.Original;
 
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Id!.Contains("1"));
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.Contains("1va"));
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterBySearch_UsesCaseInSensitiveSearch()
+        {
+            lookup.Filter.Search = "1Va";
+            lookup.FilterCase = LookupFilterCase.Lower;
+
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.ToLower().Contains("1va"));
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
 
             Assert.Equal(expected, actual);
@@ -717,26 +731,26 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 new Dictionary<String, String>
                 {
                     ["Id"] = "6I",
-                    ["Label"] = "6V",
+                    ["Label"] = "6Value",
                     ["Date"] = new DateTime(2014, 12, 16).ToString("d"),
                     ["Count"] = "16",
-                    ["Value"] = "6V"
+                    ["Value"] = "6Value"
                 },
                 new Dictionary<String, String>
                 {
                     ["Id"] = "7I",
-                    ["Label"] = "7V",
+                    ["Label"] = "7Value",
                     ["Date"] = new DateTime(2014, 12, 17).ToString("d"),
                     ["Count"] = "17",
-                    ["Value"] = "7V"
+                    ["Value"] = "7Value"
                 },
                 new Dictionary<String, String>
                 {
                     ["Id"] = "8I",
-                    ["Label"] = "8V",
+                    ["Label"] = "8Value",
                     ["Date"] = new DateTime(2014, 12, 18).ToString("d"),
                     ["Count"] = "18",
-                    ["Value"] = "8V"
+                    ["Value"] = "8Value"
                 }
             }.GetEnumerator();
 
@@ -756,26 +770,26 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 new Dictionary<String, String>
                 {
                     ["Id"] = "6I",
-                    ["Label"] = "6V",
+                    ["Label"] = "6Value",
                     ["Date"] = new DateTime(2014, 12, 16).ToString("d"),
                     ["Count"] = "16",
-                    ["Value"] = "6V"
+                    ["Value"] = "6Value"
                 },
                 new Dictionary<String, String>
                 {
                     ["Id"] = "7I",
-                    ["Label"] = "7V",
+                    ["Label"] = "7Value",
                     ["Date"] = new DateTime(2014, 12, 17).ToString("d"),
                     ["Count"] = "17",
-                    ["Value"] = "7V"
+                    ["Value"] = "7Value"
                 },
                 new Dictionary<String, String>
                 {
                     ["Id"] = "8I",
-                    ["Label"] = "8V",
+                    ["Label"] = "8Value",
                     ["Date"] = new DateTime(2014, 12, 18).ToString("d"),
                     ["Count"] = "18",
-                    ["Value"] = "8V"
+                    ["Value"] = "8Value"
                 }
             }.GetEnumerator();
 

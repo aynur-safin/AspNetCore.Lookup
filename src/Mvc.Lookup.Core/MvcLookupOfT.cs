@@ -35,6 +35,7 @@ namespace NonFactors.Mvc.Lookup
                 Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
                 {
                     CssClass = GetColumnCssClass(property),
+                    FilterCase = column.FilterCase,
                     Filterable = column.Filterable,
                     Hidden = column.Hidden
                 });
@@ -90,15 +91,17 @@ namespace NonFactors.Mvc.Lookup
             if (String.IsNullOrEmpty(Filter.Search))
                 return models;
 
+            List<String> values = new List<String>();
             List<String> queries = new List<String>();
-            foreach (String property in Columns.Where(column => !column.Hidden && column.Filterable).Select(column => column.Key))
-                if (typeof(T).GetProperty(property)?.PropertyType == typeof(String))
-                    queries.Add($"({property} != null && {property}.ToLower().Contains(@0))");
 
-            if (queries.Count == 0)
-                return models;
+            foreach (LookupColumn column in Columns.Where(column => !column.Hidden && column.Filterable))
+                if (typeof(T).GetProperty(column.Key)?.PropertyType == typeof(String))
+                {
+                    queries.Add($"({column.Key} != null && {ConvertCase(column)}.Contains(@{queries.Count}))");
+                    values.Add(ConvertCase(column, Filter.Search!));
+                }
 
-            return models.Where(String.Join(" || ", queries), Filter.Search!.ToLower());
+            return queries.Count == 0 ? models : models.Where(String.Join(" || ", queries), values.ToArray());
         }
         public virtual IQueryable<T> FilterByAdditionalFilters(IQueryable<T> models)
         {
@@ -191,6 +194,17 @@ namespace NonFactors.Mvc.Lookup
             return data;
         }
 
+        private String ConvertCase(LookupColumn column, String value)
+        {
+            LookupFilterCase filterCase = column.FilterCase == LookupFilterCase.Unspecified ? FilterCase : column.FilterCase;
+
+            return filterCase switch
+            {
+                LookupFilterCase.Upper => value.ToUpper(),
+                LookupFilterCase.Lower => value.ToLower(),
+                _ => value
+            };
+        }
         private String? GetValue(T model, String propertyName)
         {
             PropertyInfo? property = typeof(T).GetProperty(propertyName);
@@ -211,6 +225,17 @@ namespace NonFactors.Mvc.Lookup
                 values.Add(converter.ConvertFrom(value));
 
             return values;
+        }
+        private String ConvertCase(LookupColumn column)
+        {
+            LookupFilterCase filterCase = column.FilterCase == LookupFilterCase.Unspecified ? FilterCase : column.FilterCase;
+
+            return filterCase switch
+            {
+                LookupFilterCase.Upper => $"{column.Key}.ToUpper()",
+                LookupFilterCase.Lower => $"{column.Key}.ToLower()",
+                _ => column.Key
+            };
         }
         private Boolean IsFilterable(Type type)
         {

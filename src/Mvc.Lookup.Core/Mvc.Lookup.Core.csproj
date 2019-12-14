@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>4.2.1</Version>
+    <Version>5.0.0</Version>
     <DebugType>Full</DebugType>
     <Nullable>enable</Nullable>
     <Company>NonFactors</Company>

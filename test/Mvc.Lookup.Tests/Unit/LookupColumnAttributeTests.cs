@@ -5,20 +5,23 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
     public class LookupColumnAttributeTests
     {
         [Fact]
-        public void LookupColumnAttribute()
+        public void LookupColumnAttribute_Defaults()
         {
-            LookupColumnAttribute attribute = new LookupColumnAttribute();
+            LookupColumnAttribute actual = new LookupColumnAttribute();
 
-            Assert.True(attribute.Filterable);
+            Assert.Equal(LookupFilterCase.Unspecified, actual.FilterCase);
+            Assert.Equal(0, actual.Position);
+            Assert.True(actual.Filterable);
         }
 
         [Fact]
-        public void LookupColumnAttribute_Position()
+        public void LookupColumnAttribute_PositionDefaults()
         {
-            LookupColumnAttribute attribute = new LookupColumnAttribute(-5);
+            LookupColumnAttribute actual = new LookupColumnAttribute(-5);
 
-            Assert.Equal(-5, attribute.Position);
-            Assert.True(attribute.Filterable);
+            Assert.Equal(LookupFilterCase.Unspecified, actual.FilterCase);
+            Assert.Equal(-5, actual.Position);
+            Assert.True(actual.Filterable);
         }
     }
 }
