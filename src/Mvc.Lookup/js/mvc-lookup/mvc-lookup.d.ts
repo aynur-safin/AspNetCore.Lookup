@@ -83,9 +83,9 @@ declare class MvcLookupDialog {
     tableBody: HTMLTableSectionElement;
     options: MvcLookupDialogOptions;
     selected: MvcLookupDataRow[];
-    searching?: number;
-    isLoading: boolean;
     title: string;
+    isLoading: boolean;
+    searchTimerId?: number;
     constructor(lookup: MvcLookup);
     open(): void;
     close(): void;
@@ -103,7 +103,6 @@ declare class MvcLookupDialog {
 }
 declare class MvcLookupOverlay {
     element: HTMLElement;
-    dialog: MvcLookupDialog;
     constructor(dialog: MvcLookupDialog);
     show(): void;
     hide(): void;
@@ -114,7 +113,7 @@ declare class MvcLookupOverlay {
 }
 declare class MvcLookupAutocomplete {
     lookup: MvcLookup;
-    searching?: number;
+    searchTimerId?: number;
     element: HTMLUListElement;
     activeItem: HTMLLIElement | null;
     options: MvcLookupAutocompleteOptions;

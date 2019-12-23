@@ -147,9 +147,9 @@ class MvcLookupDialog {
     options: MvcLookupDialogOptions;
     selected: MvcLookupDataRow[];
 
-    searching?: number;
-    isLoading: boolean;
     title: string;
+    isLoading: boolean;
+    searchTimerId?: number;
 
     public constructor(lookup: MvcLookup) {
         const dialog = this;
@@ -332,8 +332,7 @@ class MvcLookupDialog {
     }
 
     private createHeaderCell(column: MvcLookupColumn): HTMLTableHeaderCellElement {
-        const dialog = this;
-        const filter = dialog.lookup.filter;
+        const filter = this.lookup.filter;
         const header = document.createElement('th');
 
         if (column.cssClass) {
@@ -350,7 +349,7 @@ class MvcLookupDialog {
             filter.sort = column.key;
             filter.offset = 0;
 
-            dialog.refresh();
+            this.refresh();
         });
 
         return header;
@@ -413,14 +412,13 @@ class MvcLookupDialog {
     }
 
     private searchChanged(this: HTMLInputElement, e: KeyboardEvent): void {
-        const search = this;
         const dialog = MvcLookupDialog.current!;
 
         dialog.lookup.stopLoading();
-        clearTimeout(dialog.searching);
-        dialog.searching = setTimeout(() => {
-            if (dialog.lookup.filter.search != search.value || e.keyCode == 13) {
-                dialog.lookup.filter.search = search.value;
+        clearTimeout(dialog.searchTimerId);
+        dialog.searchTimerId = setTimeout(() => {
+            if (dialog.lookup.filter.search != this.value || e.keyCode == 13) {
+                dialog.lookup.filter.search = this.value;
                 dialog.lookup.filter.offset = 0;
 
                 dialog.refresh();
@@ -460,11 +458,9 @@ class MvcLookupDialog {
 
 class MvcLookupOverlay {
     element: HTMLElement;
-    dialog: MvcLookupDialog;
 
     public constructor(dialog: MvcLookupDialog) {
         this.element = this.findOverlay(dialog.element);
-        this.dialog = dialog;
         this.bind();
     }
 
@@ -516,7 +512,7 @@ class MvcLookupOverlay {
 
 class MvcLookupAutocomplete {
     lookup: MvcLookup;
-    searching?: number;
+    searchTimerId?: number;
     element: HTMLUListElement;
     activeItem: HTMLLIElement | null;
     options: MvcLookupAutocompleteOptions;
@@ -535,8 +531,8 @@ class MvcLookupAutocomplete {
         const lookup = autocomplete.lookup;
 
         lookup.stopLoading();
-        clearTimeout(autocomplete.searching);
-        autocomplete.searching = setTimeout(() => {
+        clearTimeout(autocomplete.searchTimerId);
+        autocomplete.searchTimerId = setTimeout(() => {
             if (term.length < autocomplete.options.minLength || lookup.readonly) {
                 autocomplete.hide();
 
@@ -895,12 +891,10 @@ class MvcLookup {
             });
     }
     public stopLoading(): void {
-        const lookup = this;
+        this.controller.abort();
 
-        lookup.controller.abort();
-
-        clearTimeout(lookup.loading);
-        lookup.group.classList.remove('mvc-lookup-loading');
+        clearTimeout(this.loading);
+        this.group.classList.remove('mvc-lookup-loading');
     }
 
     private createSelectedItems(data: MvcLookupDataRow[]): HTMLDivElement[] {
@@ -935,12 +929,10 @@ class MvcLookup {
         });
     }
     private bindDeselect(close: HTMLButtonElement, id: string): void {
-        const lookup = this;
-
         close.addEventListener('click', () => {
-            lookup.select(lookup.selected.filter(value => value.Id != id), true);
+            this.select(this.selected.filter(value => value.Id != id), true);
 
-            lookup.search.focus();
+            this.search.focus();
         });
     }
     private findLookup(element: HTMLElement): HTMLElement {
