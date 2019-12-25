@@ -1,6 +1,6 @@
 /*!
  * Mvc.Lookup 5.0.0
- * https://github.com/NonFactors/MVC6.Lookup
+ * https://github.com/NonFactors/AspNetCore.Lookup
  *
  * Copyright © NonFactors
  *
