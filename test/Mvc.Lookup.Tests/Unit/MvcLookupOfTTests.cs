@@ -323,7 +323,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void FilterBySearch_SkipsEmptySearch(String search)
+        public void FilterBySearch_SkipsEmpty(String search)
         {
             lookup.Filter.Search = search;
 
@@ -358,27 +358,16 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void FilterBySearch_UsesCaseInSensitiveSearch()
+        [Theory]
+        [InlineData(LookupFilterCase.Lower)]
+        [InlineData(LookupFilterCase.Upper)]
+        public void FilterBySearch_UsesCaseInsensitiveSearch(LookupFilterCase filterCase)
         {
             lookup.Filter.Search = "1Va";
-            lookup.FilterCase = LookupFilterCase.Lower;
+            lookup.FilterCase = filterCase;
 
             IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.ToLower().Contains("1va"));
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FilterBySearch_DoesNotFilterNonStringProperties()
-        {
-            lookup.Columns.Clear();
-            lookup.Filter.Search = "1";
-            lookup.Columns.Add(new LookupColumn("Count", ""));
-
-            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
-            IQueryable<TestModel> expected = lookup.GetModels();
 
             Assert.Equal(expected, actual);
         }
@@ -392,6 +381,20 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterBySearch_Term()
+        {
+            lookup.Columns.Clear();
+            lookup.Filter.Search = "20";
+            lookup.Columns.Add(new LookupColumn("Count", "") { Filterable = true });
+            lookup.Columns.Add(new LookupColumn("Value", "") { Filterable = true });
+
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.Contains("20") || model.Count == 20);
+            IQueryable <TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
 
             Assert.Equal(expected, actual);
         }
@@ -477,7 +480,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByIds(Array.Empty<ObjectModel>().AsQueryable(), new String[0]));
 
-            String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
+            String expected = $"'{typeof(ObjectModel).Name}.Id' property type is not filterable.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -539,7 +542,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByNotIds(Array.Empty<ObjectModel>().AsQueryable(), Array.Empty<String>()));
 
-            String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
+            String expected = $"'{typeof(ObjectModel).Name}.Id' property type is not filterable.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -587,7 +590,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterByCheckIds(Array.Empty<ObjectModel>().AsQueryable(), Array.Empty<String>()));
 
-            String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
+            String expected = $"'{typeof(ObjectModel).Name}.Id' property type is not filterable.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);
@@ -635,7 +638,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupException exception = Assert.Throws<LookupException>(() => new TestLookup<ObjectModel>().FilterBySelected(Array.Empty<ObjectModel>().AsQueryable(), Array.Empty<String>()));
 
-            String expected = $"'{typeof(ObjectModel).Name}.Id' property type has to be a string, guid or a number.";
+            String expected = $"'{typeof(ObjectModel).Name}.Id' property type is not filterable.";
             String actual = exception.Message;
 
             Assert.Equal(expected, actual);

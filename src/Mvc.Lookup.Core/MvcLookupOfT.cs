@@ -92,16 +92,19 @@ namespace NonFactors.Mvc.Lookup
             if (String.IsNullOrEmpty(Filter.Search))
                 return models;
 
-            List<String> values = new List<String>();
+            List<Object> values = new List<Object>();
             List<String> queries = new List<String>();
 
             foreach (LookupColumn column in Columns.Where(column => !column.Hidden && column.Filterable))
-                if (typeof(T).GetProperty(column.Key)?.PropertyType == typeof(String))
+            {
+                PropertyInfo? property = typeof(T).GetProperty(column.Key);
+
+                if (GenerateQuery(column, property, queries.Count) is String query && ParseSearch(column, property) is Object value)
                 {
-                    LookupFilterPredicate predicate = column.FilterPredicate == LookupFilterPredicate.Unspecified ? FilterPredicate : column.FilterPredicate;
-                    queries.Add($"({column.Key} != null && {ConvertCase(column)}.{predicate}(@{queries.Count}))");
-                    values.Add(ConvertCase(column, Filter.Search!));
+                    queries.Add(query);
+                    values.Add(value);
                 }
+            }
 
             return queries.Count == 0 ? models : models.Where(String.Join(" || ", queries), values.ToArray());
         }
@@ -123,10 +126,10 @@ namespace NonFactors.Mvc.Lookup
             if (key == null)
                 throw new LookupException($"'{typeof(T).Name}' type does not have key or property named 'Id', required for automatic id filtering.");
 
-            if (IsFilterable(key.PropertyType))
-                return models.Where($"@0.Contains({key.Name})", Parse(key.PropertyType, ids));
+            if (!IsFilterable(key.PropertyType))
+                throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type is not filterable.");
 
-            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string, guid or a number.");
+            return models.Where($"@0.Contains({key.Name})", Parse(key.PropertyType, ids));
         }
         public virtual IQueryable<T> FilterByNotIds(IQueryable<T> models, IList<String> ids)
         {
@@ -136,10 +139,10 @@ namespace NonFactors.Mvc.Lookup
             if (key == null)
                 throw new LookupException($"'{typeof(T).Name}' type does not have key or property named 'Id', required for automatic id filtering.");
 
-            if (IsFilterable(key.PropertyType))
-                return models.Where($"!@0.Contains({key.Name})", Parse(key.PropertyType, ids));
+            if (!IsFilterable(key.PropertyType))
+                throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type is not filterable.");
 
-            throw new LookupException($"'{typeof(T).Name}.{key.Name}' property type has to be a string, guid or a number.");
+            return models.Where($"!@0.Contains({key.Name})", Parse(key.PropertyType, ids));
         }
         public virtual IQueryable<T> FilterByCheckIds(IQueryable<T> models, IList<String> ids)
         {
@@ -196,16 +199,43 @@ namespace NonFactors.Mvc.Lookup
             return data;
         }
 
-        private String ConvertCase(LookupColumn column, String value)
+        private String? GenerateQuery(LookupColumn column, PropertyInfo? property, Int32 index)
         {
-            LookupFilterCase filterCase = column.FilterCase == LookupFilterCase.Unspecified ? FilterCase : column.FilterCase;
-
-            return filterCase switch
+            if (property?.PropertyType == typeof(String))
             {
-                LookupFilterCase.Upper => value.ToUpper(),
-                LookupFilterCase.Lower => value.ToLower(),
-                _ => value
-            };
+                LookupFilterPredicate predicate = column.FilterPredicate == LookupFilterPredicate.Unspecified ? FilterPredicate : column.FilterPredicate;
+
+                return $"({column.Key} != null && {ConvertCase(column)}.{predicate}(@{index}))";
+            }
+            else if (IsFilterable(property?.PropertyType))
+            {
+                return $"{column?.Key} = @{index}";
+            }
+
+            return null;
+        }
+        private Object? ParseSearch(LookupColumn column, PropertyInfo? property)
+        {
+            if (property?.PropertyType == typeof(String))
+            {
+                LookupFilterCase filterCase = column.FilterCase == LookupFilterCase.Unspecified ? FilterCase : column.FilterCase;
+
+                return filterCase switch
+                {
+                    LookupFilterCase.Upper => Filter.Search?.ToUpper(),
+                    LookupFilterCase.Lower => Filter.Search?.ToLower(),
+                    _ => Filter.Search
+                };
+            }
+
+            try
+            {
+                return TypeDescriptor.GetConverter(property?.PropertyType).ConvertFrom(Filter.Search);
+            }
+            catch
+            {
+                return null;
+            }
         }
         private String? GetValue(T model, String propertyName)
         {
@@ -239,7 +269,7 @@ namespace NonFactors.Mvc.Lookup
                 _ => column.Key
             };
         }
-        private Boolean IsFilterable(Type type)
+        private Boolean IsFilterable(Type? type)
         {
             type = Nullable.GetUnderlyingType(type) ?? type;
 
@@ -257,6 +287,7 @@ namespace NonFactors.Mvc.Lookup
                 case TypeCode.Double:
                 case TypeCode.Decimal:
                 case TypeCode.String:
+                case TypeCode.DateTime:
                     return true;
                 default:
                     return type == typeof(Guid);
