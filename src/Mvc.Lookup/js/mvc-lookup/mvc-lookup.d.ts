@@ -21,7 +21,7 @@ interface MvcLookupColumn {
 interface MvcLookupDataRow {
     Id: string;
     Label: string;
-    [column: string]: string;
+    [column: string]: string | null;
 }
 interface MvcLookupOptions {
     readonly: boolean;
@@ -42,7 +42,7 @@ interface MvcLookupAutocompleteOptions {
     minLength: number;
     rows: number;
     sort: string;
-    order: 'Asc' | 'Desc' | '';
+    order: "Asc" | "Desc" | "";
 }
 interface MvcLookupLanguage {
     more: string;
@@ -55,7 +55,7 @@ declare class MvcLookupFilter {
     lookup: MvcLookup;
     search: string;
     sort: string;
-    order: 'Asc' | 'Desc' | '';
+    order: "Asc" | "Desc" | "";
     rows: number;
     offset: number;
     additional: string[];
@@ -63,7 +63,7 @@ declare class MvcLookupFilter {
     checkIds: HTMLInputElement[];
     selected: MvcLookupDataRow[];
     constructor(lookup: MvcLookup);
-    formUrl(search: Object): string;
+    formUrl(search: Partial<MvcLookupFilter>): string;
 }
 declare class MvcLookupDialog {
     static current: MvcLookupDialog | null;
@@ -121,7 +121,6 @@ declare class MvcLookupAutocomplete {
     search(term: string): void;
     previous(): void;
     next(): void;
-    show(): void;
     hide(): void;
     private bind;
 }
@@ -131,8 +130,8 @@ declare class MvcLookup {
     url: URL;
     for: string;
     multi: boolean;
-    loading?: number;
     readonly: boolean;
+    loadingTimerId?: number;
     group: HTMLElement;
     error: HTMLDivElement;
     items: HTMLDivElement[];
@@ -155,7 +154,7 @@ declare class MvcLookup {
     select(data: MvcLookupDataRow[], triggerChanges?: boolean): void;
     selectFirst(triggerChanges?: boolean): void;
     selectSingle(triggerChanges?: boolean): void;
-    startLoading(search: Object): Promise<any>;
+    startLoading(search: Partial<MvcLookupFilter>): Promise<MvcLookupData>;
     stopLoading(): void;
     private createSelectedItems;
     private createValues;

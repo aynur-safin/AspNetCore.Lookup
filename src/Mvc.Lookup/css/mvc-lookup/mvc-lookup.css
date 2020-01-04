@@ -397,7 +397,7 @@
 }
 
 .mvc-lookup-table .selected td:last-child::after {
-    content: '\2714';
+    content: '\2713';
     color: #5cb85c;
 }
 
