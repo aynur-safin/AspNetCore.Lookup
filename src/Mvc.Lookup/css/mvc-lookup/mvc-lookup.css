@@ -439,7 +439,7 @@
 }
 
 .mvc-lookup-autocomplete {
-    border: 1px solid #d3d3d3;
+    border: 1px solid #80bdff;
     background: #ffffff;
     margin-bottom: 1em;
     position: absolute;
@@ -454,7 +454,8 @@
 }
 
 .mvc-lookup-autocomplete li.active {
-    border: 1px solid #aaaaaa;
+    background-color: rgba(128, 189, 255, 0.15);
+    border: 1px solid #80bdff;
     margin: -1px;
 }
 

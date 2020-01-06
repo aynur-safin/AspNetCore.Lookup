@@ -571,14 +571,15 @@ class MvcLookupAutocomplete {
                         autocomplete.element.appendChild(noData);
                     }
 
-                    const search = autocomplete.lookup.search.getBoundingClientRect();
+                    const control = lookup.control.getBoundingClientRect();
 
-                    autocomplete.element.style.left = `${search.left + window.pageXOffset}px`;
-                    autocomplete.element.style.top = `${search.top + search.height + window.pageYOffset}px`;
+                    autocomplete.element.style.width = getComputedStyle(lookup.control).width;
+                    autocomplete.element.style.left = `${control.left + window.pageXOffset}px`;
+                    autocomplete.element.style.top = `${control.bottom + window.pageYOffset - 3}px`;
 
                     document.body.appendChild(autocomplete.element);
                 });
-        }, autocomplete.lookup.options.searchDelay);
+        }, lookup.options.searchDelay);
     }
     public previous(): void {
         const autocomplete = this;
