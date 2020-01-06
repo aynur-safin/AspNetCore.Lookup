@@ -837,7 +837,7 @@ class MvcLookup {
 
             if (widthLeft > contentWidth / 3) {
                 style = getComputedStyle(lookup.search);
-                widthLeft -= parseFloat(style.marginLeft) + parseFloat(style.marginRight) + 4;
+                widthLeft -= parseFloat(style.marginLeft) + parseFloat(style.marginRight) + 5;
                 lookup.search.style.width = `${widthLeft}px`;
             } else {
                 lookup.search.style.width = "";
