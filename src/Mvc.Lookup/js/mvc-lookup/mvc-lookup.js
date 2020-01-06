@@ -468,11 +468,7 @@ class MvcLookupAutocomplete {
                         autocomplete.element.appendChild(noData);
                     }
 
-                    const control = lookup.control.getBoundingClientRect();
-
-                    autocomplete.element.style.width = getComputedStyle(lookup.control).width;
-                    autocomplete.element.style.left = `${control.left + window.pageXOffset}px`;
-                    autocomplete.element.style.top = `${control.bottom + window.pageYOffset - 3}px`;
+                    autocomplete.resize();
 
                     document.body.appendChild(autocomplete.element);
                 });
@@ -513,6 +509,14 @@ class MvcLookupAutocomplete {
         if (autocomplete.element.parentElement) {
             document.body.removeChild(autocomplete.element);
         }
+    }
+    resize() {
+        const style = this.element.style;
+        const control = this.lookup.control.getBoundingClientRect();
+
+        style.left = `${control.left + window.pageXOffset}px`;
+        style.width = getComputedStyle(this.lookup.control).width;
+        style.top = `${control.bottom + window.pageYOffset - 3}px`;
     }
 
     bind(item, data) {
@@ -844,8 +848,10 @@ class MvcLookup {
     }
     bind() {
         const lookup = this;
+        const autocomplete = lookup.autocomplete;
 
         window.addEventListener("resize", () => {
+            autocomplete.resize();
             lookup.resize();
         });
 
@@ -854,8 +860,8 @@ class MvcLookup {
         });
 
         lookup.search.addEventListener("blur", function () {
+            autocomplete.hide();
             lookup.stopLoading();
-            lookup.autocomplete.hide();
             lookup.group.classList.remove("mvc-lookup-focus");
 
             const originalValue = this.value;
@@ -882,7 +888,7 @@ class MvcLookup {
 
                     break;
                 case 9:
-                    if (lookup.autocomplete.activeItem) {
+                    if (autocomplete.activeItem) {
                         if (lookup.browser) {
                             lookup.browser.tabIndex = -1;
 
@@ -891,28 +897,28 @@ class MvcLookup {
                             }, 100);
                         }
 
-                        lookup.autocomplete.activeItem.click();
+                        autocomplete.activeItem.click();
                     }
 
                     break;
                 case 13:
-                    if (lookup.autocomplete.activeItem) {
+                    if (autocomplete.activeItem) {
                         e.preventDefault();
 
-                        lookup.autocomplete.activeItem.click();
+                        autocomplete.activeItem.click();
                     }
 
                     break;
                 case 38:
                     e.preventDefault();
 
-                    lookup.autocomplete.previous();
+                    autocomplete.previous();
 
                     break;
                 case 40:
                     e.preventDefault();
 
-                    lookup.autocomplete.next();
+                    autocomplete.next();
 
                     break;
             }
@@ -920,11 +926,11 @@ class MvcLookup {
 
         lookup.search.addEventListener("input", function () {
             if (!this.value.length && !lookup.multi && lookup.selected.length) {
-                lookup.autocomplete.hide();
                 lookup.select([], true);
+                autocomplete.hide();
             }
 
-            lookup.autocomplete.search(this.value);
+            autocomplete.search(this.value);
         });
 
         if (lookup.browser) {

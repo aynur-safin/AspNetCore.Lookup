@@ -122,6 +122,7 @@ declare class MvcLookupAutocomplete {
     previous(): void;
     next(): void;
     hide(): void;
+    resize(): void;
     private bind;
 }
 declare class MvcLookup {
