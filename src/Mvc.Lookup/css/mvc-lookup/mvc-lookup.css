@@ -425,12 +425,12 @@
 .mvc-lookup-load-more {
     transition: background-color 0.3s;
     border: 1px solid #dee2e6;
-    margin-bottom: 0.25em;
     padding: 0.25em 0.5em;
-    margin-top: 1.2em;
+    margin-top: -1px;
     background: none;
     cursor: pointer;
     color: #777777;
+    width: 100%;
 }
 
 .mvc-lookup-load-more:focus,
