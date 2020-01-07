@@ -40,11 +40,13 @@ interface MvcLookupDialogOptions {
 }
 interface MvcLookupAutocompleteOptions {
     minLength: number;
+    addHandler: boolean;
     rows: number;
     sort: string;
     order: "Asc" | "Desc" | "";
 }
 interface MvcLookupLanguage {
+    add: string;
     more: string;
     error: string;
     search: string;

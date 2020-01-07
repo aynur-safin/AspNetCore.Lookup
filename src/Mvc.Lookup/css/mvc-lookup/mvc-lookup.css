@@ -464,6 +464,10 @@
     cursor: default;
 }
 
+.mvc-lookup-autocomplete-add {
+    font-weight: bold;
+}
+
 @keyframes mvc-lookup-spin {
     0% {
         transform: rotate(0);

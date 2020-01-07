@@ -29,6 +29,9 @@ namespace NonFactors.Mvc.Lookup
         public String? Placeholder { get; set; }
         public new LookupSortOrder? Order { get; set; }
 
+        [HtmlAttributeName("add-handler")]
+        public Boolean? AddHandler { get; set; }
+
         [HtmlAttributeName("mvc-lookup")]
         public String? LookupName { get; set; }
 
@@ -162,6 +165,7 @@ namespace NonFactors.Mvc.Lookup
             WriteAttribute(output, "data-search", Search);
             WriteAttribute(output, "data-filters", Filters);
             WriteAttribute(output, "data-readonly", Readonly);
+            WriteAttribute(output, "data-add-handler", AddHandler);
             WriteAttribute(output, "class", (classes + " " + output.Attributes["class"]?.Value).Trim());
         }
         private void WriteAttribute(TagHelperOutput output, String key, Object? value)

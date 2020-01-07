@@ -94,21 +94,23 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             helper.Sort = "First";
             helper.Search = "Test";
             helper.Dialog = "Dialog";
+            helper.AddHandler = true;
             helper.Name = "LookupName";
             helper.Filters = "Add1,Add2";
             helper.Placeholder = "Search";
+            helper.Order = LookupSortOrder.Desc;
             helper.Title = "Dialog lookup title";
             helper.Url = "http://localhost/Lookup";
-            helper.Order = LookupSortOrder.Desc;
 
             helper.Process(null, output);
 
-            Assert.Equal(9, output.Attributes.Count);
+            Assert.Equal(10, output.Attributes.Count);
             Assert.Equal(11, output.Attributes["data-rows"].Value);
             Assert.Equal("First", output.Attributes["data-sort"].Value);
             Assert.Equal("Test", output.Attributes["data-search"].Value);
             Assert.Equal("mvc-lookup", output.Attributes["class"].Value);
             Assert.Equal("Dialog", output.Attributes["data-dialog"].Value);
+            Assert.Equal(true, output.Attributes["data-add-handler"].Value);
             Assert.Equal("Add1,Add2", output.Attributes["data-filters"].Value);
             Assert.Equal(LookupSortOrder.Desc, output.Attributes["data-order"].Value);
             Assert.Equal("Dialog lookup title", output.Attributes["data-title"].Value);

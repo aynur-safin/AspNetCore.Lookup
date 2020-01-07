@@ -48,6 +48,7 @@ interface MvcLookupDialogOptions {
 
 interface MvcLookupAutocompleteOptions {
     minLength: number;
+    addHandler: boolean;
 
     rows: number;
     sort: string;
@@ -55,6 +56,7 @@ interface MvcLookupAutocompleteOptions {
 }
 
 interface MvcLookupLanguage {
+    add: string;
     more: string;
     error: string;
     search: string;
@@ -519,7 +521,14 @@ class MvcLookupAutocomplete {
         autocomplete.lookup = lookup;
         autocomplete.element = document.createElement("ul");
         autocomplete.element.className = "mvc-lookup-autocomplete";
-        autocomplete.options = { minLength: 1, rows: 20, sort: lookup.filter.sort, order: lookup.filter.order };
+        autocomplete.options = {
+            minLength: 1,
+            addHandler: autocomplete.lookup.group.dataset.addHandler == "True",
+
+            rows: 20,
+            sort: lookup.filter.sort,
+            order: lookup.filter.order
+        };
     }
 
     public search(term: string): void {
@@ -565,8 +574,30 @@ class MvcLookupAutocomplete {
                     if (!data.rows.length) {
                         const noData = document.createElement("li");
 
-                        noData.className = "mvc-lookup-autocomplete-no-data";
-                        noData.innerText = MvcLookup.lang.noData;
+                        if (autocomplete.options.addHandler) {
+                            noData.className = "mvc-lookup-autocomplete-add";
+                            noData.innerText = MvcLookup.lang.add;
+                            noData.classList.add("active");
+
+                            noData.addEventListener("mousedown", e => {
+                                e.preventDefault();
+                            });
+
+                            noData.addEventListener("click", () => {
+                                lookup.group.dispatchEvent(new CustomEvent("lookupadd", {
+                                    detail: { lookup },
+                                    bubbles: true
+                                }));
+
+                                lookup.stopLoading();
+                                autocomplete.hide();
+                            });
+
+                            autocomplete.activeItem = noData;
+                        } else {
+                            noData.className = "mvc-lookup-autocomplete-no-data";
+                            noData.innerText = MvcLookup.lang.noData;
+                        }
 
                         autocomplete.element.appendChild(noData);
                     }
@@ -654,7 +685,8 @@ class MvcLookupAutocomplete {
 
 class MvcLookup {
     static instances: MvcLookup[] = [];
-    static lang = <MvcLookupLanguage>{
+    static lang: MvcLookupLanguage = {
+        add: "+ Add",
         more: "More...",
         search: "Search...",
         select: "Select ({0})",
@@ -1073,9 +1105,7 @@ class MvcLookup {
         }
 
         for (const additional of lookup.filter.additional) {
-            const inputs = document.querySelectorAll(`[name="${additional}"]`);
-
-            for (const input of inputs) {
+            for (const input of document.querySelectorAll(`[name="${additional}"]`)) {
                 input.addEventListener("change", () => {
                     const cancelled = !input.dispatchEvent(new CustomEvent("filterchange", {
                         detail: { lookup },
