@@ -73,7 +73,7 @@ class MvcLookupDialog {
         dialog.rows = element.querySelector(".mvc-lookup-rows");
         dialog.header = element.querySelector(".mvc-lookup-title");
         dialog.search = element.querySelector(".mvc-lookup-search");
-        dialog.footer = element.querySelector(".mvc-lookup-load-more");
+        dialog.footer = element.querySelector(".mvc-lookup-footer");
         dialog.selector = element.querySelector(".mvc-lookup-selector");
         dialog.closeButton = element.querySelector(".mvc-lookup-close");
         dialog.error = element.querySelector(".mvc-lookup-dialog-error");

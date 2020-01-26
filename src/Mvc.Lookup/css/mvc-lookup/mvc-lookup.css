@@ -417,10 +417,6 @@
 }
 
 .mvc-lookup-footer {
-    text-align: center;
-}
-
-.mvc-lookup-load-more {
     transition: background-color 0.3s;
     border: 1px solid #dee2e6;
     padding: 0.25em 0.5em;
@@ -431,8 +427,8 @@
     width: 100%;
 }
 
-.mvc-lookup-load-more:focus,
-.mvc-lookup-load-more:hover {
+.mvc-lookup-footer:focus,
+.mvc-lookup-footer:hover {
     background: #eeeeee;
 }
 
