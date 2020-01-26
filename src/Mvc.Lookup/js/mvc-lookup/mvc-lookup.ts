@@ -235,6 +235,7 @@ class MvcLookupDialog {
 
         dialog.loadingTimerId = setTimeout(() => {
             dialog.loader.style.opacity = "1";
+            dialog.footer.style.opacity = "0";
         }, dialog.lookup.options.loadingDelay);
         dialog.loader.style.display = "";
         dialog.error.style.opacity = "0";
@@ -243,7 +244,7 @@ class MvcLookupDialog {
         dialog.controller.abort();
         dialog.controller = new AbortController();
 
-        fetch(dialog.lookup.filter.formUrl({ selected: dialog.selected, rows: dialog.lookup.filter.rows + 1}), {
+        fetch(dialog.lookup.filter.formUrl({ selected: dialog.selected, rows: dialog.lookup.filter.rows + 1 }), {
             signal: dialog.controller.signal,
             headers: { "X-Requested-With": "XMLHttpRequest" }
         }).then(response => {
@@ -296,6 +297,7 @@ class MvcLookupDialog {
         if (data.rows.length <= dialog.lookup.filter.rows) {
             dialog.footer.style.display = "none";
         } else {
+            dialog.footer.style.opacity = "";
             dialog.footer.style.display = "";
         }
     }

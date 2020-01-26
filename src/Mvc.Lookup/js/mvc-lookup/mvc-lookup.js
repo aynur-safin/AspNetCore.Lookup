@@ -136,6 +136,7 @@ class MvcLookupDialog {
         clearTimeout(dialog.loadingTimerId);
 
         dialog.loadingTimerId = setTimeout(() => {
+            dialog.footer.style.opacity = "0";
             dialog.loader.style.opacity = "1";
         }, dialog.lookup.options.loadingDelay);
         dialog.loader.style.display = "";
@@ -198,6 +199,7 @@ class MvcLookupDialog {
         if (data.rows.length <= dialog.lookup.filter.rows) {
             dialog.footer.style.display = "none";
         } else {
+            dialog.footer.style.opacity = "";
             dialog.footer.style.display = "";
         }
     }
