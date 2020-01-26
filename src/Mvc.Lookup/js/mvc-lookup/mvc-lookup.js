@@ -482,7 +482,7 @@ class MvcLookupAutocomplete {
             if (!data.rows.length) {
                 const noData = document.createElement("li");
 
-                if (autocomplete.options.addHandler) {
+                if (autocomplete.options.addHandler && term.length) {
                     noData.className = "mvc-lookup-autocomplete-add";
                     noData.innerText = MvcLookup.lang.add;
                     noData.classList.add("active");
