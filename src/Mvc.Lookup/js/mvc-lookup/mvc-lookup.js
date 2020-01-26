@@ -178,6 +178,8 @@ class MvcLookupDialog {
             dialog.tableHead.innerHTML = "";
             dialog.loadingTimerId = 0;
 
+            dialog.search.focus();
+
             return Promise.reject(reason);
         });
     }
