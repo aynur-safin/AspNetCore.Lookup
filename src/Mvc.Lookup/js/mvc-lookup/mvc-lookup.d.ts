@@ -86,8 +86,9 @@ declare class MvcLookupDialog {
     options: MvcLookupDialogOptions;
     selected: MvcLookupDataRow[];
     title: string;
-    isLoading: boolean;
     searchTimerId?: number;
+    loadingTimerId?: number;
+    controller: AbortController;
     constructor(lookup: MvcLookup);
     open(): void;
     close(): void;
@@ -157,8 +158,7 @@ declare class MvcLookup {
     select(data: MvcLookupDataRow[], triggerChanges?: boolean): void;
     selectFirst(triggerChanges?: boolean): void;
     selectSingle(triggerChanges?: boolean): void;
-    startLoading(search: Partial<MvcLookupFilter>): Promise<MvcLookupData>;
-    stopLoading(): void;
+    fetch(search: Partial<MvcLookupFilter>, resolved: (data: MvcLookupData) => void): void;
     private createSelectedItems;
     private createValues;
     private bindDeselect;
