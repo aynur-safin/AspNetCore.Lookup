@@ -337,14 +337,22 @@ class MvcLookupDialog {
 
         dialog.controller.abort();
         clearTimeout(dialog.searchTimerId);
-        dialog.searchTimerId = setTimeout(() => {
-            if (dialog.lookup.filter.search != this.value || e.keyCode == 13) {
-                dialog.lookup.filter.search = this.value;
-                dialog.lookup.filter.offset = 0;
 
-                dialog.refresh();
-            }
-        }, dialog.lookup.options.searchDelay);
+        if (e.keyCode == 13) {
+            dialog.lookup.filter.search = this.value;
+            dialog.lookup.filter.offset = 0;
+
+            dialog.refresh();
+        } else {
+            dialog.searchTimerId = setTimeout(() => {
+                if (dialog.lookup.filter.search != this.value) {
+                    dialog.lookup.filter.search = this.value;
+                    dialog.lookup.filter.offset = 0;
+
+                    dialog.refresh();
+                }
+            }, dialog.lookup.options.searchDelay);
+        }
     }
     rowsChanged() {
         const rows = this;
