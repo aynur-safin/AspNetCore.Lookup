@@ -8,45 +8,45 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-interface MvcLookupData {
+export interface MvcLookupData {
     selected: MvcLookupDataRow[];
     columns: MvcLookupColumn[];
     rows: MvcLookupDataRow[];
 }
 
-interface MvcLookupColumn {
+export interface MvcLookupColumn {
     key: string;
     header: string;
     hidden: boolean;
     cssClass: string;
 }
 
-interface MvcLookupDataRow {
+export interface MvcLookupDataRow {
     Id: string;
     Label: string;
 
     [column: string]: string | null;
 }
 
-interface MvcLookupOptions {
+export interface MvcLookupOptions {
     readonly: boolean;
     searchDelay: number;
     loadingDelay: number;
 
-    dialog: MvcLookupDialogOptions;
-    autocomplete: MvcLookupAutocompleteOptions;
+    dialog: Partial<MvcLookupDialogOptions>;
+    autocomplete: Partial<MvcLookupAutocompleteOptions>;
 }
 
-interface MvcLookupDialogOptions {
+export interface MvcLookupDialogOptions {
     preserveSearch: boolean;
     openDelay: number;
-    rows: {
+    rows: Partial<{
         min: number;
         max: number;
-    };
+    }>;
 }
 
-interface MvcLookupAutocompleteOptions {
+export interface MvcLookupAutocompleteOptions {
     minLength: number;
     addHandler: boolean;
 
@@ -55,7 +55,7 @@ interface MvcLookupAutocompleteOptions {
     order: "Asc" | "Desc" | "";
 }
 
-interface MvcLookupLanguage {
+export interface MvcLookupLanguage {
     add: string;
     more: string;
     error: string;
@@ -64,7 +64,7 @@ interface MvcLookupLanguage {
     noData: string;
 }
 
-class MvcLookupFilter {
+export class MvcLookupFilter {
     lookup: MvcLookup;
 
     search: string;
@@ -127,7 +127,7 @@ class MvcLookupFilter {
     }
 }
 
-class MvcLookupDialog {
+export class MvcLookupDialog {
     static current: MvcLookupDialog | null;
 
     lookup: MvcLookup;
@@ -425,7 +425,7 @@ class MvcLookupDialog {
     }
 
     private limitRows(value: string): string {
-        const rows = Math.max(this.options.rows.min, Math.min(parseInt(value), this.options.rows.max));
+        const rows = Math.max(this.options.rows.min!, Math.min(parseInt(value), this.options.rows.max!));
 
         return (isNaN(rows) ? this.lookup.filter.rows : rows).toString();
     }
@@ -483,7 +483,7 @@ class MvcLookupDialog {
     }
 }
 
-class MvcLookupOverlay {
+export class MvcLookupOverlay {
     element: HTMLElement;
 
     public constructor(dialog: MvcLookupDialog) {
@@ -537,7 +537,7 @@ class MvcLookupOverlay {
     }
 }
 
-class MvcLookupAutocomplete {
+export class MvcLookupAutocomplete {
     lookup: MvcLookup;
     searchTimerId?: number;
     element: HTMLUListElement;
@@ -714,7 +714,7 @@ class MvcLookupAutocomplete {
     }
 }
 
-class MvcLookup {
+export class MvcLookup {
     static instances: MvcLookup[] = [];
     static lang: MvcLookupLanguage = {
         add: "+ Add",

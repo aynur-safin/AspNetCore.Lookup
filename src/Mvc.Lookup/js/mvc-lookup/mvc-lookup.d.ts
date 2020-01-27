@@ -7,45 +7,45 @@
  * Licensed under the terms of the MIT License
  * http://www.opensource.org/licenses/mit-license.php
  */
-interface MvcLookupData {
+export interface MvcLookupData {
     selected: MvcLookupDataRow[];
     columns: MvcLookupColumn[];
     rows: MvcLookupDataRow[];
 }
-interface MvcLookupColumn {
+export interface MvcLookupColumn {
     key: string;
     header: string;
     hidden: boolean;
     cssClass: string;
 }
-interface MvcLookupDataRow {
+export interface MvcLookupDataRow {
     Id: string;
     Label: string;
     [column: string]: string | null;
 }
-interface MvcLookupOptions {
+export interface MvcLookupOptions {
     readonly: boolean;
     searchDelay: number;
     loadingDelay: number;
-    dialog: MvcLookupDialogOptions;
-    autocomplete: MvcLookupAutocompleteOptions;
+    dialog: Partial<MvcLookupDialogOptions>;
+    autocomplete: Partial<MvcLookupAutocompleteOptions>;
 }
-interface MvcLookupDialogOptions {
+export interface MvcLookupDialogOptions {
     preserveSearch: boolean;
     openDelay: number;
-    rows: {
+    rows: Partial<{
         min: number;
         max: number;
-    };
+    }>;
 }
-interface MvcLookupAutocompleteOptions {
+export interface MvcLookupAutocompleteOptions {
     minLength: number;
     addHandler: boolean;
     rows: number;
     sort: string;
     order: "Asc" | "Desc" | "";
 }
-interface MvcLookupLanguage {
+export interface MvcLookupLanguage {
     add: string;
     more: string;
     error: string;
@@ -53,7 +53,7 @@ interface MvcLookupLanguage {
     select: string;
     noData: string;
 }
-declare class MvcLookupFilter {
+export declare class MvcLookupFilter {
     lookup: MvcLookup;
     search: string;
     sort: string;
@@ -67,7 +67,7 @@ declare class MvcLookupFilter {
     constructor(lookup: MvcLookup);
     formUrl(search: Partial<MvcLookupFilter>): string;
 }
-declare class MvcLookupDialog {
+export declare class MvcLookupDialog {
     static current: MvcLookupDialog | null;
     lookup: MvcLookup;
     element: HTMLElement;
@@ -104,7 +104,7 @@ declare class MvcLookupDialog {
     private loadMore;
     private bind;
 }
-declare class MvcLookupOverlay {
+export declare class MvcLookupOverlay {
     element: HTMLElement;
     constructor(dialog: MvcLookupDialog);
     show(): void;
@@ -114,7 +114,7 @@ declare class MvcLookupOverlay {
     private onKeyDown;
     private bind;
 }
-declare class MvcLookupAutocomplete {
+export declare class MvcLookupAutocomplete {
     lookup: MvcLookup;
     searchTimerId?: number;
     element: HTMLUListElement;
@@ -128,7 +128,7 @@ declare class MvcLookupAutocomplete {
     resize(): void;
     private bind;
 }
-declare class MvcLookup {
+export declare class MvcLookup {
     static instances: MvcLookup[];
     static lang: MvcLookupLanguage;
     url: URL;
