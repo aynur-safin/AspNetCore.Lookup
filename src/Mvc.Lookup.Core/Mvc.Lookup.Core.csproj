@@ -8,9 +8,9 @@
     <Product>Mvc.Lookup</Product>
     <LangVersion>8.0</LangVersion>
     <GenerateFullPaths>true</GenerateFullPaths>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>NonFactors.Lookup.Core.Mvc6</PackageId>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <Description>Data lookup controls for ASP.NET Core projects</Description>
   </PropertyGroup>
 
