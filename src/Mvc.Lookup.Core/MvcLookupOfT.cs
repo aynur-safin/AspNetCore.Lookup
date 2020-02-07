@@ -42,21 +42,6 @@ namespace NonFactors.Mvc.Lookup
                 });
             }
         }
-        public virtual String GetColumnKey(PropertyInfo property)
-        {
-            if (property == null)
-                throw new ArgumentNullException(nameof(property));
-
-            return property.Name;
-        }
-        public virtual String GetColumnHeader(PropertyInfo property)
-        {
-            return property?.GetCustomAttribute<DisplayAttribute>(false)?.GetShortName() ?? "";
-        }
-        public virtual String GetColumnCssClass(PropertyInfo property)
-        {
-            return "";
-        }
 
         public override LookupData GetData()
         {
@@ -207,12 +192,8 @@ namespace NonFactors.Mvc.Lookup
 
                 return $"({column.Key} != null && {ConvertCase(column)}.{predicate}(@{index}))";
             }
-            else if (IsFilterable(property?.PropertyType))
-            {
-                return $"{column?.Key} = @{index}";
-            }
 
-            return null;
+            return IsFilterable(property?.PropertyType) ? $"{column?.Key} = @{index}" : null;
         }
         private Object? ParseSearch(LookupColumn column, PropertyInfo? property)
         {

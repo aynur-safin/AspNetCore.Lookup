@@ -97,67 +97,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void GetColumnKey_NullProperty_Throws()
-        {
-            ArgumentNullException actual = Assert.Throws<ArgumentNullException>(() => lookup.GetColumnKey(null!));
-
-            Assert.Equal("property", actual.ParamName);
-        }
-
-        [Fact]
-        public void GetColumnKey_ReturnsPropertyName()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Count))!;
-
-            String actual = lookup.GetColumnKey(property);
-            String expected = property.Name;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetColumnHeader_NullProperty_ReturnsEmpty()
-        {
-            Assert.Empty(lookup.GetColumnHeader(null!));
-        }
-
-        [Fact]
-        public void GetColumnHeader_NoDisplayName_ReturnsEmpty()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Value))!;
-
-            Assert.Empty(lookup.GetColumnHeader(property));
-        }
-
-        [Fact]
-        public void GetColumnHeader_ReturnsDisplayName()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Date))!;
-
-            String? expected = property.GetCustomAttribute<DisplayAttribute>()?.Name;
-            String? actual = lookup.GetColumnHeader(property);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetColumnHeader_ReturnsDisplayShortName()
-        {
-            PropertyInfo property = typeof(TestModel).GetProperty(nameof(TestModel.Count))!;
-
-            String? expected = property.GetCustomAttribute<DisplayAttribute>()?.ShortName;
-            String? actual = lookup.GetColumnHeader(property);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void GetColumnCssClass_ReturnsEmpty()
-        {
-            Assert.Empty(lookup.GetColumnCssClass(null!));
-        }
-
-        [Fact]
         public void GetData_FiltersByIds()
         {
             lookup.Filter.Ids.Add("9I");
