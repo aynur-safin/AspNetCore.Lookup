@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace NonFactors.Mvc.Lookup
 {
-    public abstract class MvcLookup<T> : MvcLookup where T : class
+    public abstract class ALookup<T> : ALookup where T : class
     {
         public Func<T, String> GetId { get; set; }
         public Func<T, String> GetLabel { get; set; }
@@ -24,7 +24,7 @@ namespace NonFactors.Mvc.Lookup
             }
         }
 
-        protected MvcLookup()
+        protected ALookup()
         {
             GetId = (model) => GetValue(model, "Id") ?? "";
             GetLabel = (model) => GetValue(model, Columns.Where(col => !col.Hidden).Select(col => col.Key).FirstOrDefault() ?? "") ?? "";
@@ -34,8 +34,8 @@ namespace NonFactors.Mvc.Lookup
                 LookupColumnAttribute column = property.GetCustomAttribute<LookupColumnAttribute>(false)!;
                 Columns.Add(new LookupColumn(GetColumnKey(property), GetColumnHeader(property))
                 {
-                    FilterPredicate = column.FilterPredicate,
                     CssClass = GetColumnCssClass(property),
+                    FilterMethod = column.FilterMethod,
                     FilterCase = column.FilterCase,
                     Filterable = column.Filterable,
                     Hidden = column.Hidden
@@ -188,9 +188,9 @@ namespace NonFactors.Mvc.Lookup
         {
             if (property?.PropertyType == typeof(String))
             {
-                LookupFilterPredicate predicate = column.FilterPredicate ?? FilterPredicate;
+                LookupFilterMethod method = column.FilterMethod ?? FilterMethod;
 
-                return $"({column.Key} != null && {ConvertCase(column)}.{predicate}(@{index}))";
+                return $"({column.Key} != null && {ConvertCase(column)}.{method}(@{index}))";
             }
 
             return IsFilterable(property?.PropertyType) ? $"{column?.Key} = @{index}" : null;

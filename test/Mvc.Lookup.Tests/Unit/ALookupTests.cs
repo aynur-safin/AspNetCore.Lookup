@@ -9,19 +9,19 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 {
     public class MvcLookupTests
     {
-        private MvcLookup lookup;
+        private ALookup lookup;
 
         public MvcLookupTests()
         {
-            lookup = Substitute.ForPartsOf<MvcLookup>();
+            lookup = Substitute.ForPartsOf<ALookup>();
         }
 
         [Fact]
         public void MvcLookup_Defaults()
         {
-            MvcLookup actual = Substitute.For<MvcLookup>();
+            ALookup actual = Substitute.For<ALookup>();
 
-            Assert.Equal(LookupFilterPredicate.Contains, actual.FilterPredicate);
+            Assert.Equal(LookupFilterMethod.Contains, actual.FilterMethod);
             Assert.Equal(LookupFilterCase.Lower, actual.FilterCase);
             Assert.Empty(actual.AdditionalFilters);
             Assert.NotNull(actual.Filter);

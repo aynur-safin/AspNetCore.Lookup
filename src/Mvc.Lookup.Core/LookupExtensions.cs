@@ -12,7 +12,7 @@ namespace NonFactors.Mvc.Lookup
     public static class LookupExtensions
     {
         public static TagBuilder AutoComplete<TModel>(this IHtmlHelper<TModel> html,
-            String name, MvcLookup model, Object? value = null, Object? htmlAttributes = null)
+            String name, ALookup model, Object? value = null, Object? htmlAttributes = null)
         {
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
             lookup.AddCssClass("mvc-lookup-browseless");
@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Lookup
             return lookup;
         }
         public static TagBuilder AutoCompleteFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object? htmlAttributes = null)
+            Expression<Func<TModel, TProperty>> expression, ALookup model, Object? htmlAttributes = null)
         {
             String name = LookupExpressionMetadata.GetName(expression);
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
@@ -36,7 +36,7 @@ namespace NonFactors.Mvc.Lookup
         }
 
         public static TagBuilder Lookup<TModel>(this IHtmlHelper<TModel> html,
-            String name, MvcLookup model, Object? value = null, Object? htmlAttributes = null)
+            String name, ALookup model, Object? value = null, Object? htmlAttributes = null)
         {
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
 
@@ -47,7 +47,7 @@ namespace NonFactors.Mvc.Lookup
             return lookup;
         }
         public static TagBuilder LookupFor<TModel, TProperty>(this IHtmlHelper<TModel> html,
-            Expression<Func<TModel, TProperty>> expression, MvcLookup model, Object? htmlAttributes = null)
+            Expression<Func<TModel, TProperty>> expression, ALookup model, Object? htmlAttributes = null)
         {
             String name = LookupExpressionMetadata.GetName(expression);
             TagBuilder lookup = CreateLookup(model, name, htmlAttributes);
@@ -59,7 +59,7 @@ namespace NonFactors.Mvc.Lookup
             return lookup;
         }
 
-        private static TagBuilder CreateLookup(MvcLookup lookup, String name, Object? htmlAttributes)
+        private static TagBuilder CreateLookup(ALookup lookup, String name, Object? htmlAttributes)
         {
             IDictionary<String, Object?> attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes);
             attributes["data-filters"] = String.Join(",", lookup.AdditionalFilters);
@@ -85,7 +85,7 @@ namespace NonFactors.Mvc.Lookup
             return group;
         }
 
-        private static IHtmlContent CreateLookupValues<TModel, TProperty>(IHtmlHelper<TModel> html, MvcLookup lookup, Expression<Func<TModel, TProperty>> expression)
+        private static IHtmlContent CreateLookupValues<TModel, TProperty>(IHtmlHelper<TModel> html, ALookup lookup, Expression<Func<TModel, TProperty>> expression)
         {
             Object value = LookupExpressionMetadata.GetValue(html, expression).Model;
             String name = LookupExpressionMetadata.GetName(expression);
@@ -107,7 +107,7 @@ namespace NonFactors.Mvc.Lookup
 
             return container;
         }
-        private static IHtmlContent CreateLookupValues(IHtmlHelper html, MvcLookup lookup, String name, Object? value)
+        private static IHtmlContent CreateLookupValues(IHtmlHelper html, ALookup lookup, String name, Object? value)
         {
             IDictionary<String, Object> attributes = new Dictionary<String, Object>
             {
@@ -147,7 +147,7 @@ namespace NonFactors.Mvc.Lookup
 
             return container;
         }
-        private static IHtmlContent CreateLookupControl(IHtmlHelper html, MvcLookup lookup, String name)
+        private static IHtmlContent CreateLookupControl(IHtmlHelper html, ALookup lookup, String name)
         {
             TagBuilder search = new TagBuilder("input") { TagRenderMode = TagRenderMode.SelfClosing };
             TagBuilder control = new TagBuilder("div");

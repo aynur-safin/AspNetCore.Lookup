@@ -1,6 +1,6 @@
 namespace NonFactors.Mvc.Lookup
 {
-    public enum LookupFilterPredicate
+    public enum LookupFilterMethod
     {
         Equals,
         Contains,

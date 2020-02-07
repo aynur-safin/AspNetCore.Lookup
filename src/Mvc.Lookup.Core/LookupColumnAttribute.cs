@@ -4,7 +4,7 @@ namespace NonFactors.Mvc.Lookup
 {
     public class LookupColumnAttribute : Attribute
     {
-        public LookupFilterPredicate? FilterPredicate { get; set; }
+        public LookupFilterMethod? FilterMethod { get; set; }
         public LookupFilterCase? FilterCase { get; set; }
         public Boolean Filterable { get; set; }
         public Int32 Position { get; set; }

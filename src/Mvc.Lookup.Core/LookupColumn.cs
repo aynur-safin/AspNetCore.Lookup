@@ -10,7 +10,7 @@ namespace NonFactors.Mvc.Lookup
         public String CssClass { get; set; }
         public Boolean Filterable { get; set; }
         public LookupFilterCase? FilterCase { get; set; }
-        public LookupFilterPredicate? FilterPredicate { get; set; }
+        public LookupFilterMethod? FilterMethod { get; set; }
 
         public LookupColumn(String key, String header)
         {

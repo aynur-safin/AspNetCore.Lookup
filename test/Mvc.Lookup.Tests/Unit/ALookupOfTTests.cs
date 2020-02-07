@@ -93,7 +93,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                 Assert.Equal(expected.Current.CssClass, actual.Current.CssClass);
                 Assert.Equal(expected.Current.Filterable, actual.Current.Filterable);
                 Assert.Equal(expected.Current.FilterCase, actual.Current.FilterCase);
-                Assert.Equal(expected.Current.FilterPredicate, actual.Current.FilterPredicate);
+                Assert.Equal(expected.Current.FilterMethod, actual.Current.FilterMethod);
             }
         }
 
@@ -330,7 +330,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "20Value";
-            lookup.FilterPredicate = LookupFilterPredicate.Equals;
+            lookup.FilterMethod = LookupFilterMethod.Equals;
             lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
 
             IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value == "20Value");
@@ -344,7 +344,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "0Va";
-            lookup.FilterPredicate = LookupFilterPredicate.Contains;
+            lookup.FilterMethod = LookupFilterMethod.Contains;
             lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
 
             IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.Contains("0Va"));
@@ -358,7 +358,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "a14";
-            lookup.FilterPredicate = LookupFilterPredicate.EndsWith;
+            lookup.FilterMethod = LookupFilterMethod.EndsWith;
             lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
 
             IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.EndsWith("a14"));
@@ -372,7 +372,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "20";
-            lookup.FilterPredicate = LookupFilterPredicate.StartsWith;
+            lookup.FilterMethod = LookupFilterMethod.StartsWith;
             lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
 
             IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.StartsWith("20"));
