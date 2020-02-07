@@ -8,11 +8,14 @@ namespace NonFactors.Mvc.Lookup.Tests.Objects
         public String? Id { get; set; }
 
         [LookupColumn(8, Filterable = false)]
-        [Display(Name = "Count's value", ShortName = "Value")]
+        [Display(Name = "Count's value", ShortName = "Counter")]
         public Int32 Count { get; set; }
 
         [LookupColumn]
         public String? Value { get; set; }
+
+        [LookupColumn]
+        public Object? NextValue { get; set; }
 
         public String? ParentId { get; set; }
 

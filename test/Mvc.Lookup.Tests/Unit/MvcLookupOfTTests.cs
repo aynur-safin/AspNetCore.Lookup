@@ -1,7 +1,6 @@
 ﻿using NonFactors.Mvc.Lookup.Tests.Objects;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Xunit;
@@ -23,7 +22,8 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
                     Id = i + "I",
                     Count = i + 10,
                     ParentId = "1000",
-                    Value = i + "Value",
+                    Value = $"{i}Value{i + 1}",
+                    NextValue = $"{i + 1}Value",
                     Date = new DateTime(2014, 12, 10).AddDays(i)
                 });
         }
@@ -76,9 +76,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             List<LookupColumn> columns = new List<LookupColumn>
             {
-                new LookupColumn("Value", "") { Hidden = false, Filterable = true },
-                new LookupColumn("Date", "Date") { Hidden = false, Filterable = true },
-                new LookupColumn("Count", "Value") { Hidden = false, Filterable = false }
+                new LookupColumn(nameof(TestModel.Value), "") { Hidden = false, Filterable = true },
+                new LookupColumn(nameof(TestModel.NextValue), "") { Hidden = false, Filterable = true },
+                new LookupColumn(nameof(TestModel.Date), "Date") { Hidden = false, Filterable = true },
+                new LookupColumn(nameof(TestModel.Count), "Counter") { Hidden = false, Filterable = false }
             };
 
             using IEnumerator<LookupColumn> expected = columns.GetEnumerator();
@@ -101,24 +102,24 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Filter.Ids.Add("9I");
             lookup.Filter.Ids.Add("15I");
-            lookup.Filter.Sort = "Count";
             lookup.Filter.Search = "Term";
             lookup.Filter.Selected.Add("17I");
-            lookup.Filter.AdditionalFilters.Add("Value", "5Value");
+            lookup.Filter.Sort = nameof(TestModel.Count);
+            lookup.Filter.AdditionalFilters.Add(nameof(TestModel.Value), "5Value");
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("9Value", actual.Rows[0]["Label"]);
-            Assert.Equal("9Value", actual.Rows[0]["Value"]);
-            Assert.Equal("19", actual.Rows[0]["Count"]);
-            Assert.Equal("9I", actual.Rows[0]["Id"]);
+            Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0][nameof(TestModel.Date)]);
+            Assert.Equal("9Value10", actual.Rows[0][nameof(TestModel.Value)]);
+            Assert.Equal("19", actual.Rows[0][nameof(TestModel.Count)]);
+            Assert.Equal("9I", actual.Rows[0][nameof(TestModel.Id)]);
+            Assert.Equal("9Value10", actual.Rows[0]["Label"]);
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15Value", actual.Rows[1]["Label"]);
-            Assert.Equal("15Value", actual.Rows[1]["Value"]);
-            Assert.Equal("25", actual.Rows[1]["Count"]);
-            Assert.Equal("15I", actual.Rows[1]["Id"]);
+            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1][nameof(TestModel.Date)]);
+            Assert.Equal("15Value16", actual.Rows[1][nameof(TestModel.Value)]);
+            Assert.Equal("25", actual.Rows[1][nameof(TestModel.Count)]);
+            Assert.Equal("15I", actual.Rows[1][nameof(TestModel.Id)]);
+            Assert.Equal("15Value16", actual.Rows[1]["Label"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.Rows.Count);
@@ -128,24 +129,24 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_FiltersByCheckIds()
         {
-            lookup.Filter.Sort = "Count";
             lookup.Filter.CheckIds.Add("9I");
             lookup.Filter.CheckIds.Add("15I");
+            lookup.Filter.Sort = nameof(TestModel.Count);
             lookup.Filter.AdditionalFilters.Add("ParentId", "1000");
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("9Value", actual.Rows[0]["Label"]);
-            Assert.Equal("9Value", actual.Rows[0]["Value"]);
-            Assert.Equal("19", actual.Rows[0]["Count"]);
-            Assert.Equal("9I", actual.Rows[0]["Id"]);
+            Assert.Equal(new DateTime(2014, 12, 19).ToString("d"), actual.Rows[0][nameof(TestModel.Date)]);
+            Assert.Equal("9Value10", actual.Rows[0][nameof(TestModel.Value)]);
+            Assert.Equal("19", actual.Rows[0][nameof(TestModel.Count)]);
+            Assert.Equal("9I", actual.Rows[0][nameof(TestModel.Id)]);
+            Assert.Equal("9Value10", actual.Rows[0]["Label"]);
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("15Value", actual.Rows[1]["Label"]);
-            Assert.Equal("15Value", actual.Rows[1]["Value"]);
-            Assert.Equal("25", actual.Rows[1]["Count"]);
-            Assert.Equal("15I", actual.Rows[1]["Id"]);
+            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Rows[1][nameof(TestModel.Date)]);
+            Assert.Equal("15Value16", actual.Rows[1][nameof(TestModel.Value)]);
+            Assert.Equal("25", actual.Rows[1][nameof(TestModel.Count)]);
+            Assert.Equal("15I", actual.Rows[1][nameof(TestModel.Id)]);
+            Assert.Equal("15Value16", actual.Rows[1]["Label"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.Rows.Count);
@@ -155,32 +156,32 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_FiltersByNotSelected()
         {
-            lookup.Filter.Sort = "Count";
             lookup.Filter.Search = "133Value";
             lookup.Filter.Selected.Add("15I");
             lookup.Filter.Selected.Add("125I");
+            lookup.Filter.Sort = nameof(TestModel.Count);
 
             lookup.GetData();
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Selected[0]["Date"]);
-            Assert.Equal("15Value", actual.Selected[0]["Label"]);
-            Assert.Equal("15Value", actual.Selected[0]["Value"]);
-            Assert.Equal("25", actual.Selected[0]["Count"]);
-            Assert.Equal("15I", actual.Selected[0]["Id"]);
+            Assert.Equal(new DateTime(2014, 12, 25).ToString("d"), actual.Selected[0][nameof(TestModel.Date)]);
+            Assert.Equal("15Value16", actual.Selected[0][nameof(TestModel.Value)]);
+            Assert.Equal("25", actual.Selected[0][nameof(TestModel.Count)]);
+            Assert.Equal("15I", actual.Selected[0][nameof(TestModel.Id)]);
+            Assert.Equal("15Value16", actual.Selected[0]["Label"]);
 
-            Assert.Equal(new DateTime(2015, 4, 14).ToString("d"), actual.Selected[1]["Date"]);
-            Assert.Equal("125Value", actual.Selected[1]["Label"]);
-            Assert.Equal("125Value", actual.Selected[1]["Value"]);
-            Assert.Equal("135", actual.Selected[1]["Count"]);
-            Assert.Equal("125I", actual.Selected[1]["Id"]);
+            Assert.Equal(new DateTime(2015, 4, 14).ToString("d"), actual.Selected[1][nameof(TestModel.Date)]);
+            Assert.Equal("125Value126", actual.Selected[1][nameof(TestModel.Value)]);
+            Assert.Equal("135", actual.Selected[1][nameof(TestModel.Count)]);
+            Assert.Equal("125I", actual.Selected[1][nameof(TestModel.Id)]);
+            Assert.Equal("125Value126", actual.Selected[1]["Label"]);
 
-            Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("133Value", actual.Rows[0]["Label"]);
-            Assert.Equal("133Value", actual.Rows[0]["Value"]);
-            Assert.Equal("143", actual.Rows[0]["Count"]);
-            Assert.Equal("133I", actual.Rows[0]["Id"]);
+            Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[0][nameof(TestModel.Date)]);
+            Assert.Equal("133Value134", actual.Rows[0][nameof(TestModel.Value)]);
+            Assert.Equal("143", actual.Rows[0][nameof(TestModel.Count)]);
+            Assert.Equal("133I", actual.Rows[0][nameof(TestModel.Id)]);
+            Assert.Equal("133Value134", actual.Rows[0]["Label"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.Selected.Count);
@@ -191,17 +192,17 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void GetData_FiltersByAdditionalFilters()
         {
             lookup.Filter.Search = "6Value";
-            lookup.Filter.AdditionalFilters.Add("Count", 16);
+            lookup.Filter.AdditionalFilters.Add(nameof(TestModel.Count), 16);
 
             lookup.GetData();
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2014, 12, 16).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("6Value", actual.Rows[0]["Label"]);
-            Assert.Equal("6Value", actual.Rows[0]["Value"]);
-            Assert.Equal("16", actual.Rows[0]["Count"]);
-            Assert.Equal("6I", actual.Rows[0]["Id"]);
+            Assert.Equal(new DateTime(2014, 12, 16).ToString("d"), actual.Rows[0][nameof(TestModel.Date)]);
+            Assert.Equal("6Value7", actual.Rows[0][nameof(TestModel.Value)]);
+            Assert.Equal("16", actual.Rows[0][nameof(TestModel.Count)]);
+            Assert.Equal("6I", actual.Rows[0][nameof(TestModel.Id)]);
+            Assert.Equal("6Value7", actual.Rows[0]["Label"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Empty(actual.Selected);
@@ -212,23 +213,23 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         public void GetData_FiltersBySearch()
         {
             lookup.Filter.Search = "33Value";
-            lookup.Filter.Sort = "Count";
+            lookup.Filter.Sort = nameof(TestModel.Count);
 
             lookup.GetData();
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2015, 1, 12).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("33Value", actual.Rows[0]["Label"]);
-            Assert.Equal("33Value", actual.Rows[0]["Value"]);
-            Assert.Equal("43", actual.Rows[0]["Count"]);
-            Assert.Equal("33I", actual.Rows[0]["Id"]);
+            Assert.Equal(new DateTime(2015, 1, 12).ToString("d"), actual.Rows[0][nameof(TestModel.Date)]);
+            Assert.Equal("33Value34", actual.Rows[0][nameof(TestModel.Value)]);
+            Assert.Equal("43", actual.Rows[0][nameof(TestModel.Count)]);
+            Assert.Equal("33I", actual.Rows[0][nameof(TestModel.Id)]);
+            Assert.Equal("33Value34", actual.Rows[0]["Label"]);
 
-            Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("133Value", actual.Rows[1]["Label"]);
-            Assert.Equal("133Value", actual.Rows[1]["Value"]);
-            Assert.Equal("143", actual.Rows[1]["Count"]);
-            Assert.Equal("133I", actual.Rows[1]["Id"]);
+            Assert.Equal(new DateTime(2015, 4, 22).ToString("d"), actual.Rows[1][nameof(TestModel.Date)]);
+            Assert.Equal("133Value134", actual.Rows[1][nameof(TestModel.Value)]);
+            Assert.Equal("143", actual.Rows[1][nameof(TestModel.Count)]);
+            Assert.Equal("133I", actual.Rows[1][nameof(TestModel.Id)]);
+            Assert.Equal("133Value134", actual.Rows[1]["Label"]);
 
             Assert.Equal(lookup.Columns, actual.Columns);
             Assert.Equal(2, actual.Rows.Count);
@@ -238,25 +239,25 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void GetData_Sorts()
         {
-            lookup.Filter.Order = LookupSortOrder.Asc;
             lookup.Filter.Search = "55Value";
-            lookup.Filter.Sort = "Count";
+            lookup.Filter.Order = LookupSortOrder.Asc;
+            lookup.Filter.Sort = nameof(TestModel.Count);
 
             lookup.GetData();
 
             LookupData actual = lookup.GetData();
 
-            Assert.Equal(new DateTime(2015, 2, 3).ToString("d"), actual.Rows[0]["Date"]);
-            Assert.Equal("55Value", actual.Rows[0]["Label"]);
-            Assert.Equal("55Value", actual.Rows[0]["Value"]);
-            Assert.Equal("65", actual.Rows[0]["Count"]);
-            Assert.Equal("55I", actual.Rows[0]["Id"]);
+            Assert.Equal(new DateTime(2015, 2, 3).ToString("d"), actual.Rows[0][nameof(TestModel.Date)]);
+            Assert.Equal("55Value56", actual.Rows[0][nameof(TestModel.Value)]);
+            Assert.Equal("65", actual.Rows[0][nameof(TestModel.Count)]);
+            Assert.Equal("55I", actual.Rows[0][nameof(TestModel.Id)]);
+            Assert.Equal("55Value56", actual.Rows[0]["Label"]);
 
-            Assert.Equal(new DateTime(2015, 5, 14).ToString("d"), actual.Rows[1]["Date"]);
-            Assert.Equal("155Value", actual.Rows[1]["Label"]);
-            Assert.Equal("155Value", actual.Rows[1]["Value"]);
-            Assert.Equal("165", actual.Rows[1]["Count"]);
-            Assert.Equal("155I", actual.Rows[1]["Id"]);
+            Assert.Equal(new DateTime(2015, 5, 14).ToString("d"), actual.Rows[1][nameof(TestModel.Date)]);
+            Assert.Equal("155Value156", actual.Rows[1][nameof(TestModel.Value)]);
+            Assert.Equal("165", actual.Rows[1][nameof(TestModel.Count)]);
+            Assert.Equal("155I", actual.Rows[1][nameof(TestModel.Id)]);
+            Assert.Equal("155Value156", actual.Rows[1]["Label"]);
         }
 
         [Theory]
@@ -316,7 +317,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "1";
-            lookup.Columns.Add(new LookupColumn("Value", "") { Filterable = false });
+            lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = false });
 
             IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -325,15 +326,57 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         }
 
         [Fact]
-        public void FilterBySearch_Term()
+        public void FilterBySearch_EqualsTerm()
+        {
+            lookup.Columns.Clear();
+            lookup.Filter.Search = "20Value";
+            lookup.FilterPredicate = LookupFilterPredicate.Equals;
+            lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
+
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value == "20Value");
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterBySearch_ContainsTerm()
+        {
+            lookup.Columns.Clear();
+            lookup.Filter.Search = "0Va";
+            lookup.FilterPredicate = LookupFilterPredicate.Contains;
+            lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
+
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.Contains("0Va"));
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterBySearch_EndsWithTerm()
+        {
+            lookup.Columns.Clear();
+            lookup.Filter.Search = "a14";
+            lookup.FilterPredicate = LookupFilterPredicate.EndsWith;
+            lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
+
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.EndsWith("a14"));
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FilterBySearch_StartsWithTerm()
         {
             lookup.Columns.Clear();
             lookup.Filter.Search = "20";
-            lookup.Columns.Add(new LookupColumn("Count", "") { Filterable = true });
-            lookup.Columns.Add(new LookupColumn("Value", "") { Filterable = true });
+            lookup.FilterPredicate = LookupFilterPredicate.StartsWith;
+            lookup.Columns.Add(new LookupColumn(nameof(TestModel.Value), "") { Filterable = true });
 
-            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.Contains("20") || model.Count == 20);
-            IQueryable <TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
+            IQueryable<TestModel> expected = lookup.GetModels().Where(model => model.Value!.StartsWith("20"));
+            IQueryable<TestModel> actual = lookup.FilterBySearch(lookup.GetModels());
 
             Assert.Equal(expected, actual);
         }
@@ -341,7 +384,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByAdditionalFilters_SkipsNullValues()
         {
-            lookup.Filter.AdditionalFilters.Add("Id", null);
+            lookup.Filter.AdditionalFilters.Add(nameof(TestModel.Id), null);
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels();
@@ -352,9 +395,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void FilterByAdditionalFilters_Filters()
         {
-            lookup.Filter.AdditionalFilters.Add("Id", "9I");
-            lookup.Filter.AdditionalFilters.Add("Count", new[] { 19, 30 });
-            lookup.Filter.AdditionalFilters.Add("Date", new DateTime(2014, 12, 19));
+            lookup.Filter.AdditionalFilters.Add(nameof(TestModel.Id), "9I");
+            lookup.Filter.AdditionalFilters.Add(nameof(TestModel.Count), new[] { 19, 30 });
+            lookup.Filter.AdditionalFilters.Add(nameof(TestModel.Date), new DateTime(2014, 12, 19));
 
             IQueryable<TestModel> actual = lookup.FilterByAdditionalFilters(lookup.GetModels());
             IQueryable<TestModel> expected = lookup.GetModels().Where(model =>
@@ -586,7 +629,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         [Fact]
         public void Sort_ByColumn()
         {
-            lookup.Filter.Sort = "Count";
+            lookup.Filter.Sort = nameof(TestModel.Count);
 
             IQueryable<TestModel> expected = lookup.GetModels().OrderBy(model => model.Count);
             IQueryable<TestModel> actual = lookup.Sort(lookup.GetModels());
@@ -673,27 +716,30 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             {
                 new Dictionary<String, String>
                 {
-                    ["Id"] = "6I",
-                    ["Label"] = "6Value",
-                    ["Date"] = new DateTime(2014, 12, 16).ToString("d"),
-                    ["Count"] = "16",
-                    ["Value"] = "6Value"
+                    ["Label"] = "6Value7",
+                    [nameof(TestModel.Id)] = "6I",
+                    [nameof(TestModel.Count)] = "16",
+                    [nameof(TestModel.Value)] = "6Value7",
+                    [nameof(TestModel.NextValue)] = "7Value",
+                    [nameof(TestModel.Date)] = new DateTime(2014, 12, 16).ToString("d")
                 },
                 new Dictionary<String, String>
                 {
-                    ["Id"] = "7I",
-                    ["Label"] = "7Value",
-                    ["Date"] = new DateTime(2014, 12, 17).ToString("d"),
-                    ["Count"] = "17",
-                    ["Value"] = "7Value"
+                    ["Label"] = "7Value8",
+                    [nameof(TestModel.Id)] = "7I",
+                    [nameof(TestModel.Count)] = "17",
+                    [nameof(TestModel.Value)] = "7Value8",
+                    [nameof(TestModel.NextValue)] = "8Value",
+                    [nameof(TestModel.Date)] = new DateTime(2014, 12, 17).ToString("d")
                 },
                 new Dictionary<String, String>
                 {
-                    ["Id"] = "8I",
-                    ["Label"] = "8Value",
-                    ["Date"] = new DateTime(2014, 12, 18).ToString("d"),
-                    ["Count"] = "18",
-                    ["Value"] = "8Value"
+                    ["Label"] = "8Value9",
+                    [nameof(TestModel.Id)] = "8I",
+                    [nameof(TestModel.Count)] = "18",
+                    [nameof(TestModel.Value)] = "8Value9",
+                    [nameof(TestModel.NextValue)] = "9Value",
+                    [nameof(TestModel.Date)] = new DateTime(2014, 12, 18).ToString("d")
                 }
             }.GetEnumerator();
 
@@ -712,27 +758,30 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             {
                 new Dictionary<String, String>
                 {
-                    ["Id"] = "6I",
-                    ["Label"] = "6Value",
-                    ["Date"] = new DateTime(2014, 12, 16).ToString("d"),
-                    ["Count"] = "16",
-                    ["Value"] = "6Value"
+                    ["Label"] = "6Value7",
+                    [nameof(TestModel.Id)] = "6I",
+                    [nameof(TestModel.Count)] = "16",
+                    [nameof(TestModel.Value)] = "6Value7",
+                    [nameof(TestModel.NextValue)] = "7Value",
+                    [nameof(TestModel.Date)] = new DateTime(2014, 12, 16).ToString("d")
                 },
                 new Dictionary<String, String>
                 {
-                    ["Id"] = "7I",
-                    ["Label"] = "7Value",
-                    ["Date"] = new DateTime(2014, 12, 17).ToString("d"),
-                    ["Count"] = "17",
-                    ["Value"] = "7Value"
+                    ["Label"] = "7Value8",
+                    [nameof(TestModel.Id)] = "7I",
+                    [nameof(TestModel.Count)] = "17",
+                    [nameof(TestModel.Value)] = "7Value8",
+                    [nameof(TestModel.NextValue)] = "8Value",
+                    [nameof(TestModel.Date)] = new DateTime(2014, 12, 17).ToString("d")
                 },
                 new Dictionary<String, String>
                 {
-                    ["Id"] = "8I",
-                    ["Label"] = "8Value",
-                    ["Date"] = new DateTime(2014, 12, 18).ToString("d"),
-                    ["Count"] = "18",
-                    ["Value"] = "8Value"
+                    ["Label"] = "8Value9",
+                    [nameof(TestModel.Id)] = "8I",
+                    [nameof(TestModel.Count)] = "18",
+                    [nameof(TestModel.Value)] = "8Value9",
+                    [nameof(TestModel.NextValue)] = "9Value",
+                    [nameof(TestModel.Date)] = new DateTime(2014, 12, 18).ToString("d")
                 }
             }.GetEnumerator();
 
@@ -748,17 +797,17 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
             Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { "Test", "Label", "Id" }, row.Keys);
+            Assert.Equal(new[] { "Test", "Label", nameof(TestModel.Id) }, row.Keys);
             Assert.Equal(new[] { null, "", "1" }, row.Values);
         }
 
         [Fact]
         public void FormData_Values()
         {
-            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", NextValue = "Next", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test", "1" }, row.Values);
-            Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);
+            Assert.Equal(new[] { "Test", "Next", DateTime.Now.Date.ToString("d"), "4", "Test", "1" }, row.Values);
+            Assert.Equal(new[] { nameof(TestModel.Value), nameof(TestModel.NextValue), nameof(TestModel.Date), nameof(TestModel.Count), "Label", nameof(TestModel.Id) }, row.Keys);
         }
 
         [Fact]
@@ -766,10 +815,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             lookup.GetId = (model) => $"Test {model.Id}";
             lookup.GetLabel = (model) => $"Test label {model.Id}";
-            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", Date = DateTime.Now.Date, Count = 4 });
+            Dictionary<String, String?> row = lookup.FormData(new TestModel { Id = "1", Value = "Test", NextValue = "Next", Date = DateTime.Now.Date, Count = 4 });
 
-            Assert.Equal(new[] { "Test", DateTime.Now.Date.ToString("d"), "4", "Test label 1", "Test 1" }, row.Values);
-            Assert.Equal(new[] { "Value", "Date", "Count", "Label", "Id" }, row.Keys);
+            Assert.Equal(new[] { "Test", "Next", DateTime.Now.Date.ToString("d"), "4", "Test label 1", "Test 1" }, row.Values);
+            Assert.Equal(new[] { nameof(TestModel.Value), nameof(TestModel.NextValue), nameof(TestModel.Date), nameof(TestModel.Count), "Label", nameof(TestModel.Id) }, row.Keys);
         }
     }
 }
