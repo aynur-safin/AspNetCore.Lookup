@@ -4,8 +4,8 @@ namespace NonFactors.Mvc.Lookup
 {
     public class LookupColumnAttribute : Attribute
     {
-        public LookupFilterPredicate FilterPredicate { get; set; }
-        public LookupFilterCase FilterCase { get; set; }
+        public LookupFilterPredicate? FilterPredicate { get; set; }
+        public LookupFilterCase? FilterCase { get; set; }
         public Boolean Filterable { get; set; }
         public Int32 Position { get; set; }
         public Boolean Hidden { get; set; }
@@ -19,8 +19,6 @@ namespace NonFactors.Mvc.Lookup
         {
             Filterable = true;
             Position = position;
-            FilterCase = LookupFilterCase.Unspecified;
-            FilterPredicate = LookupFilterPredicate.Unspecified;
         }
     }
 }

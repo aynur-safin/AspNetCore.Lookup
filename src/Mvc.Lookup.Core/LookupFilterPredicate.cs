@@ -5,7 +5,6 @@ namespace NonFactors.Mvc.Lookup
         Equals,
         Contains,
         EndsWith,
-        StartsWith,
-        Unspecified
+        StartsWith
     }
 }

@@ -9,8 +9,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupColumnAttribute actual = new LookupColumnAttribute();
 
-            Assert.Equal(LookupFilterPredicate.Unspecified, actual.FilterPredicate);
-            Assert.Equal(LookupFilterCase.Unspecified, actual.FilterCase);
             Assert.Equal(0, actual.Position);
             Assert.True(actual.Filterable);
         }
@@ -20,8 +18,6 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
         {
             LookupColumnAttribute actual = new LookupColumnAttribute(-5);
 
-            Assert.Equal(LookupFilterPredicate.Unspecified, actual.FilterPredicate);
-            Assert.Equal(LookupFilterCase.Unspecified, actual.FilterCase);
             Assert.Equal(-5, actual.Position);
             Assert.True(actual.Filterable);
         }

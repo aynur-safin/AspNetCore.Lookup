@@ -188,7 +188,7 @@ namespace NonFactors.Mvc.Lookup
         {
             if (property?.PropertyType == typeof(String))
             {
-                LookupFilterPredicate predicate = column.FilterPredicate == LookupFilterPredicate.Unspecified ? FilterPredicate : column.FilterPredicate;
+                LookupFilterPredicate predicate = column.FilterPredicate ?? FilterPredicate;
 
                 return $"({column.Key} != null && {ConvertCase(column)}.{predicate}(@{index}))";
             }
@@ -199,7 +199,7 @@ namespace NonFactors.Mvc.Lookup
         {
             if (property?.PropertyType == typeof(String))
             {
-                LookupFilterCase filterCase = column.FilterCase == LookupFilterCase.Unspecified ? FilterCase : column.FilterCase;
+                LookupFilterCase filterCase = column.FilterCase ?? FilterCase;
 
                 return filterCase switch
                 {
@@ -241,9 +241,7 @@ namespace NonFactors.Mvc.Lookup
         }
         private String ConvertCase(LookupColumn column)
         {
-            LookupFilterCase filterCase = column.FilterCase == LookupFilterCase.Unspecified ? FilterCase : column.FilterCase;
-
-            return filterCase switch
+            return (column.FilterCase ?? FilterCase) switch
             {
                 LookupFilterCase.Upper => $"{column.Key}.ToUpper()",
                 LookupFilterCase.Lower => $"{column.Key}.ToLower()",
