@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Version>5.0.0</Version>
-    <DebugType>Full</DebugType>
     <Nullable>enable</Nullable>
     <Company>NonFactors</Company>
     <Product>Mvc.Lookup</Product>
@@ -11,6 +10,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>NonFactors.Lookup.Core.Mvc6</PackageId>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType Condition="'$(Configuration)'=='Release'">none</DebugType>
     <Description>Data lookup controls for ASP.NET Core projects</Description>
   </PropertyGroup>
 
