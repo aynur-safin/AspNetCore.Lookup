@@ -65,20 +65,20 @@ export interface MvcLookupLanguage {
 }
 
 export class MvcLookupFilter {
-    lookup: MvcLookup;
+    public lookup: MvcLookup;
 
-    search: string;
+    public search: string;
 
-    sort: string;
-    order: "Asc" | "Desc" | "";
+    public sort: string;
+    public order: "Asc" | "Desc" | "";
 
-    rows: number;
-    offset: number;
+    public rows: number;
+    public offset: number;
 
-    additional: string[];
-    ids: HTMLInputElement[];
-    checkIds: HTMLInputElement[];
-    selected: MvcLookupDataRow[];
+    public additional: string[];
+    public ids: HTMLInputElement[];
+    public checkIds: HTMLInputElement[];
+    public selected: MvcLookupDataRow[];
 
     public constructor(lookup: MvcLookup) {
         const filter = this;
@@ -128,31 +128,31 @@ export class MvcLookupFilter {
 }
 
 export class MvcLookupDialog {
-    static current: MvcLookupDialog | null;
+    public static current: MvcLookupDialog | null;
 
-    lookup: MvcLookup;
-    element: HTMLElement;
+    public lookup: MvcLookup;
+    public element: HTMLElement;
 
-    error: HTMLDivElement;
-    rows: HTMLInputElement;
-    loader: HTMLDivElement;
-    table: HTMLTableElement;
-    header: HTMLSpanElement;
-    search: HTMLInputElement;
-    overlay: MvcLookupOverlay;
-    footer: HTMLButtonElement;
-    selector: HTMLButtonElement;
-    closeButton: HTMLButtonElement;
-    tableHead: HTMLTableSectionElement;
-    tableBody: HTMLTableSectionElement;
+    public error: HTMLDivElement;
+    public rows: HTMLInputElement;
+    public loader: HTMLDivElement;
+    public table: HTMLTableElement;
+    public header: HTMLSpanElement;
+    public search: HTMLInputElement;
+    public overlay: MvcLookupOverlay;
+    public footer: HTMLButtonElement;
+    public selector: HTMLButtonElement;
+    public closeButton: HTMLButtonElement;
+    public tableHead: HTMLTableSectionElement;
+    public tableBody: HTMLTableSectionElement;
 
-    options: MvcLookupDialogOptions;
-    selected: MvcLookupDataRow[];
+    public options: MvcLookupDialogOptions;
+    public selected: MvcLookupDataRow[];
 
-    title: string;
-    searchTimerId?: number;
-    loadingTimerId?: number;
-    controller: AbortController;
+    public title: string;
+    public searchTimerId?: number;
+    public loadingTimerId?: number;
+    public controller: AbortController;
 
     public constructor(lookup: MvcLookup) {
         const dialog = this;
@@ -484,7 +484,7 @@ export class MvcLookupDialog {
 }
 
 export class MvcLookupOverlay {
-    element: HTMLElement;
+    public element: HTMLElement;
 
     public constructor(dialog: MvcLookupDialog) {
         this.element = this.findOverlay(dialog.element);
@@ -538,11 +538,11 @@ export class MvcLookupOverlay {
 }
 
 export class MvcLookupAutocomplete {
-    lookup: MvcLookup;
-    searchTimerId?: number;
-    element: HTMLUListElement;
-    activeItem: HTMLLIElement | null;
-    options: MvcLookupAutocompleteOptions;
+    public lookup: MvcLookup;
+    public searchTimerId?: number;
+    public element: HTMLUListElement;
+    public activeItem: HTMLLIElement | null;
+    public options: MvcLookupAutocompleteOptions;
 
     public constructor(lookup: MvcLookup) {
         const autocomplete = this;
@@ -715,8 +715,8 @@ export class MvcLookupAutocomplete {
 }
 
 export class MvcLookup {
-    static instances: MvcLookup[] = [];
-    static lang: MvcLookupLanguage = {
+    public static instances: MvcLookup[] = [];
+    public static lang: MvcLookupLanguage = {
         add: "+ Add",
         more: "More...",
         search: "Search...",
@@ -725,26 +725,26 @@ export class MvcLookup {
         error: "Error while retrieving records"
     };
 
-    url: URL;
-    for: string;
-    multi: boolean;
-    readonly: boolean;
-    loadingTimerId?: number;
+    public url: URL;
+    public for: string;
+    public multi: boolean;
+    public readonly: boolean;
+    public loadingTimerId?: number;
 
-    group: HTMLElement;
-    error: HTMLDivElement;
-    items: HTMLDivElement[];
-    control: HTMLDivElement;
-    dialog: MvcLookupDialog;
-    filter: MvcLookupFilter;
-    search: HTMLInputElement;
-    options: MvcLookupOptions;
-    values: HTMLInputElement[];
-    controller: AbortController;
-    selected: MvcLookupDataRow[];
-    valueContainer: HTMLDivElement;
-    browser: HTMLButtonElement | null;
-    autocomplete: MvcLookupAutocomplete;
+    public group: HTMLElement;
+    public error: HTMLDivElement;
+    public items: HTMLDivElement[];
+    public control: HTMLDivElement;
+    public dialog: MvcLookupDialog;
+    public filter: MvcLookupFilter;
+    public search: HTMLInputElement;
+    public options: MvcLookupOptions;
+    public values: HTMLInputElement[];
+    public controller: AbortController;
+    public selected: MvcLookupDataRow[];
+    public valueContainer: HTMLDivElement;
+    public browser: HTMLButtonElement | null;
+    public autocomplete: MvcLookupAutocomplete;
 
     public constructor(element: HTMLElement, options: Partial<MvcLookupOptions> = {}) {
         const lookup = this;

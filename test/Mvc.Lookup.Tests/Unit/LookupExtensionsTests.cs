@@ -26,7 +26,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
 
         public LookupExtensionsTests()
         {
-            html = MockHtmlHelper();
+            html = CreateHtmlHelper();
             lookup = new TestLookup<TestModel>();
 
             lookup.Filter.Rows = 11;
@@ -343,11 +343,10 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        private IHtmlHelper<TestModel> MockHtmlHelper()
+        private IHtmlHelper<TestModel> CreateHtmlHelper()
         {
-            IOptions<MvcViewOptions> options = Substitute.For<IOptions<MvcViewOptions>>();
+            IOptions<MvcViewOptions> options = Options.Create(new MvcViewOptions());
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            options.Value.Returns(new MvcViewOptions());
 
             IHtmlGenerator generator = new DefaultHtmlGenerator(
                 Substitute.For<IAntiforgery>(),

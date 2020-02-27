@@ -136,8 +136,8 @@ class MvcLookupDialog {
         clearTimeout(dialog.loadingTimerId);
 
         dialog.loadingTimerId = setTimeout(() => {
-            dialog.footer.style.opacity = "0";
             dialog.loader.style.opacity = "1";
+            dialog.footer.style.opacity = "0";
         }, dialog.lookup.options.loadingDelay);
         dialog.loader.style.display = "";
         dialog.error.style.opacity = "0";

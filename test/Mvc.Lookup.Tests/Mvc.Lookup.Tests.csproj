@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>8.0</LangVersion>
     <GenerateFullPaths>true</GenerateFullPaths>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType Condition="'$(Configuration)'=='Release'">none</DebugType>
   </PropertyGroup>
