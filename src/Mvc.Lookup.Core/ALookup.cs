@@ -25,7 +25,7 @@ namespace NonFactors.Mvc.Lookup
         {
             FilterMethod = LookupFilterMethod.Contains;
             AdditionalFilters = new List<String>();
-            FilterCase = LookupFilterCase.Lower;
+            FilterCase = LookupFilterCase.Original;
             Columns = new List<LookupColumn>();
             Filter = new LookupFilter();
         }

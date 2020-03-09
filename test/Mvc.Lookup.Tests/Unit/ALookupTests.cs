@@ -22,7 +22,7 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             ALookup actual = Substitute.For<ALookup>();
 
             Assert.Equal(LookupFilterMethod.Contains, actual.FilterMethod);
-            Assert.Equal(LookupFilterCase.Lower, actual.FilterCase);
+            Assert.Equal(LookupFilterCase.Original, actual.FilterCase);
             Assert.Empty(actual.AdditionalFilters);
             Assert.NotNull(actual.Filter);
             Assert.Empty(actual.Columns);
