@@ -27,7 +27,9 @@ namespace NonFactors.Mvc.Lookup
         public Boolean? Browser { get; set; }
         public Boolean? Readonly { get; set; }
         public String? Placeholder { get; set; }
-        public new LookupSortOrder? Order { get; set; }
+
+        [HtmlAttributeName("order")]
+        public LookupSortOrder? SortOrder { get; set; }
 
         [HtmlAttributeName("add-handler")]
         public Boolean? AddHandler { get; set; }
@@ -159,10 +161,10 @@ namespace NonFactors.Mvc.Lookup
             WriteAttribute(output, "data-rows", Rows);
             WriteAttribute(output, "data-sort", Sort);
             WriteAttribute(output, "data-multi", Multi);
-            WriteAttribute(output, "data-order", Order);
             WriteAttribute(output, "data-title", Title);
             WriteAttribute(output, "data-dialog", Dialog);
             WriteAttribute(output, "data-search", Search);
+            WriteAttribute(output, "data-order", SortOrder);
             WriteAttribute(output, "data-filters", Filters);
             WriteAttribute(output, "data-readonly", Readonly);
             WriteAttribute(output, "data-add-handler", AddHandler);

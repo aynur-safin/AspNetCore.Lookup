@@ -99,9 +99,9 @@ namespace NonFactors.Mvc.Lookup.Tests.Unit
             helper.Filters = "Add1,Add2";
             helper.Placeholder = "Search";
             helper.LookupName = "LookupName";
-            helper.Order = LookupSortOrder.Desc;
             helper.Title = "Dialog lookup title";
             helper.Url = "http://localhost/Lookup";
+            helper.SortOrder = LookupSortOrder.Desc;
 
             helper.Process(null, output);
 

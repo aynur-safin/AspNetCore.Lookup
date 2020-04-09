@@ -1,5 +1,5 @@
-/*!
- * Mvc.Lookup 5.0.0
+﻿/*!
+ * Mvc.Lookup 5.0.1
  * https://github.com/NonFactors/AspNetCore.Lookup
  *
  * Copyright © NonFactors
